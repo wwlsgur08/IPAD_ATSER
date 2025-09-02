@@ -1141,8 +1141,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-          console.log("[main.html] 버튼 클릭! 메시지 전송 시도..."); // 👈 [추가 
-
         isSubmitting = true;
         const createCardBtn = document.getElementById('createCardBtn');
         createCardBtn.textContent = '처리 중...';
@@ -1154,7 +1152,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error("사용자 이름이 입력되지 않았습니다.");
             }
 
-            console.log("[main.html] 데이터 수집 및 전송 시작");
+            // 별자리 데이터 수집
             const charmDetails = Object.values(state.charms)
                 .filter(c => c.level > 0)
                 .map(c => ({
@@ -1163,24 +1161,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     starImage: categoryInfo[c.category].starImage
                 }));
             const lineDetails = state.lines.map(line => ({ start: line.start, end: line.end }));
-            const payload = { userName, charms: charmDetails, lines: lineDetails };
             
-            if (window.ReactNativeWebView) {
-                console.log("[main.html] postMessage 실행 직전. payload:", JSON.stringify({ type: 'createConstellationCard', payload })); // 👈 [추가 2] 전송 직전 데이터 확인
-                window.ReactNativeWebView.postMessage(
-                    JSON.stringify({ type: 'createConstellationCard', payload })
-                );
-                console.log("[main.html] 데이터 전송 완료. 이제 이 페이지는 사라집니다.");
-                // 성공 시에는 여기서 아무것도 하지 않습니다. RN이 모든 것을 처리합니다.
-            } else {
-                alert("웹 테스트: 데이터 생성 완료");
-                isSubmitting = false;
-                createCardBtn.textContent = '결과 카드 만들기';
-                createCardBtn.disabled = false;
-            }
+            // 결과 데이터를 localStorage에 저장
+            const resultData = {
+                userName,
+                charms: charmDetails,
+                lines: lineDetails,
+                totalStardust: state.totalStardust,
+                remainingStardust: state.remainingStardust
+            };
+            localStorage.setItem('asterResultData', JSON.stringify(resultData));
+            
+            // 결과 페이지로 이동
+            window.location.href = 'result.html';
+            
         } catch (error) {
             alert(error.message || '오류가 발생했습니다.');
-            isSubmitting = false; // 오류 시에만 잠금을 풀어줍니다.
+            isSubmitting = false;
             createCardBtn.textContent = '결과 카드 만들기';
             createCardBtn.disabled = false;
         }

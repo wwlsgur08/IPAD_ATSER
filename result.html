@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aster: 나만의 별자리 카드</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Prefer Playfair Display for English text */
+        :lang(en) {
+            font-family: 'Playfair Display', 'YESMyungJo', 'Nanum Myeongjo', serif !important;
+        }
+        
+        /* Apply Playfair Display to elements with English content */
+        .constellation-name[lang="en"] {
+            font-family: 'Playfair Display', serif !important;
+        }
+        /* YESMyungJo (예스명조): map regular and bold to the same family */
+        @font-face {
+            font-family: 'YESMyungJo';
+            src: local('YESMyungJo'), local('YES MyungJo'), local('YESMyungjo'), local('예스명조');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'YESMyungJo';
+            src: local('YESMyungJo Bold'), local('YES MyungJo Bold'), local('YESMyungjo Bold'), local('예스명조 Bold'), local('YESMyungjo-Bold'), local('YESMyungJo-Bold');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'YESMyungJo', 'Nanum Myeongjo', 'Playfair Display', serif;
+            background: #000;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            justify-content: center;
+        }
+        
+        .title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .cards-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .card {
+            background: linear-gradient(145deg, #e8ecff 0%, #d1d9ff 100%);
+            border-radius: 20px;
+            padding: 20px;
+            width: 360px;
+            height: 520px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .star-corner {
+            position: absolute;
+            color: #6366f1;
+            font-size: 1.5rem;
+        }
+        .star-corner.tl { top: 15px; left: 15px; }
+        .star-corner.tr { top: 15px; right: 15px; }
+        .star-corner.bl { bottom: 15px; left: 15px; }
+        .star-corner.br { bottom: 15px; right: 15px; }
+        
+        .aster-logo {
+            width: 80px;
+            height: 32px;
+            margin: -5px 0 25px 0;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .constellation-card .subtitle {
+            color: #6366f1;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 700;
+            font-family: 'YESMyungJo', 'Nanum Myeongjo', serif;
+        }
+        
+        .constellation-preview {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            margin: 3px 0;
+            background: transparent;
+        }
+
+        .eye-background {
+            position: absolute;
+            top: -20%;
+            left: -20%;
+            width: 140%;
+            height: 140%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 0;
+            opacity: 1;
+        }
+        
+        .constellation-name {
+            color: #6366f1;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 25px 0 20px 0;
+            text-align: center;
+            font-family: 'YESMyungJo', 'Nanum Myeongjo', serif;
+        }
+        
+        .constellation-bottom {
+            color: #6366f1;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 14px;
+            font-weight: 700;
+            font-family: 'YESMyungJo', 'Nanum Myeongjo', serif;
+        }
+        
+        .stats-list {
+            flex: 1;
+            width: 100%;
+            margin: 20px 0;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+        }
+        
+        .stat-name {
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'YESMyungJo', 'Nanum Myeongjo', serif;
+        }
+        
+        .stat-value {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        
+        .qr-code {
+            width: 80px;
+            height: 80px;
+            background: #6366f1;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.2s;
+            font-family: 'Nanum Gothic', sans-serif;
+        }
+        
+        .btn:hover { transform: translateY(-2px); }
+        .btn-primary { background: #6366f1; }
+        .btn-secondary { background: #10b981; }
+        
+        .star-field {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 3;
+        }
+        
+        .constellation-star {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        #constellation-svg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        .constellation-line {
+            stroke: rgba(255, 255, 255, 0.9);
+            stroke-width: 3;
+            stroke-linecap: round;
+        }
+        
+        @media (max-width: 768px) {
+            .cards-container { flex-direction: column; gap: 20px; }
+            .card { width: 100%; max-width: 320px; height: auto; padding: 20px; }
+            .constellation-preview { width: 200px; height: 200px; }
+            .buttons { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">나만의 매력 별자리 카드</h1>
+    
+    <div class="cards-container">
+        <div class="card constellation-card">
+            <div class="star-corner tl">✦</div>
+            <div class="star-corner tr">✦</div>
+            <div class="aster-logo" id="asterLogo"></div>
+            <div class="subtitle">아름다움이 비로소 나다움으로</div>
+            
+            <div class="constellation-preview">
+                <div class="eye-background" id="eyeBackground"></div>
+                <svg id="constellation-svg"></svg>
+                <div class="star-field" id="starField"></div>
+            </div>
+            
+            <div class="constellation-name" id="constellationName">Loading...</div>
+            <div class="constellation-bottom">마침내 발견한 나만의 별</div>
+            <div class="star-corner bl">✦</div>
+            <div class="star-corner br">✦</div>
+        </div>
+
+        <div class="card stats-card">
+            <div class="star-corner tl">✦</div>
+            <div class="star-corner tr">✦</div>
+            <div class="aster-logo" id="asterLogo2"></div>
+            
+            <div class="stats-list" id="statsList"></div>
+            
+            <div class="constellation-bottom">마침내 발견한 나만의 별</div>
+            <div class="star-corner bl">✦</div>
+            <div class="star-corner br">✦</div>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button class="btn btn-secondary" onclick="downloadCard()">카드 다운로드</button>
+        <a href="main.html" class="btn btn-primary">다시 만들기</a>
+    </div>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        const categoryInfo = {
+            "이해심 및 공감 능력": { color: "#D726BD", starImage: "star-pink.png", shortName: "리더십", colorName: "pink", bgColor: "#FFE7FB" },
+            "성실성 및 책임감": { color: "#1A99B6", starImage: "star-skyblue.png", shortName: "배려심", colorName: "skyblue", bgColor: "#E7FBFF" },
+            "지적 호기심 및 개방성": { color: "#CD9F1F", starImage: "star-yellow.png", shortName: "계획성", colorName: "yellow", bgColor: "#FEFFE4" },
+            "정서적 안정 및 자기 인식": { color: "#1BC14D", starImage: "star-green.png", shortName: "자기 객관화", colorName: "green", bgColor: "#E7FFEC" },
+            "도덕성 및 양심": { color: "#4169E1", starImage: "star-blue.png", shortName: "포용력", colorName: "blue", bgColor: "#E7F1FF" },
+            "유머감각 및 사교성": { color: "#D1791A", starImage: "star-orange.png", shortName: "넓은 시야", colorName: "orange", bgColor: "#FFEFE4" },
+            "목표 지향성 및 야망": { color: "#CE2629", starImage: "star-red.png", shortName: "성실함", colorName: "red", bgColor: "#FFE7E7" }
+        };
+
+        const symbols = { 0: "♦", 1: "♦", 2: "♦", 3: "♦", 4: "♦", 5: "♦", 6: "♦" };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedData = localStorage.getItem('asterResultData');
+            if (!savedData) {
+                alert('결과 데이터를 찾을 수 없습니다.');
+                window.location.href = 'main.html';
+                return;
+            }
+
+            const resultData = JSON.parse(savedData);
+            
+            // 가장 높은 레벨의 별 찾기
+            let highestLevelCharm = null;
+            let maxLevel = 0;
+            
+            resultData.charms.forEach(charm => {
+                if (charm.level > maxLevel) {
+                    maxLevel = charm.level;
+                    highestLevelCharm = charm;
+                }
+            });
+            
+            // 가장 높은 레벨 별의 카테고리 정보 가져오기
+            const dominantCategoryInfo = highestLevelCharm ? categoryInfo[highestLevelCharm.category] : null;
+            const colorName = dominantCategoryInfo ? dominantCategoryInfo.colorName : 'blue';
+            const bgColor = dominantCategoryInfo ? dominantCategoryInfo.bgColor : '#E7F1FF';
+            
+            // 별자리 이름 설정
+            const nameEl = document.getElementById('constellationName');
+            nameEl.textContent = `${resultData.userName}'s Constellation`;
+            nameEl.setAttribute('lang', 'en');
+            
+            // 카드 배경색 변경
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.style.background = `linear-gradient(145deg, ${bgColor} 0%, ${bgColor}dd 100%)`;
+            });
+
+            // Apply dominant theme color to text and corner stars
+            const themeColor = dominantCategoryInfo ? dominantCategoryInfo.color : '#4169E1';
+            document.querySelectorAll('.subtitle, .constellation-name, .constellation-bottom, .star-corner').forEach(el => {
+                el.style.color = themeColor;
+            });
+            
+            // 로고 이미지 설정
+            const logoElements = [document.getElementById('asterLogo'), document.getElementById('asterLogo2')];
+            logoElements.forEach(logo => {
+                if (logo) {
+                    logo.style.backgroundImage = `url('./images/logo-${colorName}.png')`;
+                }
+            });
+            
+            // 눈 배경 이미지 설정
+            const eyeBackground = document.getElementById('eyeBackground');
+            if (eyeBackground) {
+                const eyeImagePath = `./images/eye-${colorName}.png`;
+                console.log('눈 이미지 경로:', eyeImagePath);
+                console.log('colorName:', colorName);
+                eyeBackground.style.backgroundImage = `url('${eyeImagePath}')`;
+                console.log('eyeBackground 요소:', eyeBackground);
+                console.log('eyeBackground 스타일:', eyeBackground.style);
+            } else {
+                console.log('eyeBackground 요소를 찾을 수 없음');
+            }
+
+            // 별들 생성
+            const starField = document.getElementById('starField');
+            const svg = document.getElementById('constellation-svg');
+            
+            resultData.charms.forEach(charm => {
+                const star = document.createElement('div');
+                star.className = 'constellation-star';
+                star.style.left = `${charm.position.x}%`;
+                star.style.top = `${charm.position.y}%`;
+                // Use each charm's original star image (preserve per-charm color)
+                star.style.backgroundImage = `url(./images/${charm.starImage})`;
+                
+                const size = charm.level > 0 ? 40 + (charm.level * 50) : 0;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                
+                starField.appendChild(star);
+            });
+
+            // 연결선 생성
+            console.log('연결선 데이터:', resultData.lines);
+            resultData.lines.forEach(line => {
+                const startCharm = resultData.charms.find(c => c.name === line.start);
+                const endCharm = resultData.charms.find(c => c.name === line.end);
+                
+                if (startCharm && endCharm) {
+                    console.log(`연결선 생성: ${startCharm.name} -> ${endCharm.name}`);
+                    const lineEl = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    lineEl.setAttribute('x1', `${startCharm.position.x}%`);
+                    lineEl.setAttribute('y1', `${startCharm.position.y}%`);
+                    lineEl.setAttribute('x2', `${endCharm.position.x}%`);
+                    lineEl.setAttribute('y2', `${endCharm.position.y}%`);
+                    lineEl.className = 'constellation-line';
+                    lineEl.setAttribute('stroke', 'rgba(255, 255, 255, 0.9)');
+                    lineEl.setAttribute('stroke-width', '2');
+                    svg.appendChild(lineEl);
+                    console.log('연결선 추가됨:', lineEl);
+                } else {
+                    console.log('연결선 매력을 찾을 수 없음:', line);
+                }
+            });
+
+            // 통계 생성 - 개별 매력들을 레벨 순으로 표시
+            const statsList = document.getElementById('statsList');
+            
+            resultData.charms
+                .sort((a, b) => b.level - a.level)
+                .slice(0, 8)
+                .forEach(charm => {
+                    const info = categoryInfo[charm.category];
+                    const item = document.createElement('div');
+                    item.className = 'stat-item';
+                    item.innerHTML = `
+                        <div class="stat-name" style="color: ${info.color}">${charm.name}</div>
+                        <div class="stat-value">
+                            <span style="color: ${info.color}">♦</span>
+                            <span>${charm.level}</span>
+                        </div>
+                    `;
+                    statsList.appendChild(item);
+                });
+        });
+
+        async function downloadCard() {
+            const btn = event.target;
+            btn.textContent = '처리중...';
+            btn.disabled = true;
+            
+            try {
+                const container = document.querySelector('.cards-container');
+                const body = document.body;
+                
+                // 임시로 페이지 배경을 투명하게 변경
+                const originalBackground = body.style.background;
+                body.style.background = 'transparent';
+                
+                const canvas = await html2canvas(container, { 
+                    scale: 2,
+                    backgroundColor: null
+                });
+                
+                // 원래 배경으로 복원
+                body.style.background = originalBackground;
+                
+                const link = document.createElement('a');
+                link.download = 'constellation-card.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            } catch (error) {
+                // 에러 발생 시에도 배경 복원
+                document.body.style.background = '#000';
+                alert('다운로드 실패');
+            }
+            
+            btn.textContent = '카드 다운로드';
+            btn.disabled = false;
+        }
+    </script>
+</body>
+</html>
