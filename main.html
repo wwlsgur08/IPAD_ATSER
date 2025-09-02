@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <title>Aster: 나만의 별자리 만들기 (4단계)</title>
+    <style>
+        /* --- (기존 스타일은 변경 없음, 생략) --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2d3748;
+            line-height: 1.6;
+            padding: env(safe-area-inset-top, 20px) env(safe-area-inset-right, 20px) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 20px);
+            height: 100vh;
+            height: -webkit-fill-available;
+            overflow: hidden;
+            touch-action: manipulation;
+            font-size: 125%;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            max-width: min(98vw, 1600px);
+            margin: 0 auto;
+            gap: clamp(20px, 4vw, 40px);
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: clamp(20px, 4vw, 40px);
+            height: calc(100vh - env(safe-area-inset-top, 20px) - env(safe-area-inset-bottom, 20px));
+            height: calc(-webkit-fill-available - env(safe-area-inset-top, 20px) - env(safe-area-inset-bottom, 20px));
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* iPad 세로/가로 모드 대응 */
+        @media screen and (max-width: 1024px) {
+            .app-container {
+                flex-direction: column;
+                height: auto;
+                min-height: calc(100vh - 40px);
+                padding: clamp(15px, 4vw, 25px);
+                gap: clamp(15px, 4vw, 25px);
+            }
+        }
+
+        .visualization-panel {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .star-container-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 100%;
+            height: 0;
+        }
+
+        .star-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            /* ▼▼▼ [핵심 수정] 캡처 시 이미지에 포함되던 내부 그림자를 제거합니다. ▼▼▼ */
+            /* box-shadow: inset 0 0 15px rgba(0,0,0,0.5); */
+        }
+        
+        #connectionSvg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star-field {
+            position: relative;
+            width: 100%; height: 100%;
+            z-index: 2;
+        }
+
+        .star {
+            position: absolute;
+            width: 0px; 
+            height: 0px; 
+            transform: translate(-50%, -50%);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 0.5s ease, width 0.4s ease, height 0.4s ease, box-shadow 0.3s ease;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .star-clickable-area {
+            pointer-events: auto; 
+            cursor: pointer;
+            border-radius: 50%;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            min-width: 44px;
+            min-height: 44px;
+            transition: transform 0.1s ease;
+        }
+        
+        .star-clickable-area:active {
+            transform: scale(0.95);
+        }
+        
+        /* 터치 디바이스에서 더 큰 터치 영역 */
+        @media (hover: none) and (pointer: coarse) {
+            .star-clickable-area {
+                min-width: 48px;
+                min-height: 48px;
+            }
+        }
+        
+        .permanent-instruction {
+            text-align: center;
+            font-size: 12px;
+            color: #4a5568;
+            background-color: #f1f5f9;
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .visualization-controls {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        
+        .control-btn {
+            flex: 1;
+            padding: 14px 10px;
+            border: none;
+            border-radius: 12px;
+            background-color: #e2e8f0;
+            color: #4a5568;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-height: 50px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            white-space: nowrap;
+        }
+        
+        /* 데스크톱에서는 좀 더 여유있게 */
+        @media (min-width: 1024px) {
+            .control-btn {
+                padding: 16px 14px;
+                font-size: 15px;
+                min-height: 54px;
+            }
+        }
+        
+        /* 모바일/태블릿에서는 터치 친화적으로 */
+        @media (max-width: 1023px) {
+            .control-btn {
+                padding: clamp(12px, 3vw, 16px);
+                font-size: clamp(11px, 2.5vw, 13px);
+                min-height: 48px;
+            }
+        }
+
+        .control-btn:disabled {
+            background-color: #f1f5f9;
+            color: #a0aec0;
+            cursor: not-allowed;
+        }
+
+        .control-btn:not(:disabled):hover,
+        .control-btn:not(:disabled):active { 
+            background-color: #cbd5e0; 
+            transform: scale(0.95);
+        }
+        
+        .control-btn.active {
+            background-color: #4c51bf;
+            color: white;
+            box-shadow: 0 4px 12px rgba(76, 81, 191, 0.2);
+        }
+        
+        .control-btn.danger:not(:disabled) { 
+            background-color: #fed7d7; 
+            color: #c53030; 
+        }
+        
+        .control-btn.danger:not(:disabled):hover,
+        .control-btn.danger:not(:disabled):active { 
+            background-color: #fc8181; 
+            color: white; 
+            transform: scale(0.95);
+        }
+        
+        /* 터치 디바이스용 호버 효과 제거 */
+        @media (hover: none) and (pointer: coarse) {
+            .control-btn:not(:disabled):hover {
+                background-color: #e2e8f0;
+                transform: none;
+            }
+            
+            .control-btn.danger:not(:disabled):hover {
+                background-color: #fed7d7;
+                color: #c53030;
+                transform: none;
+            }
+        }
+        
+        .budget-panel {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            overflow: hidden;
+        }
+        
+        .replay-btn {
+            background-color: #e2e8f0;
+            border: 1px solid #d1d5db;
+            color: #4a5568;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 4px 10px;
+            border-radius: 6px;
+            transition: background-color 0.2s ease;
+        }
+        .replay-btn:hover {
+            background-color: #cbd5e0;
+        }
+
+        .panel-header {
+            text-align: center;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+            flex-shrink: 0;
+        }
+
+        .panel-header h2 { font-size: 18px; margin-bottom: 3px; }
+        .panel-header p { font-size: 11px; line-height: 1.3; margin-bottom: 8px; }
+        
+        .header-middle-row {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .cost-guide {
+            grid-column: 2 / 3;
+            margin: 0;
+            background-color: #edf2f7;
+            border-radius: 6px;
+            padding: 4px 8px;
+            max-width: 260px;
+        }
+
+        .replay-container {
+            grid-column: 3 / 4;
+            justify-self: end;
+        }
+        
+        .cost-guide-row {
+            display: flex;
+            align-items: center;
+            font-size: 10px;
+        }
+        .cost-guide-row:first-child {
+            margin-bottom: 2px;
+        }
+        .guide-label {
+            font-weight: 600;
+            color: #4a5568;
+            width: 30px;
+            text-align: right;
+            margin-right: 6px;
+        }
+        .guide-values {
+            display: flex;
+            flex: 1;
+            justify-content: space-around;
+        }
+        .guide-values > span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 18px;
+            height: 18px;
+        }
+        .level-tag {
+            background-color: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 9px;
+            color: #4a5568;
+        }
+        .cost-value {
+            font-weight: 500;
+            font-size: 10px;
+            color: #718096;
+        }
+        
+        .stardust-display-wrapper {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            padding: 7px 10px;
+            color: white;
+            box-shadow: 0 8px 15px rgba(102, 126, 234, 0.2);
+        }
+        .stardust-display-wrapper p { 
+            margin: 0; 
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .stardust-display-wrapper span { font-size: 15px; }
+
+        .charm-list-container {
+            display: flex;
+            flex-direction: row;
+            gap: 15px;
+            margin-top: 8px;
+            padding: 5px;
+            padding-bottom: 15px;
+            flex-grow: 1;
+            overflow-x: auto;
+            overflow-y: hidden;
+            cursor: grab;
+        }
+        .charm-list-container.active-drag {
+            cursor: grabbing;
+        }
+        
+        .charm-list-container::-webkit-scrollbar { height: 8px; }
+        .charm-list-container::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 4px; }
+        .charm-list-container::-webkit-scrollbar-thumb { background: #a0aec0; border-radius: 4px; }
+        .charm-list-container::-webkit-scrollbar-thumb:hover { background: #718096; }
+
+        .category-group {
+            width: 160px;
+            flex-shrink: 0;
+            margin: 0;
+            padding: 8px;
+            background-color: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .category-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #4a5568;
+            margin-bottom: 5px;
+            padding-bottom: 2px;
+            border-bottom: 2px solid;
+            display: inline-block;
+            align-self: flex-start;
+            cursor: default;
+            user-select: none;
+        }
+        
+        .charm-items-wrapper {
+            display: grid;
+            gap: 3px;
+        }
+
+        .charm-item {
+            display: flex;
+            flex-direction: column; 
+            align-items: center; 
+            gap: 3px;
+            margin-bottom: 0;
+            padding: 4px;
+            background-color: #fdfdff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+        }
+
+        .charm-name { 
+            font-size: 10px;
+            line-height: 1.2;
+            font-weight: 500;
+            color: #4a5568;
+            text-align: center;
+        }
+        
+        .level-buttons { 
+            display: flex;
+            justify-content: center;
+            gap: 1px;
+        }
+
+        .level-btn {
+            width: 18px; 
+            height: 18px; 
+            font-size: 9px;
+            background-color: #edf2f7;
+            color: #718096;
+            border: 1px solid #e2e8f0;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .level-btn:hover,
+        .level-btn:active { 
+            background-color: #e2e8f0; 
+            border-color: #cbd5e0; 
+            transform: scale(0.9);
+        }
+        
+        .level-btn.active {
+            color: white;
+            border-color: transparent;
+            transform: scale(1.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        
+        .level-btn.disabled {
+            background-color: #f7fafc;
+            color: #cbd5e0;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        
+        /* 터치 디바이스 최적화 */
+        @media (hover: none) and (pointer: coarse) {
+            .level-btn {
+                width: 22px;
+                height: 22px;
+                font-size: 10px;
+            }
+            
+            .level-btn:hover {
+                background-color: #edf2f7;
+                border-color: #e2e8f0;
+                transform: none;
+            }
+        }
+        
+        /* 데스크톱에서는 더 작게 */
+        @media (min-width: 1024px) {
+            .level-btn {
+                width: 16px;
+                height: 16px;
+                font-size: 8px;
+            }
+        }
+
+        .star-clickable-area:focus { outline: none; }
+        
+        #onboarding-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+        
+        #onboarding-overlay.active {
+            display: flex;
+        }
+
+        .onboarding-highlight {
+            position: absolute;
+            border-radius: 12px;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.6);
+            transition: all 0.5s ease-in-out;
+        }
+        
+        .onboarding-tooltip {
+            position: absolute;
+            background-color: white;
+            color: #2d3748;
+            padding: 20px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            max-width: 350px;
+            text-align: center;
+            transition: all 0.5s ease-in-out;
+            pointer-events: auto;
+        }
+        .onboarding-tooltip h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .onboarding-tooltip p {
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .onboarding-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #skip-onboarding {
+            background: none;
+            border: none;
+            color: #718096;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        #next-onboarding {
+            background-color: #4c51bf;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* --- [수정] 모바일 반응형 스타일 --- */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                height: auto;
+                overflow: auto;
+            }
+
+            .app-container {
+                flex-direction: column;
+                height: auto;
+                padding: 15px;
+                gap: 20px;
+            }
+
+            .visualization-panel, .budget-panel {
+                flex: none;
+                width: 100%;
+            }
+
+            .budget-panel {
+                padding: 15px;
+            }
+
+            .panel-header h2 {
+                font-size: 16px;
+            }
+            .panel-header p {
+                font-size: 10px;
+            }
+
+            .header-middle-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            .cost-guide {
+                grid-column: 1 / -1;
+                justify-self: center;
+                max-width: 100%;
+            }
+            .replay-container {
+                grid-column: 1 / -1;
+                justify-self: center;
+            }
+
+            .charm-list-container {
+                min-height: 280px; 
+            }
+
+            /* ▼▼▼ 이 부분을 수정/교체해주세요 ▼▼▼ */
+            .onboarding-tooltip {
+                position: fixed;
+                width: 90%; 
+                max-width: 320px;
+                left: 50% !important;
+                transform: translateX(-50%);
+                z-index: 1001;
+                padding: 15px 20px;
+                bottom: 15px !important;
+            }
+            .onboarding-tooltip h3 {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+            .onboarding-tooltip p {
+                font-size: 13px;
+                line-height: 1.5;
+                margin-bottom: 15px;
+            }
+            .onboarding-tooltip #next-onboarding {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+            .onboarding-tooltip #skip-onboarding {
+                font-size: 13px;
+            }
+            /* ▲▲▲ 여기까지 수정/교체 ▲▲▲ */
+        }
+    </style>
+
+    
+</head>
+<body>
+
+    <!-- ▼▼▼ 이 부분을 새로 추가하세요 ▼▼▼ -->
+<div id="redirect-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center;">
+    <div id="redirect-box" style="background: white; padding: 30px 40px; border-radius: 12px; text-align: center;">
+        <p style="margin-bottom: 20px;">먼저 당신의 매력을 선택해야 합니다.</p>
+        <a href="select.html" style="color: white; background: #4c51bf; padding: 10px 20px; border-radius: 8px; text-decoration: none;">1단계로 이동하기</a>
+    </div>
+</div>
+
+    <div class="app-container" id="appContainer">
+        
+        <div class="visualization-panel" id="visualizationPanel">
+            <div class="star-container-wrapper">
+                <div class="star-container" id="starContainer">
+                    <div class="star-field" id="starField"></div>
+                    <svg id="connectionSvg"></svg>
+                </div>
+            </div>
+            <div class="permanent-instruction">
+                별이 생성되면 <b>선 연결 모드</b>를 켜고, 별 두개를 '클릭'해 선을 연결해주세요.
+            </div>
+            <div class="visualization-controls" id="visualization-controls">
+                <button id="drawModeBtn" class="control-btn">선 연결 모드 켜기</button>
+                <button id="undoLineBtn" class="control-btn">선 연결 되돌리기</button>
+                <button id="clearLinesBtn" class="control-btn danger">모든 선 지우기</button>
+                <button id="resetAllBtn" class="control-btn danger">모두 초기화</button>
+            </div>
+        </div>
+
+        <div class="budget-panel" id="budgetPanel">
+            <header class="panel-header" id="panelHeader">
+                <h2>4단계: 핵심매력 발견 및 별자리 완성</h2>
+                <p>주어진 '별가루'를 투자하여 당신의 핵심 매력을 발견하고, 자신만의 별자리를 만들어보세요.</p>
+                
+                <div class="header-middle-row">
+                    <div class="cost-guide">
+                        <div class="cost-guide-row">
+                            <span class="guide-label">레벨:</span>
+                            <div class="guide-values">
+                                <span class="level-tag">1</span> <span class="level-tag">2</span> <span class="level-tag">3</span> <span class="level-tag">4</span> <span class="level-tag">5</span> <span class="level-tag">6</span>
+                            </div>
+                        </div>
+                        <div class="cost-guide-row">
+                            <span class="guide-label">비용:</span>
+                            <div class="guide-values">
+                                <span class="cost-value">1</span> <span class="cost-value">2</span> <span class="cost-value">3</span> <span class="cost-value">5</span> <span class="cost-value">7</span> <span class="cost-value">10</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="replay-container">
+                        <button id="replayOnboardingBtn" class="replay-btn">설명 다시보기</button>
+                    </div>
+                </div>
+
+                <div class="stardust-display-wrapper">
+                    <p>남은 별가루: <span id="remaining-stardust">40</span> / 40</p>
+                </div>
+            </header>
+
+            <div style="padding: 10px 5px 5px; text-align: center; display: flex; gap: 10px; align-items: center;">
+    <input type="text" id="userNameInput" placeholder="이름을 입력하세요 (영문)" style="flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 6px;">
+    <button id="createCardBtn" style="padding: 8px 15px; border: none; background: #4c51bf; color: white; border-radius: 6px; cursor: pointer; font-weight: 600;">결과 카드 만들기</button>
+</div>
+            <div class="charm-list-container" id="charmListContainer">
+            </div>
+        </div>
+
+    </div>
+    
+    <div id="onboarding-overlay">
+        <div class="onboarding-highlight" id="onboardingHighlight"></div>
+        <div class="onboarding-tooltip" id="onboardingTooltip">
+            <h3>사용법 안내</h3>
+            <p id="onboardingText">여기에 안내 문구가 표시됩니다.</p>
+            <div class="onboarding-buttons">
+                <button id="skip-onboarding">건너뛰기</button>
+                <button id="next-onboarding">다음</button>
+            </div>
+        </div>
+    </div>
+     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+   <script>
+// JavaScript 로드 확인
+console.log('🔥 main.html JavaScript 로드됨!');
+
+// --- START OF FILE code (1).js ---
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 DOMContentLoaded 이벤트 실행됨!');
+
+    // state, categoryInfo, categoryDataForPanel, shuffledCharmLayout 등
+    // 모든 const 변수 선언은 그대로 유지합니다.
+    const state = {
+        totalStardust: 40, remainingStardust: 40, charms: {},
+        costTable: { 0: 0, 1: 1, 2: 2, 3: 3, 4: 5, 5: 7, 6: 10 },
+        drawMode: false, startStar: null, lines: []
+    };
+    const categoryInfo = {
+        "이해심 및 공감 능력": { color: "#F64DC6", starImage: "star-pink.png" },
+        "성실성 및 책임감": { color: "#2DB6F6", starImage: "star-skyblue.png" },
+        "지적 호기심 및 개방성": { color: "#FBCA06", starImage: "star-yellow.png" },
+        "정서적 안정 및 자기 인식": { color: "#2ABB53", starImage: "star-green.png" },
+        "도덕성 및 양심": { color: "#4D77F6", starImage: "star-blue.png" },
+        "유머감각 및 사교성": { color: "#F68E4D", starImage: "star-orange.png" },
+        "목표 지향성 및 야망": { color: "#F64D4D", starImage: "star-red.png" }
+    };
+    const categoryDataForPanel = [
+        { name: "이해심 및 공감 능력", charms: ["다정함", "공감 능력", "이해심", "배려심", "경청 능력", "위로 능력", "섬세함"] },
+        { name: "성실성 및 책임감", charms: ["성실함", "책임감", "인내심", "계획성", "세심함", "신중함", "절제력"] },
+        { name: "지적 호기심 및 개방성", charms: ["호기심", "창의성", "열린 마음", "모험심", "비판적 사고력", "통찰력", "넓은 시야", "집중력"] },
+        { name: "정서적 안정 및 자기 인식", charms: ["침착함", "안정감", "자기 성찰", "긍정적", "현실 감각", "자기 객관화", "자존감", "겸손"] },
+        { name: "도덕성 및 양심", charms: ["정직함", "양심", "일관성", "원칙 준수", "진정성", "약자보호"] },
+        { name: "유머감각 및 사교성", charms: ["유머 감각", "분위기 메이커", "다양한 친분", "타인을 편하게 해주는 능력", "연락 등 관계를 이어가는 능력", "사교적 에너지"] },
+        { name: "목표 지향성 및 야망", charms: ["목표 의식", "열정", "자기 계발 의지", "리더십", "야망", "경쟁심", "전략적 사고"] }
+    ];
+    const shuffledCharmLayout = [
+        { name: "정직함", category: "도덕성 및 양심" }, { name: "성실함", category: "성실성 및 책임감" }, { name: "호기심", category: "지적 호기심 및 개방성" }, { name: "침착함", category: "정서적 안정 및 자기 인식" }, { name: "유머 감각", category: "유머감각 및 사교성" }, { name: "다정함", category: "이해심 및 공감 능력" }, { name: "목표 의식", category: "목표 지향성 및 야망" },
+        { name: "창의성", category: "지적 호기심 및 개방성" }, { name: "안정감", category: "정서적 안정 및 자기 인식" }, { name: "분위기 메이커", category: "유머감각 및 사교성" }, { name: "열정", category: "목표 지향성 및 야망" }, { name: "공감 능력", category: "이해심 및 공감 능력" }, { name: "양심", category: "도덕성 및 양심" }, { name: "책임감", category: "성실성 및 책임감" },
+        { name: "다양한 친분", category: "유머감각 및 사교성" }, { name: "이해심", category: "이해심 및 공감 능력" }, { name: "자기 성찰", category: "정서적 안정 및 자기 인식" }, { name: "열린 마음", category: "지적 호기심 및 개방성" }, { name: "일관성", category: "도덕성 및 양심" }, { name: "자기 계발 의지", category: "목표 지향성 및 야망" }, { name: "인내심", category: "성실성 및 책임감" },
+        { name: "긍정적", category: "정서적 안정 및 자기 인식" }, { name: "모험심", category: "지적 호기심 및 개방성" }, { name: "배려심", category: "이해심 및 공감 능력" }, { name: "타인을 편하게 해주는 능력", category: "유머감각 및 사교성" }, { name: "리더십", category: "목표 지향성 및 야망" }, { name: "계획성", category: "성실성 및 책임감" }, { name: "원칙 준수", category: "도덕성 및 양심" },
+        { name: "진정성", category: "도덕성 및 양심" }, { name: "세심함", category: "성실성 및 책임감" }, { name: "비판적 사고력", category: "지적 호기심 및 개방성" }, { name: "현실 감각", category: "정서적 안정 및 자기 인식" }, { name: "경청 능력", category: "이해심 및 공감 능력" }, { name: "야망", category: "목표 지향성 및 야망" }, { name: "집중력", category: "지적 호기심 및 개방성" },
+        { name: "연락 등 관계를 이어가는 능력", category: "유머감각 및 사교성" }, { name: "위로 능력", category: "이해심 및 공감 능력" }, { name: "신중함", category: "성실성 및 책임감" }, { name: "자기 객관화", category: "정서적 안정 및 자기 인식" }, { name: "경쟁심", category: "목표 지향성 및 야망" }, { name: "통찰력", category: "지적 호기심 및 개방성" }, { name: "약자보호", category: "도덕성 및 양심" },
+        { name: "전략적 사고", category: "목표 지향성 및 야망" }, { name: "자존감", category: "정서적 안정 및 자기 인식" }, { name: "넓은 시야", category: "지적 호기심 및 개방성" }, { name: "섬세함", category: "이해심 및 공감 능력" }, { name: "사교적 에너지", category: "유머감각 및 사교성" }, { name: "절제력", category: "성실성 및 책임감" }, { name: "겸손", category: "정서적 안정 및 자기 인식" }
+    ];
+    const starField = document.getElementById('starField');
+    const charmListContainer = document.getElementById('charmListContainer');
+    // ... 나머지 DOM 요소들도 그대로 ...
+    
+    // init(), createControlPanel(), createStars(), resetAll() 등등
+    // generateResultCard를 제외한 모든 함수는 그대로 유지합니다.
+    function init() { 
+        console.log('[main.html] init() 함수 시작');
+        const savedCharmsJSON = localStorage.getItem('userSelectedCharms');
+        console.log('[main.html] 저장된 매력 데이터:', savedCharmsJSON);
+        if (!savedCharmsJSON) {
+            console.log('[main.html] 매력 데이터 없음, 선택 페이지로 리다이렉트');
+            document.getElementById('redirect-overlay').style.display = 'flex';
+            return;
+        }
+        const selectedCharmNames = JSON.parse(savedCharmsJSON);
+        createControlPanel(selectedCharmNames);
+        createStars(selectedCharmNames);
+        
+        // 이벤트 리스너 직접 등록
+        const drawModeBtn = document.getElementById('drawModeBtn');
+        const undoLineBtn = document.getElementById('undoLineBtn');
+        const clearLinesBtn = document.getElementById('clearLinesBtn');
+        const resetAllBtn = document.getElementById('resetAllBtn');
+        const replayOnboardingBtn = document.getElementById('replayOnboardingBtn');
+        
+        if(drawModeBtn) drawModeBtn.addEventListener('click', toggleDrawMode);
+        if(undoLineBtn) undoLineBtn.addEventListener('click', handleUndoLine);
+        if(clearLinesBtn) clearLinesBtn.addEventListener('click', clearAllLines);
+        if(resetAllBtn) resetAllBtn.addEventListener('click', resetAll);
+        if(replayOnboardingBtn) replayOnboardingBtn.addEventListener('click', startOnboarding);
+
+        const createCardBtn = document.getElementById('createCardBtn');
+        if (createCardBtn) {
+            createCardBtn.addEventListener('click', generateResultCard);
+        }
+        
+        setupOnboarding();
+        setupDragScroll();
+        updateDisplay();
+        updateUndoButtonState();
+        if (selectedCharmNames.length > 0) {
+            startOnboarding();
+        }
+    }
+    function createControlPanel(selectedCharmNames) {
+        categoryDataForPanel.forEach((category) => {
+            const charmsInThisCategory = category.charms.filter(charm => selectedCharmNames.includes(charm));
+            if (charmsInThisCategory.length === 0) return;
+            const categoryGroup = document.createElement('div');
+            categoryGroup.className = 'category-group';
+            const categoryTitle = document.createElement('h3');
+            categoryTitle.className = 'category-title';
+            categoryTitle.textContent = category.name;
+            categoryTitle.style.borderColor = categoryInfo[category.name].color;
+            categoryGroup.appendChild(categoryTitle);
+            const itemsWrapper = document.createElement('div');
+            itemsWrapper.className = 'charm-items-wrapper';
+            charmsInThisCategory.forEach(charmName => {
+                const charmItem = document.createElement('div');
+                charmItem.className = 'charm-item';
+                const nameEl = document.createElement('span');
+                nameEl.className = 'charm-name';
+                nameEl.textContent = charmName;
+                const buttonsEl = document.createElement('div');
+                buttonsEl.className = 'level-buttons';
+                for (let level = 0; level <= 6; level++) {
+                    const btn = document.createElement('button');
+                    btn.className = 'level-btn';
+                    btn.textContent = level;
+                    btn.dataset.level = level;
+                    btn.addEventListener('click', () => handleLevelButtonClick(charmName, level));
+                    buttonsEl.appendChild(btn);
+                }
+                charmItem.appendChild(nameEl);
+                charmItem.appendChild(buttonsEl);
+                itemsWrapper.appendChild(charmItem);
+            });
+            categoryGroup.appendChild(itemsWrapper);
+            charmListContainer.appendChild(categoryGroup);
+        });
+     }
+    function createStars(selectedCharmNames) {
+        shuffledCharmLayout.forEach((charm, index) => {
+            if (!selectedCharmNames.includes(charm.name)) return;
+            const charmName = charm.name;
+            const charmCategory = charm.category;
+            const info = categoryInfo[charmCategory];
+            const row = Math.floor(index / 7);
+            const col = index % 7;
+
+            const padding = 9;
+            let gridX = padding + (col * (100 - padding * 2) / (7 - 1));
+            let gridY = padding + (row * (100 - padding * 2) / (7 - 1));
+
+            const centerX = 50;
+            const centerY = 50;
+            const radius = 50 - padding; 
+
+            const dx = gridX - centerX;
+            const dy = gridY - centerY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance > radius) {
+                const scale = radius / distance;
+                gridX = centerX + dx * scale;
+                gridY = centerY + dy * scale;
+            }
+
+            const randomJitter = 4;
+            const offsetX = gridX + (Math.random() - 0.5) * randomJitter;
+            const offsetY = gridY + (Math.random() - 0.5) * randomJitter;
+            const starEl = document.createElement('div');
+            starEl.className = 'star';
+            starEl.style.left = `${offsetX}%`;
+            starEl.style.top = `${offsetY}%`;
+            
+            starEl.style.backgroundImage = `url(./images/${info.starImage})`;
+
+            const clickableArea = document.createElement('div');
+            clickableArea.className = 'star-clickable-area';
+            clickableArea.addEventListener('click', () => handleStarClick(charmName));
+            starEl.appendChild(clickableArea);
+            starField.appendChild(starEl);
+            state.charms[charmName] = {
+                name: charmName, level: 0, category: charmCategory,
+                color: info.color, element: starEl, clickableElement: clickableArea,
+                position: { x: offsetX, y: offsetY }
+            };
+        });
+     }
+    function resetAll() {
+        if (!confirm("정말 모든 선택을 초기화하고 처음(1단계)부터 다시 시작하시겠습니까?")) return;
+        localStorage.removeItem('userSelectedCharms');
+        localStorage.removeItem('asterResultData');
+        window.location.href = 'select.html';
+     }
+    function handleLevelButtonClick(charmName, newLevel) {
+        console.log('[main.html] handleLevelButtonClick 호출:', charmName, newLevel);
+        console.log('[main.html] state.charms:', state.charms);
+        const charm = state.charms[charmName];
+        if (!charm) {
+            console.error('[main.html] 매력을 찾을 수 없음:', charmName);
+            return;
+        }
+        if (charm.level === newLevel) return;
+        const costDiff = state.costTable[newLevel] - state.costTable[charm.level];
+        if (state.remainingStardust < costDiff) { alert("별가루가 부족합니다!"); return; }
+        charm.level = newLevel;
+        state.remainingStardust -= costDiff;
+        updateDisplay();
+     }
+    function handleStarClick(charmName) {
+        if (!state.drawMode) return;
+        const clickedStar = state.charms[charmName];
+        if (clickedStar.level === 0) return;
+        if (!state.startStar) {
+            state.startStar = clickedStar;
+            updateStarAppearance(clickedStar.element, clickedStar.clickableElement, clickedStar.level, true);
+        } else {
+            if (state.startStar.name === clickedStar.name) {
+                updateStarAppearance(clickedStar.element, clickedStar.clickableElement, clickedStar.level, false);
+                state.startStar = null;
+                return;
+            }
+            drawLine(state.startStar, clickedStar);
+            updateStarAppearance(state.startStar.element, state.startStar.clickableElement, state.startStar.level, false);
+            state.startStar = null;
+        }
+     }
+    function toggleDrawMode() {
+        console.log('[main.html] toggleDrawMode 함수 호출됨');
+        state.drawMode = !state.drawMode;
+        const drawModeBtn = document.getElementById('drawModeBtn');
+        drawModeBtn.classList.toggle('active', state.drawMode);
+        drawModeBtn.textContent = state.drawMode ? '선 연결 모드 끄기' : '선 연결 모드 켜기';
+        console.log('[main.html] 선 연결 모드:', state.drawMode);
+        if (!state.drawMode && state.startStar) {
+            updateStarAppearance(state.startStar.element, state.startStar.clickableElement, state.startStar.level, false);
+            state.startStar = null;
+        }
+     }
+    function drawLine(startCharm, endCharm) {
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', `${startCharm.position.x}%`);
+        line.setAttribute('y1', `${startCharm.position.y}%`);
+        line.setAttribute('x2', `${endCharm.position.x}%`);
+        line.setAttribute('y2', `${endCharm.position.y}%`);
+        line.setAttribute('stroke', 'rgba(255, 255, 255, 0.7)');
+        line.setAttribute('stroke-width', '3.5');
+        document.getElementById('connectionSvg').appendChild(line);
+        state.lines.push({ element: line, start: startCharm.name, end: endCharm.name });
+        updateUndoButtonState();
+     }
+    function handleUndoLine() {
+        if (state.lines.length === 0) return;
+        const lastLine = state.lines.pop();
+        lastLine.element.remove();
+        updateUndoButtonState();
+     }
+    function clearAllLines() {
+        document.getElementById('connectionSvg').innerHTML = '';
+        state.lines = [];
+        updateUndoButtonState();
+     }
+    function updateUndoButtonState() {
+        const undoBtn = document.getElementById('undoLineBtn');
+        if (undoBtn) {
+            undoBtn.disabled = state.lines.length === 0;
+        }
+     }
+    function getVisualSize(level, isMobile) { /* 기존 코드 그대로 */ 
+        const unit = isMobile ? 'vw' : 'px';
+        const sizeMap = { 0: 0, 1: 100, 2: 140, 3: 180, 4: 230, 5: 280, 6: 340 };
+        if (isMobile) {
+            const mobileSizeMap = { 0: 0, 1: 10, 2: 14, 3: 18, 4: 22, 5: 26, 6: 30 };
+            return (mobileSizeMap[level] || 0) + unit;
+        }
+        return (sizeMap[level] || 0) + unit;
+    }
+    function getClickableSize(level, isMobile) { /* 기존 코드 그대로 */ 
+        const unit = isMobile ? 'vw' : 'px';
+        const sizeMap = { 0: 0, 1: 30, 2: 40, 3: 50, 4: 60, 5: 75, 6: 90 };
+        if (isMobile) {
+            const mobileSizeMap = { 0: 0, 1: 8, 2: 11, 3: 13, 4: 16, 5: 19, 6: 22 };
+            return (mobileSizeMap[level] || 0) + unit;
+        }
+        return (sizeMap[level] || 0) + unit;
+    }
+    function updateStarAppearance(starEl, clickableEl, level, isHighlighted) { /* 기존 코드 그대로 */ 
+        const isMobile = window.innerWidth <= 768;
+        const visualSize = getVisualSize(level, isMobile);
+        const clickableSize = getClickableSize(level, isMobile);
+        starEl.style.width = visualSize;
+        starEl.style.height = visualSize;
+        clickableEl.style.width = clickableSize;
+        clickableEl.style.height = clickableSize;
+        if (isHighlighted) {
+            starEl.style.boxShadow = `0 0 25px 8px rgba(255, 255, 255, 0.7)`;
+        } else {
+            starEl.style.boxShadow = '';
+        }
+    }
+    function updateDisplay() { 
+        document.getElementById('remaining-stardust').textContent = state.remainingStardust;
+        document.querySelectorAll('.charm-item').forEach(item => {
+            const charmName = item.querySelector('.charm-name').textContent;
+            const charm = state.charms[charmName];
+            item.querySelectorAll('.level-btn').forEach(btn => {
+                const btnLevel = parseInt(btn.dataset.level);
+                const isSelected = (btnLevel === charm.level);
+                btn.classList.toggle('active', isSelected);
+                if (isSelected) {
+                    btn.style.backgroundColor = charm.color;
+                } else {
+                    btn.style.backgroundColor = '';
+                }
+                const costDiff = state.costTable[btnLevel] - state.costTable[charm.level];
+                const isDisabled = state.remainingStardust < costDiff;
+                btn.classList.toggle('disabled', !isSelected && isDisabled);
+            });
+        });
+        Object.values(state.charms).forEach(charm => {
+            const isHighlighted = state.startStar ? state.startStar.name === charm.name : false;
+            updateStarAppearance(charm.element, charm.clickableElement, charm.level, isHighlighted);
+            charm.element.style.opacity = charm.level > 0 ? '1' : '0';
+        });
+    }
+    function setupDragScroll() { /* 기존 코드 그대로 */ 
+        const slider = document.getElementById('charmListContainer');
+        let isDown = false; let startX; let scrollLeft;
+        slider.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.level-btn')) return;
+            isDown = true; slider.classList.add('active-drag');
+            startX = e.pageX - slider.offsetLeft; scrollLeft = slider.scrollLeft;
+        });
+        slider.addEventListener('mouseleave', () => { isDown = false; slider.classList.remove('active-drag'); });
+        slider.addEventListener('mouseup', () => { isDown = false; slider.classList.remove('active-drag'); });
+        slider.addEventListener('mousemove', (e) => {
+            if (!isDown) return; e.preventDefault();
+            const x = e.pageX - slider.offsetLeft; const walk = (x - startX) * 2;
+            slider.scrollLeft = scrollLeft - walk;
+        });
+    }
+    // 온보딩 관련 변수들
+    let onboardingSteps = [
+        {
+            target: '.budget-panel',
+            title: '별가루 투자하기',
+            text: '왼쪽에서 매력을 선택하고 별가루를 투자해보세요. 투자할수록 더 큰 별이 됩니다!'
+        },
+        {
+            target: '.visualization-panel',
+            title: '나만의 별자리',
+            text: '투자한 매력들이 별자리로 나타납니다. 별들을 연결해서 자신만의 별자리를 완성하세요!'
+        },
+        {
+            target: '.visualization-controls',
+            title: '별자리 그리기',
+            text: '선 그리기 버튼을 눌러 별들을 연결할 수 있습니다. 실수했다면 되돌리기도 가능해요!'
+        }
+    ];
+    let currentOnboardingStep = 0;
+
+    function setupOnboarding() {
+        const skipBtn = document.getElementById('skip-onboarding');
+        const nextBtn = document.getElementById('next-onboarding');
+        
+        if (skipBtn) skipBtn.addEventListener('click', endOnboarding);
+        if (nextBtn) nextBtn.addEventListener('click', () => {
+            currentOnboardingStep++;
+            if (currentOnboardingStep >= onboardingSteps.length) {
+                endOnboarding();
+            } else {
+                showOnboardingStep(currentOnboardingStep);
+            }
+        });
+    }
+
+    function showOnboardingStep(stepIndex) {
+        const step = onboardingSteps[stepIndex];
+        if (!step) return;
+
+        const overlay = document.getElementById('onboarding-overlay');
+        const tooltip = document.getElementById('onboardingTooltip');
+        const highlight = document.getElementById('onboardingHighlight');
+        const target = document.querySelector(step.target);
+
+        if (!target || !overlay || !tooltip || !highlight) return;
+
+        // 타겟 요소 위치 계산
+        const rect = target.getBoundingClientRect();
+        
+        // 하이라이트 위치 설정
+        highlight.style.left = rect.left - 5 + 'px';
+        highlight.style.top = rect.top - 5 + 'px';
+        highlight.style.width = rect.width + 10 + 'px';
+        highlight.style.height = rect.height + 10 + 'px';
+        
+        // 툴팁 내용 설정
+        tooltip.querySelector('h3').textContent = step.title;
+        tooltip.querySelector('#onboardingText').textContent = step.text;
+        
+        // 툴팁 위치 설정 (화면 중앙 하단)
+        tooltip.style.left = '50%';
+        tooltip.style.top = '70%';
+        tooltip.style.transform = 'translateX(-50%)';
+        
+        // 마지막 단계인지 확인
+        const nextBtn = document.getElementById('next-onboarding');
+        if (nextBtn) {
+            nextBtn.textContent = stepIndex === onboardingSteps.length - 1 ? '완료' : '다음';
+        }
+        
+        overlay.classList.add('active');
+    }
+
+    function startOnboarding() {
+        currentOnboardingStep = 0;
+        showOnboardingStep(0);
+    }
+
+    function endOnboarding() {
+        const overlay = document.getElementById('onboarding-overlay');
+        if (overlay) {
+            overlay.classList.remove('active');
+        }
+    }
+
+    // ✅ generateResultCard 함수를 이 최종 버전으로 교체합니다.
+    let isSubmitting = false;
+
+    async function generateResultCard() {
+        if (isSubmitting) {
+            console.log("[main.html] 중복 실행 방지됨.");
+            return;
+        }
+
+          console.log("[main.html] 버튼 클릭! 메시지 전송 시도..."); // 👈 [추가 
+
+        isSubmitting = true;
+        const createCardBtn = document.getElementById('createCardBtn');
+        createCardBtn.textContent = '처리 중...';
+        createCardBtn.disabled = true;
+
+        try {
+            const userName = document.getElementById('userNameInput').value.trim();
+            if (!userName) {
+                throw new Error("사용자 이름이 입력되지 않았습니다.");
+            }
+
+            console.log("[main.html] 데이터 수집 및 전송 시작");
+            const charmDetails = Object.values(state.charms)
+                .filter(c => c.level > 0)
+                .map(c => ({
+                    name: c.name, level: c.level, category: c.category,
+                    color: c.color, position: c.position,
+                    starImage: categoryInfo[c.category].starImage
+                }));
+            const lineDetails = state.lines.map(line => ({ start: line.start, end: line.end }));
+            const payload = { userName, charms: charmDetails, lines: lineDetails };
+            
+            if (window.ReactNativeWebView) {
+                console.log("[main.html] postMessage 실행 직전. payload:", JSON.stringify({ type: 'createConstellationCard', payload })); // 👈 [추가 2] 전송 직전 데이터 확인
+                window.ReactNativeWebView.postMessage(
+                    JSON.stringify({ type: 'createConstellationCard', payload })
+                );
+                console.log("[main.html] 데이터 전송 완료. 이제 이 페이지는 사라집니다.");
+                // 성공 시에는 여기서 아무것도 하지 않습니다. RN이 모든 것을 처리합니다.
+            } else {
+                alert("웹 테스트: 데이터 생성 완료");
+                isSubmitting = false;
+                createCardBtn.textContent = '결과 카드 만들기';
+                createCardBtn.disabled = false;
+            }
+        } catch (error) {
+            alert(error.message || '오류가 발생했습니다.');
+            isSubmitting = false; // 오류 시에만 잠금을 풀어줍니다.
+            createCardBtn.textContent = '결과 카드 만들기';
+            createCardBtn.disabled = false;
+        }
+    }
+
+    // 프로그램 실행
+    init();
+});
+   </script>
+</body>
+</html>
