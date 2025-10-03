@@ -7,6 +7,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="format-detection" content="telephone=no">
     <title>매력 분석 테스트</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
        
         * {
@@ -19,8 +20,8 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            /* color: #333; */ /* Replaced by text-slate-300 on body tag */
+            /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */ /* Replaced by tailwind classes on body tag */
             min-height: 100vh;
             min-height: -webkit-fill-available;
             padding: env(safe-area-inset-top, 20px) env(safe-area-inset-right, 20px) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 20px);
@@ -38,11 +39,13 @@
         #app {
             max-width: 1024px;
             width: 100%;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin: 2.5vh auto; /* Add some vertical margin */
+            /* background: white; */ /* Replaced by glassmorphism classes */
+            border-radius: 20px; /* Slightly more rounded corners */
+            /* box-shadow: 0 20px 40px rgba(0,0,0,0.1); */ /* Replaced by neon shadow classes */
             overflow: hidden;
+            position: relative; /* Ensure app is on top of the sparkling background */
+            z-index: 1;
         }
         
         /* iPad Pro 12.9" 최적화 */
@@ -67,10 +70,83 @@
         }
         
         h2 {
-            color: #5a67d8;
+            /* color: #5a67d8; */
             margin-bottom: 20px;
             font-size: clamp(24px, 4vw, 32px);
             text-align: center;
+        }
+
+        #stage1 h2 {
+            color: #fff;
+            font-weight: bold;
+        }
+        #stage1 > p {
+            color: #cbd5e1;
+        }
+        .progress-bar {
+            background-color: rgba(100, 116, 139, 0.5); /* slate-500/50 */
+            border-radius: 9999px;
+            height: 10px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(34, 211, 238, 0.2);
+        }
+        .progress-fill {
+            background: linear-gradient(to right, #22d3ee, #14b8a6);
+            box-shadow: 0 0 8px #22d3ee, 0 0 12px #22d3ee;
+            animation: glow-anim 2.5s ease-in-out infinite;
+        }
+        .category-item {
+            background: linear-gradient(to bottom right, rgba(51, 65, 85, 0.4), rgba(30, 58, 138, 0.4));
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            box-shadow: 0 4px 6px -1px rgba(34, 211, 238, 0.05), 0 2px 4px -2px rgba(34, 211, 238, 0.05);
+            border-radius: 1rem;
+            color: #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        .category-item:hover {
+            transform: scale(1.03);
+            border-color: rgba(34, 211, 238, 0.7);
+            box-shadow: 0 10px 15px -3px rgba(34, 211, 238, 0.15), 0 4px 6px -4px rgba(34, 211, 238, 0.15);
+        }
+        .category-item.selected {
+            background: linear-gradient(to bottom right, rgba(34, 211, 238, 0.3), rgba(20, 184, 166, 0.3));
+            border-color: #22d3ee;
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+            transform: scale(1.02);
+        }
+        .category-item strong {
+            color: #fff;
+        }
+        .category-item div div {
+            color: #94a3b8; /* slate-400 */
+        }
+        .category-item input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            height: 1.5em;
+            width: 1.5em;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 0.375rem;
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            cursor: pointer;
+            margin-right: 1rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .category-item input[type="checkbox"]:checked {
+            background-image: linear-gradient(to right, #22d3ee, #14b8a6);
+            border-color: #14b8a6;
+            box-shadow: 0 0 10px #22d3ee;
+        }
+        .category-item input[type="checkbox"]:checked::after {
+            content: '✔';
+            color: #0f172a; /* slate-900 */
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
         }
         
         .category-selection {
@@ -125,43 +201,87 @@
         }
         
         .question-card {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 25px;
-            border-left: 4px solid #5a67d8;
+            background: linear-gradient(to bottom right, rgba(51, 65, 85, 0.4), rgba(30, 58, 138, 0.4));
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            box-shadow: 0 4px 6px -1px rgba(34, 211, 238, 0.05), 0 2px 4px -2px rgba(34, 211, 238, 0.05);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
         }
-        
         .question-title {
-            font-size: 18px;
+            font-size: 1.25rem; /* 20px */
             font-weight: bold;
-            margin-bottom: 15px;
-            color: #2d3748;
+            margin-bottom: 1rem;
+            color: #FFFFFF; /* 흰색으로 변경하여 가독성 확보 */
+            text-shadow: 0 0 8px rgba(100, 200, 255, 0.5); /* 은은한 그림자 효과 */
         }
-        
         .choices {
             display: grid;
-            gap: 10px;
+            gap: 0.75rem; /* 12px */
         }
-        
         .choice-item {
-            display: flex;
-            align-items: flex-start;
-            padding: 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
+            display: flex; /* flexbox 레이아웃 사용 */
+            align-items: center; /* 수직 중앙 정렬 */
+            background: rgba(15, 23, 42, 0.5); /* 반투명 어두운 배경 */
+            border: 1px solid rgba(34, 211, 238, 0.2);
+            border-radius: 0.75rem; /* 12px */
+            padding: 1rem; /* 16px */
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+            color: #cbd5e1; /* 기본 글자색 (slate-300) */
         }
-        
         .choice-item:hover {
-            background-color: #f7fafc;
-            border-color: #5a67d8;
+            background: rgba(34, 211, 238, 0.15);
+            border-color: rgba(34, 211, 238, 0.7);
         }
-        
+        /* 선택된 항목 스타일 */
         .choice-item.selected {
-            background-color: #edf2f7;
-            border-color: #5a67d8;
+            background: linear-gradient(to right, #22d3ee, #14b8a6); /* 밝지만 눈부시지 않은 그라데이션 */
+            border-color: #22d3ee;
+            color: #0f172a; /* 글자를 어두운 색(slate-900)으로 변경 */
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
+        }
+        /* 선택된 항목 내부의 strong 태그도 어둡게 */
+        .choice-item.selected strong {
+            color: #0f172a;
+        }
+        .choice-item input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            height: 1.25em;
+            width: 1.25em;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 9999px;
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            cursor: pointer;
+            margin-right: 0.75rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .choice-item input[type="radio"]:checked {
+            background-image: linear-gradient(to right, #22d3ee, #14b8a6);
+            border-color: #14b8a6;
+        }
+        .choice-item input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 9999px;
+            background-color: #0f172a; /* slate-900 */
+        }
+        /* 선택된 항목의 라디오 버튼 스타일 재정의 */
+        .choice-item.selected input[type="radio"]:checked {
+            background-image: none;
+            background-color: #0f172a;
+            border-color: #0f172a;
+        }
+        .choice-item.selected input[type="radio"]:checked::after {
+            background-color: #22d3ee; /* 밝은 체크 표시 */
         }
         
         .choice-item input[type="radio"] {
@@ -234,18 +354,20 @@
             border-left: 3px solid #5a67d8;
         }
         
-        /* 3단계 성찰 질문 스타일 */
+        /* 3단계 성찰 질문 스타일 (다크 테마 적용) */
         .reflection-container {
             max-width: 800px;
             margin: 0 auto;
         }
         
         .reflection-question-card {
-            background: #fff9f9;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 40px;
-            border-left: 5px solid #e53e3e;
+            background: linear-gradient(to bottom right, rgba(51, 65, 85, 0.4), rgba(30, 58, 138, 0.4));
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            box-shadow: 0 4px 6px -1px rgba(34, 211, 238, 0.05), 0 2px 4px -2px rgba(34, 211, 238, 0.05);
+            border-radius: 1rem;
+            padding: clamp(20px, 4vw, 30px);
+            margin-bottom: 2.5rem;
             position: relative;
         }
         
@@ -253,18 +375,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
         }
         
         .reflection-question-title {
-            font-size: 20px;
+            font-size: clamp(18px, 3vw, 22px);
             font-weight: bold;
-            color: #2d3748;
+            color: #fff;
+            text-shadow: 0 0 8px rgba(100, 200, 255, 0.5);
         }
         
         .reflection-question-number {
-            background: #e53e3e;
-            color: white;
+            background: rgba(34, 211, 238, 0.8);
+            color: #0f172a;
             padding: 5px 12px;
             border-radius: 20px;
             font-size: 14px;
@@ -272,38 +395,42 @@
         }
         
         .reflection-sub-questions {
-            margin-bottom: 20px;
+            margin-bottom: 1rem;
         }
         
         .reflection-sub-question {
-            margin-bottom: 25px;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
+            margin-bottom: 1.5rem;
+            padding: 1.25rem;
+            background: rgba(15, 23, 42, 0.4); /* slate-900/40 */
+            border-radius: 0.75rem;
+            border: 1px solid rgba(34, 211, 238, 0.2);
         }
         
         .reflection-sub-question-title {
             font-weight: bold;
-            margin-bottom: 15px;
-            color: #4a5568;
+            margin-bottom: 1rem;
+            color: #94a3b8; /* slate-400 */
+            line-height: 1.6;
         }
         
         .reflection-textarea {
             width: 100%;
             min-height: 120px;
             padding: 15px;
-            border: 2px solid #e2e8f0;
+            border: 1px solid rgba(34, 211, 238, 0.3);
             border-radius: 8px;
             font-size: 14px;
             font-family: inherit;
             resize: vertical;
             margin-top: 10px;
+            background-color: rgba(15, 23, 42, 0.5);
+            color: #cbd5e1;
         }
         
         .reflection-textarea:focus {
             outline: none;
-            border-color: #5a67d8;
+            border-color: #22d3ee;
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
         }
         
         .helper-buttons {
@@ -1151,18 +1278,21 @@
 
 .notice-text p {
     margin: 0;
-    font-size: 14px;
-    line-height: 1.6;
-    color: #FFFFFF; /* 옅은 흰색에서 완전한 흰색으로 변경 */
+    font-size: 15px; /* 폰트 크기를 14px에서 15px로 증가 */
+    line-height: 1.7; /* 줄 간격을 1.6에서 1.7로 증가 */
+    color: #FFFFFF; /* 완전한 흰색 유지 */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* 텍스트에 그림자 추가로 가독성 향상 */
+    font-weight: 500; /* 폰트 두께를 500으로 증가 */
 }
 
 .notice-text p strong {
-    font-weight: 600;
-    font-size: 14px;
-    color: #FFFFFF; /* 색상 명확하게 지정 */
-    background-color: rgba(255, 255, 255, 0.2); /* 강조를 위해 은은한 배경 추가 */
-    padding: 0 4px; /* 배경에 약간의 여백 추가 */
-    border-radius: 3px; /* 모서리를 살짝 둥글게 */
+    font-weight: 700; /* 강조 텍스트의 폰트 두께를 600에서 700으로 증가 */
+    font-size: 15px; /* 폰트 크기를 14px에서 15px로 증가 */
+    color: #FFFFFF; /* 완전한 흰색 유지 */
+    background-color: rgba(255, 255, 255, 0.3); /* 배경 투명도를 0.2에서 0.3으로 증가 */
+    padding: 2px 6px; /* 패딩을 0 4px에서 2px 6px로 증가 */
+    border-radius: 4px; /* 모서리 둥글기를 3px에서 4px로 증가 */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); /* 강조 텍스트에도 그림자 추가 */
     display: inline;
 }
 
@@ -1456,47 +1586,116 @@ body {
     scrollbar-width: none; /* Firefox */
 }
     </style>
+    <style id="starlight-theme-styles">
+        @keyframes sparkle-anim {
+            0%, 100% { opacity: 0.3; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        @keyframes glow-anim {
+            0%, 100% { box-shadow: 0 0 8px #22d3ee, 0 0 12px #22d3ee; }
+            50% { box-shadow: 0 0 15px #22d3ee, 0 0 25px #22d3ee; }
+        }
+        @keyframes float-anim {
+            0%, 100% { transform: translateY(-10px); }
+            50% { transform: translateY(10px); }
+        }
+        .glowing-border {
+            animation: glow-anim 2.5s ease-in-out infinite;
+        }
+        .floating {
+            animation: float-anim 8s ease-in-out infinite;
+        }
+        #sparkling-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .sparkle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background-color: #67e8f9;
+            border-radius: 50%;
+            animation-name: sparkle-anim;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+        }
+    </style>
+    <script type="module">
+        import { animate } from "https://cdn.skypack.dev/motion";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const sparklingBackground = document.getElementById('sparkling-background-container');
+            if (sparklingBackground) {
+                const stars = Array.from({ length: 50 }).map(() => {
+                    const star = document.createElement('div');
+                    star.className = 'absolute w-1 h-1 bg-cyan-300 rounded-full';
+                    star.style.left = `${Math.random() * 100}%`;
+                    star.style.top = `${Math.random() * 100}%`;
+                    sparklingBackground.appendChild(star);
+                    return star;
+                });
+
+                stars.forEach(star => {
+                    animate(star, {
+                        opacity: [0.3, 1, 0.3],
+                        scale: [0.5, 1.2, 0.5]
+                    }, {
+                        duration: 2 + Math.random() * 3,
+                        repeat: Infinity,
+                        delay: Math.random() * 2,
+                        ease: "ease-in-out"
+                    });
+                });
+            }
+        });
+    </script>
 </head>
-<body>
+<body class="bg-gradient-to-b from-slate-900 via-blue-900 to-indigo-900 text-slate-300">
+    <div id="sparkling-background-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0"></div>
      <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" id="backToTopBtn" title="맨 위로">🔝</button>
- <div id="app">
+ <div id="app" class="bg-gradient-to-br from-slate-800/60 to-blue-900/60 backdrop-blur-sm border border-cyan-400/30 shadow-lg shadow-cyan-400/10 rounded-2xl">
         <div id="introStage" class="stage" style="display: block; text-align: center; padding-top: 60px; padding-bottom: 60px;">
             <div class="intro-content">
-                <div style="font-size: 48px; margin-bottom: 20px;">🧭</div>
-                <h2 style="font-size: 32px; margin-bottom: 15px;">나의 매력을 찾아 떠나는 여행</h2>
-                <p style="font-size: 16px; color: #718096; line-height: 1.7; max-width: 600px; margin: 0 auto 30px auto;">
+                <div class="text-6xl mb-4 animate-float">✨</div>
+                <h2 class="text-4xl font-bold text-white mb-4" style="text-shadow: 0 0 15px rgba(255, 255, 255, 0.3), 0 0 25px rgba(34, 211, 238, 0.4);">나의 매력을 찾아 떠나는 여행</h2>
+                <p class="text-slate-200 text-lg leading-relaxed max-w-2xl mx-auto mb-12">
                     ASTER 프로그램에 오신 것을 환영합니다.<br>
                     이 프로그램은 간단한 질문과 성찰을 통해, 당신이 미처 깨닫지 못했던<br>
-                    자신만의 소중한 **내적 매력**을 발견하도록 돕는 도구입니다.
+                    자신만의 소중한 <strong class="text-cyan-300 font-semibold">내적 매력</strong>을 발견하도록 돕는 도구입니다.
                 </p>
                 
-                <div style="background: #f8f9fa; padding: 25px; border-radius: 10px; margin-bottom: 35px; text-align: left; max-width: 550px; margin-left: auto; margin-right: auto;">
-                    <h4 style="color: #5a67d8; margin-bottom: 15px; text-align: center;">🔍 프로그램 진행 과정</h4>
-                    <ul style="list-style-type: none; padding-left: 0;">
-                        <li style="margin-bottom: 10px;"><strong>1단계:</strong> 중요하게 생각하는 매력 카테고리 선택</li>
-                        <li style="margin-bottom: 10px;"><strong>2단계:</strong> 다양한 상황/성향 질문을 통해 나의 모습 탐색</li>
-                        <li style="margin-bottom: 10px;"><strong>3단계:</strong> 개인화된 심층 질문에 답변하며 나의 경험과 가치 발견</li>
+                <div class="bg-slate-800/50 backdrop-blur-md rounded-2xl p-8 border border-cyan-400/30 shadow-xl shadow-cyan-400/10 mb-12 max-w-md mx-auto text-left">
+                    <h4 class="text-cyan-300 font-bold text-xl mb-4 text-center">🔍 프로그램 진행 과정</h4>
+                    <ul class="list-none space-y-3">
+                        <li class="text-white font-medium text-base"><strong class="text-cyan-200">1단계:</strong> 중요하게 생각하는 매력 카테고리 선택</li>
+                        <li class="text-white font-medium text-base"><strong class="text-cyan-200">2단계:</strong> 다양한 상황/성향 질문을 통해 나의 모습 탐색</li>
+                        <li class="text-white font-medium text-base"><strong class="text-cyan-200">3단계:</strong> 개인화된 심층 질문에 답변하며 나의 경험과 가치 발견</li>
                     </ul>
                 </div>
 
-               <div class="intro-notice-box">
-    <div class="notice-item">
-        <div class="notice-icon">💡</div>
-        <div class="notice-text">
-            <strong>안내</strong>
-            <p>진행하는 동안 '이 선택은 나의 어떤 내적 매력과 연결될까?'를<br> 
-                계속 생각해보시면 더욱 의미 있는 여정이 될 거예요.</p>
-        </div>
-    </div>
-    <div class="notice-item">
-        <div class="notice-icon">🔒</div>
-        <div class="notice-text">
-            <strong>완벽한 익명성</strong>
-            <p>최종 피드백 설문을 제외한, 테스트 과정에서의 모든 답변은 <strong>그 어디에도 저장되지 않습니다.</strong><br> 안심하고 솔직한 당신의 이야기를 들려주세요.</p>
-        </div>
-    </div>
-</div>
-<button class="btn" onclick="startTest()">나의 매력 탐험 시작하기</button>
+               <div class="bg-gradient-to-b from-slate-800/70 to-blue-900/70 backdrop-blur-md rounded-2xl p-8 border border-slate-600/80 shadow-lg max-w-2xl mx-auto">
+                    <div class="notice-item">
+                        <div class="notice-icon text-3xl mb-2">💡</div>
+                        <div class="notice-text">
+                            <strong class="text-white text-lg">안내</strong>
+                            <p class="text-slate-300 mt-1">진행하는 동안 '이 선택은 나의 어떤 내적 매력과 연결될까?'를<br> 
+                                계속 생각해보시면 더욱 의미 있는 여정이 될 거예요.</p>
+                        </div>
+                    </div>
+                    <div class="notice-item mt-6 pt-6 border-t border-slate-700/80">
+                        <div class="notice-icon text-3xl mb-2">🔒</div>
+                        <div class="notice-text">
+                            <strong class="text-white text-lg">완벽한 익명성</strong>
+                            <p class="text-slate-300 mt-1">최종 피드백 설문을 제외한, 테스트 과정에서의 모든 답변은 <strong class="text-cyan-300 font-semibold">그 어디에도 저장되지 않습니다.</strong><br> 안심하고 솔직한 당신의 이야기를 들려주세요.</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn bg-gradient-to-r from-cyan-400 to-teal-500 text-indigo-900 font-bold rounded-full py-4 px-10 mt-12 text-xl transition-all duration-300 ease-in-out hover:shadow-2xl hover:shadow-cyan-400/50 hover:scale-105" onclick="startTest()">나의 매력 탐험 시작하기</button>
             </div>
         </div>
 
@@ -1584,36 +1783,36 @@ body {
 
         <!-- 2A단계: 상황 질문 -->
         <div id="stage2Situation" class="stage" style="display:none;">
-            <div class="progress-bar">
-                <div class="progress-fill" style="width: 40%"></div>
+            <div class="w-full bg-slate-700/50 rounded-full h-2.5 mb-8 border border-cyan-400/20">
+                <div class="bg-gradient-to-r from-cyan-400 to-teal-500 h-full rounded-full shadow-lg shadow-cyan-500/50 glowing-border" style="width: 40%"></div>
             </div>
             
-            <h2>2단계: 상황 질문</h2>
-            <p style="text-align: center; margin-bottom: 30px; color: #718096;">
-    다양한 상황 속 당신의 모습을 확인합니다.<br>각 선택지가 어떤 매력과 연결될지 생각하며 답변해보세요. (1/2)
-</p>
+            <h2 class="text-3xl font-bold text-white mb-2">2단계: 상황 질문 (1/2)</h2>
+            <p class="text-slate-400 text-center mb-8">
+                다양한 상황 속 당신의 모습을 확인합니다.<br>각 선택지가 어떤 매력과 연결될지 생각하며 답변해보세요.
+            </p>
             
             <div id="situationQuestionsContainer"></div>
             
-            <div class="error-message" id="stage2SituationError" style="display: none;"></div>
-            <button class="btn" onclick="proceedToStage2Personality()" id="stage2SituationBtn">성향 질문으로</button>
+            <div class="error-message text-red-400 text-center my-4 font-bold" id="stage2SituationError" style="display: none;"></div>
+            <button class="btn bg-gradient-to-r from-cyan-400 to-teal-500 text-indigo-900 font-bold rounded-full py-3 px-8 mt-8 text-lg transition-all duration-300 ease-in-out hover:shadow-2xl hover:shadow-cyan-400/40 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed" onclick="proceedToStage2Personality()" id="stage2SituationBtn">성향 질문으로</button>
         </div>
 
         <!-- 2B단계: 성향 질문 -->
         <div id="stage2Personality" class="stage" style="display:none;">
-            <div class="progress-bar">
-                <div class="progress-fill" style="width: 60%"></div>
+            <div class="w-full bg-slate-700/50 rounded-full h-2.5 mb-8 border border-cyan-400/20">
+                <div class="bg-gradient-to-r from-cyan-400 to-teal-500 h-full rounded-full shadow-lg shadow-cyan-500/50 glowing-border" style="width: 60%;"></div>
             </div>
             
-            <h2>2단계: 성향 질문</h2>
-            <p style="text-align: center; margin-bottom: 30px; color: #718096;">
-    당신의 생각과 성향에 더 가까운 것을 선택해주세요.<br>선택을 통해 당신의 핵심적인 매력을 발견할 수 있습니다. (2/2)
-</p>
+            <h2 class="text-3xl font-bold text-white mb-2">2단계: 성향 질문 (2/2)</h2>
+            <p class="text-slate-400 text-center mb-8">
+                당신의 생각과 성향에 더 가까운 것을 선택해주세요.<br>선택을 통해 당신의 핵심적인 매력을 발견할 수 있습니다.
+            </p>
             
             <div id="personalityQuestionsContainer"></div>
             
-            <div class="error-message" id="stage2PersonalityError" style="display: none;"></div>
-            <button class="btn" onclick="proceedToStage3Onboarding()" id="stage2PersonalityBtn" disabled>성찰 질문으로</button>
+            <div class="error-message text-red-400 text-center my-4 font-bold" id="stage2PersonalityError" style="display: none;"></div>
+            <button class="btn bg-gradient-to-r from-cyan-400 to-teal-500 text-indigo-900 font-bold rounded-full py-3 px-8 mt-8 text-lg transition-all duration-300 ease-in-out hover:shadow-2xl hover:shadow-cyan-400/40 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed" onclick="proceedToStage3Onboarding()" id="stage2PersonalityBtn" disabled>성찰 질문으로</button>
         </div>
 
         
@@ -6554,6 +6753,24 @@ function scrollFunction() {
 }
 
 console.log('✅ 템플릿 시스템 초기화 완료 - 29개 질문 템플릿 데이터 로드됨');
+    </script>
+<script id="sparkle-generator">
+        document.addEventListener('DOMContentLoaded', function () {
+            const container = document.getElementById('sparkling-background');
+            if (!container) return;
+            const numStars = 50;
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'sparkle';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                const duration = 2 + Math.random() * 3;
+                const delay = Math.random() * 2;
+                star.style.animationDuration = `${duration}s`;
+                star.style.animationDelay = `${delay}s`;
+                container.appendChild(star);
+            }
+        });
     </script>
 </body>
 </html>

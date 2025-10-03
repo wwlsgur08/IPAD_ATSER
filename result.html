@@ -423,12 +423,58 @@
                 });
         });
 
+        // 이미지 미리 로딩 함수
+        function preloadImages() {
+            return new Promise((resolve) => {
+                const images = document.querySelectorAll('.aster-logo, .eye-background');
+                let loadedCount = 0;
+                const totalImages = images.length;
+                
+                if (totalImages === 0) {
+                    resolve();
+                    return;
+                }
+                
+                images.forEach(img => {
+                    const computedStyle = window.getComputedStyle(img);
+                    const backgroundImage = computedStyle.backgroundImage;
+                    
+                    if (backgroundImage && backgroundImage !== 'none') {
+                        const imageUrl = backgroundImage.slice(4, -1).replace(/"/g, "");
+                        const image = new Image();
+                        image.crossOrigin = 'anonymous';
+                        image.onload = () => {
+                            loadedCount++;
+                            if (loadedCount === totalImages) {
+                                resolve();
+                            }
+                        };
+                        image.onerror = () => {
+                            loadedCount++;
+                            if (loadedCount === totalImages) {
+                                resolve();
+                            }
+                        };
+                        image.src = imageUrl;
+                    } else {
+                        loadedCount++;
+                        if (loadedCount === totalImages) {
+                            resolve();
+                        }
+                    }
+                });
+            });
+        }
+
         async function downloadCard() {
             const btn = event.target;
             btn.textContent = '처리중...';
             btn.disabled = true;
             
             try {
+                // 이미지 미리 로딩
+                await preloadImages();
+                
                 const container = document.querySelector('.cards-container');
                 const body = document.body;
                 
@@ -436,9 +482,18 @@
                 const originalBackground = body.style.background;
                 body.style.background = 'transparent';
                 
+                // 잠시 대기하여 렌더링 완료 보장
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
                 const canvas = await html2canvas(container, { 
-                    scale: 2,
-                    backgroundColor: null
+                    scale: 3, // 더 높은 해상도
+                    backgroundColor: null,
+                    useCORS: true,
+                    allowTaint: true,
+                    imageTimeout: 15000,
+                    logging: false,
+                    removeContainer: true,
+                    foreignObjectRendering: true
                 });
                 
                 // 원래 배경으로 복원
@@ -446,11 +501,12 @@
                 
                 const link = document.createElement('a');
                 link.download = 'constellation-card.png';
-                link.href = canvas.toDataURL();
+                link.href = canvas.toDataURL('image/png', 1.0);
                 link.click();
             } catch (error) {
                 // 에러 발생 시에도 배경 복원
                 document.body.style.background = '#000';
+                console.error('다운로드 오류:', error);
                 alert('다운로드 실패');
             }
             
