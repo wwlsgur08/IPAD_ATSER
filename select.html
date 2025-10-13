@@ -15,8 +15,8 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
+            background: linear-gradient(to bottom, #0f172a, #1e3a8a, #312e81); /* 별빛 우주 그라데이션 */
+            color: #cbd5e1; /* slate-300 */
             padding: env(safe-area-inset-top, 20px) env(safe-area-inset-right, 20px) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 20px);
             display: flex;
             justify-content: center;
@@ -25,20 +25,25 @@
             min-height: -webkit-fill-available;
             -webkit-overflow-scrolling: touch;
             margin: 0;
+            position: relative;
+            overflow-x: hidden;
         }
         .container {
             width: 100%;
             max-width: clamp(350px, 95vw, 1200px);
             margin: 0 auto;
-            background: #fff;
+            background: linear-gradient(to bottom right, rgba(51, 65, 85, 0.6), rgba(30, 58, 138, 0.6)); /* 글래스모피즘 배경 */
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(34, 211, 238, 0.3);
             padding: clamp(20px, 4vw, 35px);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-radius: 24px; /* 더 부드러운 모서리 */
+            box-shadow: 0 10px 30px rgba(34, 211, 238, 0.15), 0 0 50px rgba(34, 211, 238, 0.05); /* 네온 그림자 */
             overflow: hidden;
+            position: relative;
         }
         header {
             text-align: center;
-            border-bottom: 1px solid #e5e5e5;
+            border-bottom: 1px solid rgba(34, 211, 238, 0.3); /* 민트색 테두리 */
             padding-bottom: 15px;
             margin-bottom: 25px;
         }
@@ -46,10 +51,12 @@
             font-size: clamp(20px, 4vw, 28px);
             margin-bottom: 8px;
             font-weight: 600;
+            color: #67e8f9; /* cyan-300 강조 색상 */
+            text-shadow: 0 0 20px rgba(103, 232, 249, 0.5); /* 네온 글로우 */
         }
         header p {
             font-size: clamp(14px, 2.5vw, 16px);
-            color: #666;
+            color: #cbd5e1; /* slate-300 */
             line-height: 1.5;
         }
         .selection-grid {
@@ -69,12 +76,20 @@
             min-width: clamp(140px, 20vw, 180px);
             flex-shrink: 0;
             padding: clamp(12px, 2.5vw, 18px);
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
+            border: 1px solid rgba(34, 211, 238, 0.4); /* 더 밝은 네온 테두리 */
+            border-radius: 16px; /* 더 부드러운 모서리 */
             display: flex;
             flex-direction: column;
-            background-color: #f8f9fa;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            background: linear-gradient(to bottom right, rgba(51, 65, 85, 0.4), rgba(30, 58, 138, 0.4)); /* 글래스모피즘 */
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(34, 211, 238, 0.1); /* 네온 그림자 */
+        }
+        
+        .category-group:hover {
+            transform: translateY(-2px);
+            border-color: rgba(34, 211, 238, 0.6);
+            box-shadow: 0 8px 25px rgba(34, 211, 238, 0.2); /* 호버 시 더 강한 글로우 */
         }
         
         .category-group:active {
@@ -88,6 +103,8 @@
             border-bottom: 2px solid;
             display: inline-block;
             align-self: flex-start;
+            color: #67e8f9; /* cyan-300 강조 색상 */
+            text-shadow: 0 0 10px rgba(103, 232, 249, 0.5); /* 네온 글로우 */
         }
         .charm-container {
             display: flex;
@@ -99,49 +116,107 @@
             box-sizing: border-box;
             font-size: 12px;
             padding: 8px 10px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            background-color: #fff;
+            border-radius: 8px;
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            background: rgba(51, 65, 85, 0.3); /* 더 투명한 배경 */
+            backdrop-filter: blur(4px);
+            color: #cbd5e1; /* slate-300 */
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             text-align: center;
             font-weight: 500;
         }
+        .selectable-charm:hover {
+            border-color: rgba(34, 211, 238, 0.6);
+            background: rgba(51, 65, 85, 0.5);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(34, 211, 238, 0.15);
+        }
         .selectable-charm.selected {
-            background-color: #4338ca;
-            color: white;
-            border-color: #4338ca;
+            background: linear-gradient(to right, #22d3ee, #14b8a6); /* 민트색 그라데이션 */
+            color: #312e81; /* indigo-900 어두운 텍스트 */
+            border-color: #22d3ee;
             font-weight: 600;
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.4); /* 네온 글로우 */
+            animation: pulseGlow 2s ease-in-out infinite; /* 맥동 효과 */
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(34, 211, 238, 0.6);
+            }
         }
         .footer {
             text-align: center;
             margin-top: 30px;
             padding-top: 20px;
-            border-top: 1px solid #e5e5e5;
+            border-top: 1px solid rgba(34, 211, 238, 0.3); /* 민트색 테두리 */
         }
         #completeBtn {
             font-size: 16px;
             font-weight: 600;
-            color: white;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #312e81; /* indigo-900 어두운 텍스트 */
+            background: linear-gradient(to right, #22d3ee, #14b8a6); /* 민트색 그라데이션 */
             border: none;
             padding: 12px 30px;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(118, 75, 162, 0.4);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(34, 211, 238, 0.4), 0 0 30px rgba(34, 211, 238, 0.2); /* 네온 글로우 */
+            position: relative;
+            overflow: hidden;
         }
         #completeBtn:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(118, 75, 162, 0.5);
+            box-shadow: 0 6px 20px rgba(34, 211, 238, 0.5), 0 0 40px rgba(34, 211, 238, 0.3);
         }
         #completeBtn:disabled {
-            background: #ccc;
+            background: rgba(71, 85, 105, 0.5); /* slate-600/50 */
+            color: #64748b; /* slate-500 */
             cursor: not-allowed;
             box-shadow: none;
         }
 
-        /* ▼▼▼ 모바일 반응형 스타일 ▼▼▼ */
+        /* 반짝이는 별 배경 효과 */
+        .sparkle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #67e8f9; /* cyan-300 */
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkle 3s ease-in-out infinite;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { 
+                opacity: 0.3;
+                transform: scale(0.5);
+            }
+            50% { 
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+        
+        .sparkle:nth-child(2n) {
+            animation-delay: 0.5s;
+            background: #14b8a6; /* teal-500 */
+        }
+        
+        .sparkle:nth-child(3n) {
+            animation-delay: 1s;
+            width: 1px;
+            height: 1px;
+        }
+        
+        .sparkle:nth-child(4n) {
+            animation-delay: 1.5s;
+            animation-duration: 4s;
+        }
         @media (max-width: 768px) {
             body {
                 display: block;
@@ -219,6 +294,9 @@
     
 </head>
 <body>
+    <!-- 반짝이는 별 배경 -->
+    <div id="sparklingBackground" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;"></div>
+    
     <div class="container">
         <header>
             <h1>1단계: 나의 매력 모두 선택하기</h1>
@@ -367,7 +445,32 @@ document.addEventListener('DOMContentLoaded', () => {
     createSelectionPanel();
     setupDragScroll(); // 드래그 스크롤 기능 활성화
     completeBtn.addEventListener('click', handleCompletion);
+    
+    // 반짝이는 별 배경 생성
+    createSparklingBackground();
 });
+
+// 반짝이는 별 배경 생성 함수
+function createSparklingBackground() {
+    const container = document.getElementById('sparklingBackground');
+    if (!container) return;
+    
+    // 50개의 반짝이는 별 생성
+    for (let i = 0; i < 50; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = `${Math.random() * 100}%`;
+        sparkle.style.top = `${Math.random() * 100}%`;
+        
+        // 랜덤한 애니메이션 지연과 지속 시간
+        const duration = 2 + Math.random() * 3;
+        const delay = Math.random() * 2;
+        sparkle.style.animationDuration = `${duration}s`;
+        sparkle.style.animationDelay = `${delay}s`;
+        
+        container.appendChild(sparkle);
+    }
+}
     
     </script>
 </body>
