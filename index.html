@@ -96,32 +96,37 @@
             animation: glow-anim 2.5s ease-in-out infinite;
         }
         .category-item {
-            background: linear-gradient(to bottom right, rgba(51, 65, 85, 0.4), rgba(30, 58, 138, 0.4));
+            background: rgba(15, 23, 42, 0.5); /* 2단계와 동일한 반투명 어두운 배경 */
             backdrop-filter: blur(4px);
-            border: 1px solid rgba(34, 211, 238, 0.3);
+            border: 1px solid rgba(34, 211, 238, 0.2);
             box-shadow: 0 4px 6px -1px rgba(34, 211, 238, 0.05), 0 2px 4px -2px rgba(34, 211, 238, 0.05);
-            border-radius: 1rem;
-            color: #cbd5e1;
+            border-radius: 0.75rem; /* 2단계와 동일 */
+            color: #cbd5e1; /* 기본 글자색 (slate-300) */
             transition: all 0.3s ease;
         }
         .category-item:hover {
-            transform: scale(1.03);
+            background: rgba(34, 211, 238, 0.15);
             border-color: rgba(34, 211, 238, 0.7);
-            box-shadow: 0 10px 15px -3px rgba(34, 211, 238, 0.15), 0 4px 6px -4px rgba(34, 211, 238, 0.15);
         }
         .category-item.selected {
-            background: linear-gradient(to bottom right, rgba(34, 211, 238, 0.3), rgba(20, 184, 166, 0.3));
+            background: linear-gradient(to right, #22d3ee, #14b8a6); /* 2단계와 동일한 밝은 그라데이션 */
             border-color: #22d3ee;
-            box-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
-            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
+            color: #0f172a; /* 선택 시 글자를 어두운 색으로 변경 */
         }
         .category-item strong {
-            color: #fff;
+            color: #fff; /* 기본 상태는 흰색 */
+        }
+        .category-item.selected strong {
+            color: #0f172a; /* 선택 시 어두운 색으로 변경 */
         }
         .category-item div div {
-            color: #ffffff; /* #94a3b8에서 흰색으로 변경 */
+            color: #cbd5e1; /* 기본 상태 밝은 회색 */
             font-weight: 500;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        .category-item.selected div div {
+            color: #0f172a; /* 선택 시 어두운 색으로 변경 */
+            text-shadow: none; /* 선택 시 그림자 제거 */
         }
         .category-item input[type="checkbox"] {
             appearance: none;
@@ -161,27 +166,11 @@
             display: flex;
             align-items: center;
             padding: clamp(12px, 3vw, 20px);
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
             min-height: 60px;
             font-size: clamp(14px, 2.5vw, 16px);
             -webkit-tap-highlight-color: transparent;
             touch-action: manipulation;
-        }
-        
-        .category-item:hover,
-        .category-item:active {
-            border-color: #5a67d8;
-            background-color: #f7fafc;
-            transform: scale(0.98);
-        }
-        
-        .category-item.selected {
-            border-color: #5a67d8;
-            background-color: #edf2f7;
-            box-shadow: 0 0 0 1px #5a67d8;
         }
         
         .category-item input[type="checkbox"] {
@@ -292,22 +281,24 @@
         }
         
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(to right, #22d3ee, #14b8a6); /* 민트색 그라데이션 */
+            color: #0f172a; /* 어두운 글씨 */
             border: none;
             padding: 15px 30px;
             border-radius: 25px;
             font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
             display: block;
             margin: 30px auto 0;
             min-width: 150px;
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
         }
         
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 0 25px rgba(34, 211, 238, 0.5);
         }
         
         .btn:disabled {
@@ -317,7 +308,8 @@
         }
         
         .btn-secondary {
-            background: #718096;
+            background: linear-gradient(to right, rgba(34, 211, 238, 0.7), rgba(20, 184, 166, 0.7));
+            color: #0f172a;
             margin-right: 10px;
         }
         
@@ -330,7 +322,7 @@
         
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(90deg, #22d3ee, #14b8a6); /* 민트색 그라데이션 */
             transition: width 0.3s ease;
         }
         
@@ -411,10 +403,10 @@
         .reflection-sub-question-title {
             font-weight: bold;
             margin-bottom: 1rem;
-            color: #ffffff; /* #94a3b8에서 흰색으로 변경 */
+            color: #f1f5f9; /* 매우 밝은 회색으로 가독성 확보 */
             line-height: 1.6;
             font-size: 15px;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         }
         
         .reflection-textarea {
@@ -524,10 +516,10 @@
         .rating-label {
             font-size: 11px;
             text-align: center;
-            color: #ffffff; /* #718096에서 흰색으로 변경 */
+            color: #cbd5e1; /* 밝은 회색으로 변경하여 가독성 확보 */
             line-height: 1.2;
             font-weight: 500;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         }
         
         .dropdown-select {
@@ -596,7 +588,7 @@
             border: none;
             font-size: 24px;
             cursor: pointer;
-            color: #ffffff; /* #718096에서 흰색으로 변경 */
+            color: #718096; /* 진한 회색으로 가독성 확보 */
         }
         
         .example-item {
@@ -682,12 +674,12 @@
 .attraction-guide {
     display: flex;
     align-items: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: linear-gradient(to right, #22d3ee, #14b8a6); /* 민트색 그라데이션 */
+    color: #0f172a; /* 어두운 글씨 */
     padding: 15px 20px;
     border-radius: 10px;
     margin: 20px 0;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 15px rgba(34, 211, 238, 0.3);
 }
 
 .attraction-guide-icon {
@@ -699,6 +691,7 @@
 .attraction-guide-text {
     font-size: 14px;
     line-height: 1.5;
+    font-weight: 500;
 }
 
 @keyframes sparkle {
@@ -708,26 +701,26 @@
 
 /* 매력 키워드 버튼 강조 스타일 */
 .attraction-keyword-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    color: white !important;
+    background: linear-gradient(to right, #22d3ee, #14b8a6) !important; /* 민트색 그라데이션 */
+    color: #0f172a !important; /* 어두운 글씨 */
     font-size: 16px !important;
     padding: 12px 20px !important;
     border-radius: 25px !important;
     border: none !important;
     font-weight: bold !important;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
+    box-shadow: 0 4px 15px rgba(34, 211, 238, 0.4) !important;
     transform: scale(1.05) !important;
     animation: pulse 2s ease-in-out infinite !important;
 }
 
 .attraction-keyword-btn:hover {
     transform: scale(1.1) !important;
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6) !important;
+    box-shadow: 0 6px 20px rgba(34, 211, 238, 0.6) !important;
 }
 
 @keyframes pulse {
-    0%, 100% { box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); }
-    50% { box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6); }
+    0%, 100% { box-shadow: 0 4px 15px rgba(34, 211, 238, 0.4); }
+    50% { box-shadow: 0 6px 20px rgba(34, 211, 238, 0.6); }
 }
 
 /* 답변창과 키워드 컨테이너 */
@@ -763,12 +756,12 @@
 }
 
 .keyword-tag {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: linear-gradient(to right, #22d3ee, #14b8a6); /* 민트색 그라데이션 */
+    color: #0f172a; /* 어두운 글씨 */
     padding: 6px 12px;
     border-radius: 20px;
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 600;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -776,9 +769,9 @@
 }
 
 .keyword-tag .remove-btn {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(15, 23, 42, 0.3);
     border: none;
-    color: white;
+    color: #0f172a;
     border-radius: 50%;
     width: 16px;
     height: 16px;
@@ -787,6 +780,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    font-weight: bold;
 }
 
 .keyword-tag .remove-btn:hover {
@@ -820,8 +814,8 @@
 
 .reflection-answer-box:focus {
     outline: none;
-    border-color: #667eea !important;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+    border-color: #22d3ee !important; /* 민트색으로 변경 */
+    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1) !important; /* 민트색 그림자 */
 }
 
 .reflection-answer-box:empty:before {
@@ -965,8 +959,8 @@
 
 /* 선택 완료 버튼 스타일 */
 .attraction-complete-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: linear-gradient(to right, #22d3ee, #14b8a6); /* 민트색 그라데이션 */
+    color: #0f172a; /* 어두운 글씨 */
     border: none;
     padding: 12px 30px;
     border-radius: 25px;
@@ -974,12 +968,12 @@
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 15px rgba(34, 211, 238, 0.3);
 }
 
 .attraction-complete-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 6px 20px rgba(34, 211, 238, 0.4);
 }
 
 .attraction-complete-btn:disabled {
@@ -1051,14 +1045,14 @@
 
 .guide-questions-container li {
     font-size: 13px;
-    color: #ffffff; /* #4a5568에서 흰색으로 변경 */
-    background-color: rgba(255, 255, 255, 0.1); /* 배경을 약간 투명한 흰색으로 변경 */
+    color: #e2e8f0; /* 밝은 회색으로 변경하여 가독성 확보 */
+    background-color: rgba(51, 65, 85, 0.3); /* 어두운 배경으로 변경 */
     padding: 10px 12px;
     border-radius: 6px;
     margin-bottom: 8px;
-    border-left: 3px solid #667eea;
+    border-left: 3px solid #22d3ee; /* 민트색으로 변경 */
     font-weight: 500;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 /* ================================= */
@@ -1112,14 +1106,17 @@
 }
 .onboarding-intro, .onboarding-outro {
     font-size: 16px;
-    color: #ffffff; /* #4a5568에서 흰색으로 변경 */
+    color: #e2e8f0; /* 밝은 회색으로 가독성 확보 */
     line-height: 1.7;
     margin-bottom: 40px;
     font-weight: 500;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 .feature-list {
-    background: #f8f9fa;
+    background: linear-gradient(to bottom right, rgba(51, 65, 85, 0.4), rgba(30, 58, 138, 0.4));
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(34, 211, 238, 0.3);
+    box-shadow: 0 4px 6px -1px rgba(34, 211, 238, 0.05), 0 2px 4px -2px rgba(34, 211, 238, 0.05);
     border-radius: 10px;
     padding: 30px;
     margin-bottom: 40px;
@@ -1127,9 +1124,11 @@
 }
 .feature-list-title {
     text-align: center;
-    color: #5a67d8;
+    color: #22d3ee;
     margin-bottom: 25px;
     font-size: 16px;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(34, 211, 238, 0.3);
 }
 .feature-item {
     display: flex;
@@ -1145,13 +1144,12 @@
 }
 .feature-description {
     font-size: 14px;
-    color: #ffffff; /* #4a5568에서 흰색으로 변경 */
+    color: #cbd5e1;
     line-height: 1.6;
     font-weight: 500;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 .feature-description strong {
-    color: #ffffff; /* #2d3748에서 흰색으로 변경 */
+    color: #fff;
     font-weight: 700;
 }
 
@@ -1172,14 +1170,16 @@
     padding: 0 10px;
 }
 
-/* 설명 박스 개별 스타일 */
+/* 설명 박스 개별 스타일 - 3단계 스타일 적용 */
 .guide-box {
-    background: #f8f9fa;
-    border: 1px solid #e2e8f0;
+    background: linear-gradient(to bottom right, rgba(51, 65, 85, 0.4), rgba(30, 58, 138, 0.4));
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(34, 211, 238, 0.3);
+    box-shadow: 0 4px 6px -1px rgba(34, 211, 238, 0.05), 0 2px 4px -2px rgba(34, 211, 238, 0.05);
     border-radius: 12px;
     text-align: center;
     position: relative;
-    padding-bottom: 10px; /* 화살표 공간 */
+    padding-bottom: 10px;
     animation: fadeIn 0.5s ease-out forwards;
     opacity: 0;
 }
@@ -1195,62 +1195,88 @@
 .guide-box strong {
     font-size: 14px;
     font-weight: 600;
-    color: #2d3748;
+    color: #fff;
     display: block;
     margin-bottom: 8px;
+    text-shadow: 0 0 8px rgba(100, 200, 255, 0.3);
 }
 
 .guide-box p {
     font-size: 12px;
-    color: #718096;
+    color: #cbd5e1;
     line-height: 1.5;
     margin: 0;
 }
 
-/* 박스 아래 화살표 (CSS로만 제작) */
+/* 박스 아래 화살표 (CSS로만 제작) - 3단계 색상 적용 */
 .guide-box-arrow {
     width: 0; 
     height: 0; 
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-top: 10px solid #f8f9fa; /* 박스 배경색과 동일 */
+    border-top: 10px solid rgba(30, 58, 138, 0.6); /* 박스 그라데이션 색상 */
     position: absolute;
     bottom: -10px;
     left: 50%;
     transform: translateX(-50%);
 }
-.guide-box-arrow::after { /* 화살표 테두리 */
+.guide-box-arrow::after {
     content: '';
     width: 0; 
     height: 0; 
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 10px solid #e2e8f0; /* 박스 테두리색과 동일 */
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    border-top: 11px solid rgba(34, 211, 238, 0.3); /* 테두리 색상 */
     position: absolute;
-    top: -11px; /* 테두리 두께만큼 위로 */
-    left: -10px;
+    top: -12px;
+    left: -11px;
     z-index: -1;
 }
 
 .demo-card {
-    border: 2px dashed #a3bffa;
-    background-color: #fbfcff;
+    background: linear-gradient(to bottom right, rgba(51, 65, 85, 0.4), rgba(30, 58, 138, 0.4));
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(34, 211, 238, 0.3);
+    box-shadow: 0 4px 6px -1px rgba(34, 211, 238, 0.05), 0 2px 4px -2px rgba(34, 211, 238, 0.05);
+    border-radius: 1rem;
+    padding: 1.5rem;
 }
 
-/* 나머지 데모 스타일 (이전과 동일) */
+/* 나머지 데모 스타일 - 3단계 스타일 적용 */
 .demo-content-wrapper { margin-top: 15px; }
 .guide-questions-container, .example-container {
-    display: none; padding: 20px; border-radius: 8px; margin: 0 25px 15px 25px;
+    display: none; 
+    padding: 20px; 
+    border-radius: 8px; 
+    margin: 0 25px 15px 25px;
     animation: fadeInDown 0.4s ease-out;
 }
-.guide-questions-container { background: #f8f9fa; border: 1px solid #e2e8f0; }
-.example-container { background: #f0fff4; border: 1px solid #c6f6d5; }
+.guide-questions-container { 
+    background: linear-gradient(to bottom right, rgba(51, 65, 85, 0.4), rgba(30, 58, 138, 0.4));
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(34, 211, 238, 0.3); 
+}
+.example-container { 
+    background: linear-gradient(to bottom right, rgba(51, 65, 85, 0.4), rgba(30, 58, 138, 0.4));
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(34, 211, 238, 0.3); 
+}
 .guide-questions-container.visible, .example-container.visible { display: block; }
-.guide-title, .example-title { font-weight: bold; margin-bottom: 15px; font-size: 14px; }
-.guide-title { color: #5a67d8; }
-.example-title { color: #38a169; }
+.guide-title, .example-title { 
+    font-weight: bold; 
+    margin-bottom: 15px; 
+    font-size: 14px; 
+    color: #fff;
+    text-shadow: 0 0 8px rgba(100, 200, 255, 0.3);
+}
+.guide-title { color: #22d3ee; }
+.example-title { color: #14b8a6; }
 .guide-questions-container ul { margin:0; padding-left: 20px; }
-.guide-questions-container li { font-size: 13px; color: #4a5568; margin-bottom: 5px; }
+.guide-questions-container li { 
+    font-size: 13px; 
+    color: #cbd5e1; 
+    margin-bottom: 5px; 
+}
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -1258,13 +1284,13 @@
 
 /* ▼▼▼ 시작 페이지 안내 박스 강조 스타일 ▼▼▼ */
 .intro-notice-box {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: linear-gradient(to right, #22d3ee, #14b8a6); /* 민트색 그라데이션 */
+    color: #0f172a; /* 어두운 글씨 */
     border-radius: 15px;
     padding: 25px 30px;
     max-width: 650px;
     margin: 40px auto;
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 30px rgba(34, 211, 238, 0.3);
 }
 
 .notice-item {
@@ -1998,7 +2024,6 @@ body {
     <div id="reflectionContainer1"></div>
     
     <div style="text-align: center; margin-top: 30px;">
-        <button class="btn btn-secondary" onclick="backToResponseSummary()">이전</button>
         <button class="btn" onclick="proceedToStage3Page2()">다음 단계</button>
     </div>
 </div>
@@ -2017,27 +2042,7 @@ body {
     <div id="reflectionContainer2"></div>
     
     <div style="text-align: center; margin-top: 30px;">
-        <button class="btn btn-secondary" onclick="backToStage3Page1()">이전</button>
-       <button class="btn" onclick="proceedToStage3Page3()">다음 단계</button>
-    </div>
-</div>
-
-<div id="stage3_page3" class="stage" style="display:none;">
-    <div class="progress-bar">
-        <div class="progress-fill" style="width: 94%"></div>
-    </div>
-    
-    <h2>3단계: 심층 탐구 (3/3)</h2>
-    <p style="text-align: center; margin-bottom: 30px; color: #ffffff; font-weight: 500; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);">
-        마지막 심층 탐구 질문입니다. 당신의 생각을 정리해보세요.
-    </p>
-    
-    <div id="reflectionContainer3">
-        </div>
-    
-    <div style="text-align: center; margin-top: 30px;">
-        <button class="btn btn-secondary" onclick="backToStage3Page2()">이전</button>
-        <button class="btn" onclick="goToSelectPage()">매력 선택하러 가기</button>
+       <button class="btn" onclick="goToSelectPage()">매력 선택하러 가기</button>
     </div>
 </div>
      
@@ -2111,6 +2116,9 @@ function postDataToApp(data) {
 }
         function startTest() {
             console.log('테스트 시작! 1단계로 이동합니다.');
+            
+            // 스크롤을 맨 위로 이동
+            window.scrollTo({top: 0, behavior: 'smooth'});
             
             // 1. 시작 페이지(introStage) 숨기기
             document.getElementById('introStage').style.display = 'none';
@@ -2421,16 +2429,16 @@ function combineQuestionData(originalQuestions, newCategoryInfoArray) {
  * @returns {Object|null} { firstQuestionId: id1, secondQuestionId: id2 } 형태의 객체, 또는 실패 시 null.
  */
 function selectPersonalizedStage3Questions(allAugmentedQuestions, userScores) {
-    // [검증] 질문 데이터가 3개 미만이면 개인화 선택이 불가능합니다.
-    if (!allAugmentedQuestions || allAugmentedQuestions.length < 3) {
-        console.error("[selectPersonalizedStage3Questions] 질문 데이터가 3개 미만이라 개인화 선택이 불가능합니다.");
+    // [검증] 질문 데이터가 2개 미만이면 개인화 선택이 불가능합니다.
+    if (!allAugmentedQuestions || allAugmentedQuestions.length < 2) {
+        console.error("[selectPersonalizedStage3Questions] 질문 데이터가 2개 미만이라 개인화 선택이 불가능합니다.");
         return null;
     }
-    // [검증] 사용자 점수 데이터가 없으면 무작위로 3개를 선택합니다.
+    // [검증] 사용자 점수 데이터가 없으면 무작위로 2개를 선택합니다.
     if (!userScores) {
         console.warn("[selectPersonalizedStage3Questions] 사용자 점수 데이터가 없어 무작위 선택됩니다.");
         const shuffled = allAugmentedQuestions.sort(() => 0.5 - Math.random());
-        return { firstQuestionId: shuffled[0].id, secondQuestionId: shuffled[1].id, thirdQuestionId: shuffled[2].id };
+        return { firstQuestionId: shuffled[0].id, secondQuestionId: shuffled[1].id };
     }
 
     // 1. 각 질문의 '개인화 적합도 점수' 계산
@@ -2469,31 +2477,31 @@ function selectPersonalizedStage3Questions(allAugmentedQuestions, userScores) {
         return null;
     };
 
-    // 5. 상위 3개 카테고리에서 각각 질문 선택 시도
-    sortedRC.slice(0, 3).forEach(rc => {
+    // 5. 상위 2개 카테고리에서 각각 질문 선택 시도
+    sortedRC.slice(0, 2).forEach(rc => {
         const bestId = findBestQuestionIdInRC(rc);
         if (bestId) selectedIds.add(bestId);
     });
     
-    // 6. [대체 로직] 만약 3개가 선택되지 않았다면, 전체 질문 목록에서 적합도 순으로 부족한 만큼 채우기
-    if (selectedIds.size < 3) {
+    // 6. [대체 로직] 만약 2개가 선택되지 않았다면, 전체 질문 목록에서 적합도 순으로 부족한 만큼 채우기
+    if (selectedIds.size < 2) {
         questionsWithFitness.sort((a, b) => b.qgFitnessScore - a.qgFitnessScore);
         for (const question of questionsWithFitness) {
-            if (selectedIds.size >= 3) break;
+            if (selectedIds.size >= 2) break;
             selectedIds.add(question.id);
         }
     }
     
     // 7. 최종 결과 반환
-    const [firstQuestionId, secondQuestionId, thirdQuestionId] = Array.from(selectedIds);
+    const [firstQuestionId, secondQuestionId] = Array.from(selectedIds);
 
-    if (firstQuestionId && secondQuestionId && thirdQuestionId) {
-        return { firstQuestionId, secondQuestionId, thirdQuestionId };
+    if (firstQuestionId && secondQuestionId) {
+        return { firstQuestionId, secondQuestionId };
     } else {
-        // [최후의 대체 로직] 그래도 실패 시, 무작위 3개 반환
-        console.error("3개의 개인화 질문을 선택하는 데 실패했습니다. 기본 질문 3개를 반환합니다.");
+        // [최후의 대체 로직] 그래도 실패 시, 무작위 2개 반환
+        console.error("2개의 개인화 질문을 선택하는 데 실패했습니다. 기본 질문 2개를 반환합니다.");
         const shuffled = allAugmentedQuestions.sort(() => 0.5 - Math.random());
-        return { firstQuestionId: shuffled[0].id, secondQuestionId: shuffled[1].id, thirdQuestionId: shuffled[2].id };
+        return { firstQuestionId: shuffled[0].id, secondQuestionId: shuffled[1].id };
     }
 }
 // testlogic.js 파일 상단 또는 적절한 위치에 추가
@@ -3201,6 +3209,9 @@ const testSystem = new AttractionTestSystem();
 
 // ==================== 1단계 → 2A단계 ====================
 function proceedToStage2Situation() {
+    // 스크롤을 맨 위로 이동
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    
     // 🕒 1단계 타이머 종료 및 2단계 타이머 시작
     startStage2Timer();
     
@@ -3301,6 +3312,8 @@ function renderSituationQuestions() { // <--- 여기서부터 복사 시작
 
 // ==================== 2A단계 → 2B단계 ====================
 function proceedToStage2Personality() {
+    // 스크롤을 맨 위로 이동
+    window.scrollTo({top: 0, behavior: 'smooth'});
     
     
     // 상황 질문 응답 수집
@@ -3459,6 +3472,9 @@ function checkPersonalityCompletion() {
 
 // 2단계 성향 질문 -> 3단계 온보딩으로 바로 이동하는 새 함수
 function proceedToStage3Onboarding() {
+    // 스크롤을 맨 위로 이동
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    
     // (기존 showResponseSummary 함수에서 가져온) 성향 질문 응답 수집 로직
     const personalityResponses = [];
     const personalizedPersonalityQuestions = testSystem.currentPersonalityQuestions || [];
@@ -3503,6 +3519,9 @@ function proceedToStage3Onboarding() {
 
 // testlogic.js 파일 내
 function startStage3() {
+    // 스크롤을 맨 위로 이동
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    
     startStage3Timer();
    
 
@@ -3516,16 +3535,15 @@ function startStage3() {
     // 2. 사용자 매력 점수 계산
     const userAttractionScores = testSystem.calculateUserCategoryScores();
 
-    // 3. 개인화된 질문 ID 3개 선택 (최초 1회)
+    // 3. 개인화된 질문 ID 2개 선택 (최초 1회)
     if (stage3SelectedQuestionIds === null) {
-        // ❗❗❗ [핵심 수정!] 2개만 고르던 옛날 함수 대신, 3개를 고르는 새 함수를 호출합니다.
         stage3SelectedQuestionIds = selectPersonalizedStage3Questions(completeStage3Questions, userAttractionScores);
-        console.log("💡 3단계에 표시할 개인화 질문 ID 3개 선택 완료:", stage3SelectedQuestionIds);
+        console.log("💡 3단계에 표시할 개인화 질문 ID 2개 선택 완료:", stage3SelectedQuestionIds);
 
         // ID 선택 실패 시 비상 로직
         if (!stage3SelectedQuestionIds) {
             console.error("⚠️ 개인화된 3단계 질문 ID를 가져오지 못했습니다. 기본 질문 ID로 대체합니다.");
-            stage3SelectedQuestionIds = { firstQuestionId: 1, secondQuestionId: 8, thirdQuestionId: 15 };
+            stage3SelectedQuestionIds = { firstQuestionId: 1, secondQuestionId: 8 };
         }
     }
     
@@ -3538,19 +3556,15 @@ function startStage3() {
     console.log('🚀 3단계의 첫 번째 질문 페이지로 시작합니다.');
 }
  function proceedToStage3Page2() {
+    // 스크롤을 맨 위로 이동
+    window.scrollTo({top: 0, behavior: 'smooth'});
     
     renderStage3Page(2);
     document.getElementById('stage3_page1').style.display = 'none';
     document.getElementById('stage3_page2').style.display = 'block';
 }
 
-// [신규] '3단계 2페이지' -> '3단계 3페이지'로 이동
-function proceedToStage3Page3() {
-    
-    renderStage3Page(3);
-    document.getElementById('stage3_page2').style.display = 'none';
-    document.getElementById('stage3_page3').style.display = 'block';
-}
+// [신규] '3단계 2페이지' -> '3단계 3페이지'로 이동 - 제거됨 (이제 2페이지가 마지막)
 function renderStage3Page(pageNumber) { // pageNumber는 1 또는 2
     // 🌟 중요: completeStage3Questions와 stage3SelectedQuestionIds 변수가
     // 이 함수에서 접근 가능한 범위에 있어야 합니다. (보통 전역 변수 또는 testSystem의 속성)
@@ -3688,24 +3702,11 @@ function proceedToStage3Page2() {
 
 
 
-// 뒤로가기 함수들
-function backToResponseSummary() {
-    document.getElementById('stage3_page1').style.display = 'none';
-    document.getElementById('responseSummary').style.display = 'block';
-}
-
-function backToStage3Page1() {
-    document.getElementById('stage3_page2').style.display = 'none';
-    document.getElementById('stage3_page1').style.display = 'block';
-}
-
-function backToStage3Page2() {
-    document.getElementById('stage3_page3').style.display = 'none';
-    document.getElementById('stage3_page2').style.display = 'block';
-}
-
 function goToSelectPage() {
     console.log("매력 선택 페이지로 이동 시작");
+    
+    // 스크롤을 맨 위로 이동
+    window.scrollTo({top: 0, behavior: 'smooth'});
     
     try {
         // 현재까지의 데이터 저장
@@ -3767,11 +3768,10 @@ function collectStage3Responses() {
         return;
     }
 
-    // 3개의 질문 ID를 모두 수집 대상으로 지정합니다.
+    // 2개의 질문 ID를 모두 수집 대상으로 지정합니다.
     const questionIdsToCollect = [
         stage3SelectedQuestionIds.firstQuestionId,
-        stage3SelectedQuestionIds.secondQuestionId,
-        stage3SelectedQuestionIds.thirdQuestionId
+        stage3SelectedQuestionIds.secondQuestionId
     ];
 
     questionIdsToCollect.forEach(questionId => {
@@ -4461,9 +4461,6 @@ function renderStage3Page(pageNumber) {
         questionIdToRender = stage3SelectedQuestionIds.firstQuestionId;
     } else if (pageNumber === 2) {
         questionIdToRender = stage3SelectedQuestionIds.secondQuestionId;
-     } else if (pageNumber === 3) { 
-        questionIdToRender = stage3SelectedQuestionIds.thirdQuestionId;
-        containerId = 'reflectionContainer3'; // 3번째 페이지의 컨테이너 ID
     } else {
         console.error("[renderStage3Page] 잘못된 페이지 번호:", pageNumber);
         return;
@@ -5580,15 +5577,12 @@ function renderStage3Page(pageNumber) {
     }
 
     let questionIdToRender;
-    const containerId = `reflectionContainer${pageNumber}`; // 컨테이너 ID를 동적으로 생성합니다.
+    const containerId = `reflectionContainer${pageNumber}`;
 
     if (pageNumber === 1) {
         questionIdToRender = stage3SelectedQuestionIds.firstQuestionId;
     } else if (pageNumber === 2) {
         questionIdToRender = stage3SelectedQuestionIds.secondQuestionId;
-    } else if (pageNumber === 3) {
-        // 3번째 페이지를 위한 로직
-        questionIdToRender = stage3SelectedQuestionIds.thirdQuestionId;
     } else {
         console.error("[renderStage3Page] 잘못된 페이지 번호입니다:", pageNumber);
         return;
@@ -5749,16 +5743,12 @@ function downloadResults() {
 
 // '응답 요약'에서 '온보딩 페이지'로 이동시키는 함수
 function showStage3Onboarding() {
+    // 스크롤을 맨 위로 이동
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    
     document.getElementById('responseSummary').style.display = 'none';
     document.getElementById('stage3_onboarding').style.display = 'block';
     console.log('✅ 3단계 온보딩 화면으로 이동합니다.');
-}
-
-// ===== 뒤로가기 함수들 =====
-function backToStage3Page4() {
-    console.log('3단계로 돌아가기');
-    document.getElementById('surveyStage').style.display = 'none';
-    document.getElementById('stage3_page2').style.display = 'block';
 }
 
 // 기존 코드 마지막 부분에 이 함수를 추가하세요:

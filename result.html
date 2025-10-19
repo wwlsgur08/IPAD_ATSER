@@ -279,6 +279,7 @@
 
     <div class="buttons">
         <button class="btn btn-secondary" onclick="downloadCard()">카드 다운로드</button>
+        <button class="btn btn-primary" onclick="sendTo3DConstellation()">3D 별자리에 추가</button>
         <a href="main.html" class="btn btn-primary">다시 만들기</a>
     </div>
 
@@ -512,6 +513,45 @@
             
             btn.textContent = '카드 다운로드';
             btn.disabled = false;
+        }
+
+        // 3D 별자리에 추가하는 함수
+        async function sendTo3DConstellation() {
+            try {
+                const savedData = localStorage.getItem('asterResultData');
+                if (!savedData) {
+                    alert('별자리 데이터를 찾을 수 없습니다.');
+                    return;
+                }
+
+                const resultData = JSON.parse(savedData);
+                
+                // 3D 프로젝트로 전송할 데이터 준비
+                const constellationData = {
+                    name: `${resultData.userName}'s Constellation`,
+                    userName: resultData.userName,
+                    charms: resultData.charms.map(charm => ({
+                        name: charm.name,
+                        level: charm.level,
+                        category: charm.category
+                    })),
+                    totalLevel: resultData.charms.reduce((sum, charm) => sum + charm.level, 0),
+                    timestamp: new Date().toISOString()
+                };
+
+                // localStorage를 통한 데이터 전송
+                const existing3DData = localStorage.getItem('constellations3D');
+                let constellations = existing3DData ? JSON.parse(existing3DData) : [];
+                constellations.push(constellationData);
+                localStorage.setItem('constellations3D', JSON.stringify(constellations));
+
+                alert('✨ 별자리가 3D 공간에 추가되었습니다!\n3D 별자리 페이지에서 확인하세요.');
+                console.log('🌟 3D 별자리 추가됨:', constellationData);
+                
+            } catch (error) {
+                console.error('3D 전송 오류:', error);
+                alert('별자리 추가 중 오류가 발생했습니다.');
+            }
         }
     </script>
 </body>
