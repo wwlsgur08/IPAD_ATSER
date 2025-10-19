@@ -533,20 +533,43 @@
                     charms: resultData.charms.map(charm => ({
                         name: charm.name,
                         level: charm.level,
-                        category: charm.category
+                        category: charm.category,
+                        position: charm.position
                     })),
+                    lines: resultData.lines || [],
                     totalLevel: resultData.charms.reduce((sum, charm) => sum + charm.level, 0),
                     timestamp: new Date().toISOString()
                 };
 
-                // localStorage를 통한 데이터 전송
+                // localStorage에 저장
                 const existing3DData = localStorage.getItem('constellations3D');
                 let constellations = existing3DData ? JSON.parse(existing3DData) : [];
                 constellations.push(constellationData);
                 localStorage.setItem('constellations3D', JSON.stringify(constellations));
 
-                alert('✨ 별자리가 3D 공간에 추가되었습니다!\n3D 별자리 페이지에서 확인하세요.');
                 console.log('🌟 3D 별자리 추가됨:', constellationData);
+
+                // 3D 별자리 페이지 URL 설정
+                const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                const base3DURL = isLocalhost 
+                    ? 'http://localhost:5173'
+                    : 'https://3d-102030.vercel.app';
+                
+                // URL 파라미터로 데이터 전송
+                const dataParam = encodeURIComponent(JSON.stringify(constellationData));
+                const url3D = ${base3DURL}?newConstellation=;
+                
+                // 새 탭에서 3D 별자리 페이지 열기
+                const confirmation = confirm('✨ 별자리가 저장되었습니다!\n\n3D 별자리 페이지를 새 탭에서 여시겠습니까?');
+                if (confirmation) {
+                    const newWindow = window.open(url3D, '_blank');
+                    if (newWindow) {
+                        newWindow.focus();
+                    } else {
+                        alert('팝업이 차단되었습니다.');
+                    }
+                } else {
+                    alert('✨ 별자리가 저장되었습니다!\n3D 페이지에서 확인할 수 있습니다.');\n                }
                 
             } catch (error) {
                 console.error('3D 전송 오류:', error);
