@@ -580,9 +580,17 @@
                 let cardImageData = null;
                 
                 try {
-                    // 눈동자 배경 임시로 숨기기
-                    const originalDisplay = eyeBackground.style.display;
-                    eyeBackground.style.display = 'none';
+                    // 원본 스타일 저장
+                    const originalEyeDisplay = eyeBackground.style.display;
+                    const originalBg = constellationPreview.style.background;
+                    const originalBorderRadius = constellationPreview.style.borderRadius;
+                    const originalOverflow = constellationPreview.style.overflow;
+                    
+                    // 캡처를 위해 임시로 스타일 변경
+                    eyeBackground.style.display = 'none'; // 눈동자 숨기기
+                    constellationPreview.style.background = 'transparent'; // 배경 투명
+                    constellationPreview.style.borderRadius = '0'; // 원형 마스킹 제거
+                    constellationPreview.style.overflow = 'visible'; // 별빛이 보이게
                     
                     // 약간 대기 (렌더링 완료)
                     await new Promise(resolve => setTimeout(resolve, 100));
@@ -595,17 +603,23 @@
                         logging: false
                     });
                     
-                    // 눈동자 배경 다시 보이기
-                    eyeBackground.style.display = originalDisplay;
+                    // 원본 스타일 복원
+                    eyeBackground.style.display = originalEyeDisplay;
+                    constellationPreview.style.background = originalBg;
+                    constellationPreview.style.borderRadius = originalBorderRadius;
+                    constellationPreview.style.overflow = originalOverflow;
                     
-                    // 이미지 압축 (품질 0.7)
-                    cardImageData = canvas.toDataURL('image/jpeg', 0.7);
+                    // 이미지 압축 (품질 0.8로 약간 높임)
+                    cardImageData = canvas.toDataURL('image/png', 0.8);
                     console.log('✅ 별자리 이미지 캡처 완료 (크기:', Math.round(cardImageData.length / 1024), 'KB)');
                 } catch (error) {
                     console.error('❌ 별자리 캡처 실패:', error);
-                    // 에러 발생 시에도 눈동자 배경 복원
-                    if (eyeBackground) {
-                        eyeBackground.style.display = '';
+                    // 에러 발생 시에도 스타일 복원
+                    if (eyeBackground) eyeBackground.style.display = '';
+                    if (constellationPreview) {
+                        constellationPreview.style.background = '';
+                        constellationPreview.style.borderRadius = '';
+                        constellationPreview.style.overflow = '';
                     }
                 }
                 
