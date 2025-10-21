@@ -298,14 +298,33 @@
         const symbols = { 0: "♦", 1: "♦", 2: "♦", 3: "♦", 4: "♦", 5: "♦", 6: "♦" };
 
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded 실행됨');
             const savedData = localStorage.getItem('asterResultData');
+            console.log('localStorage 데이터:', savedData);
+            
             if (!savedData) {
-                alert('결과 데이터를 찾을 수 없습니다.');
-                window.location.href = 'main.html';
+                console.error('asterResultData가 localStorage에 없습니다!');
+                document.getElementById('constellationName').textContent = '데이터를 찾을 수 없습니다';
+                alert('결과 데이터를 찾을 수 없습니다. main.html에서 별자리를 만들어주세요.');
+                setTimeout(() => {
+                    window.location.href = 'main.html';
+                }, 2000);
                 return;
             }
 
-            const resultData = JSON.parse(savedData);
+            let resultData;
+            try {
+                resultData = JSON.parse(savedData);
+                console.log('결과 데이터 파싱 성공:', resultData);
+            } catch (error) {
+                console.error('JSON 파싱 오류:', error);
+                document.getElementById('constellationName').textContent = '데이터 오류';
+                alert('데이터 형식이 올바르지 않습니다.');
+                setTimeout(() => {
+                    window.location.href = 'main.html';
+                }, 2000);
+                return;
+            }
             
             // 가장 높은 레벨의 별 찾기
             let highestLevelCharm = null;
