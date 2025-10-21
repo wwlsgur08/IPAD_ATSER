@@ -580,14 +580,16 @@
                 
                 try {
                     const canvas = await html2canvas(constellationPreview, {
-                        scale: 3,
-                        backgroundColor: null,
+                        scale: 2, // 2로 줄임 (용량 감소)
+                        backgroundColor: 'rgba(0,0,0,0.1)', // 약간의 배경
                         useCORS: true,
                         allowTaint: true,
                         logging: false
                     });
-                    cardImageData = canvas.toDataURL('image/png');
-                    console.log('✅ 별자리 이미지 캡처 완료');
+                    
+                    // 이미지 압축 (품질 0.7)
+                    cardImageData = canvas.toDataURL('image/jpeg', 0.7);
+                    console.log('✅ 별자리 이미지 캡처 완료 (크기:', Math.round(cardImageData.length / 1024), 'KB)');
                 } catch (error) {
                     console.error('❌ 별자리 캡처 실패:', error);
                 }
@@ -609,7 +611,7 @@
                     cardImage: cardImageData // 별자리 이미지만 추가
                 };
 
-                console.log('🌟 Firebase로 별자리 전송 중...', constellationData);
+                console.log('🌟 Firebase로 별자리 전송 중... (총 크기:', Math.round(JSON.stringify(constellationData).length / 1024), 'KB)');
 
                 // Firebase Realtime Database에 데이터 추가
                 const newConstellationRef = database.ref('constellations').push();
