@@ -283,8 +283,29 @@
         <a href="main.html" class="btn btn-primary">다시 만들기</a>
     </div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
+        // Firebase 설정
+        const firebaseConfig = {
+            apiKey: "AIzaSyBcl4tKzcneq6yn6mmADC5YzoVGmRnsZbk",
+            authDomain: "dinteraction-e0393.firebaseapp.com",
+            databaseURL: "https://dinteraction-e0393-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "dinteraction-e0393",
+            storageBucket: "dinteraction-e0393.firebasestorage.app",
+            messagingSenderId: "845988355289",
+            appId: "1:845988355289:web:b5243b16e80bfb9cbf32c8",
+            measurementId: "G-QG1QWM3LSC"
+        };
+        
+        // Firebase 초기화
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        console.log('🔥 Firebase 초기화 완료');
+    
         const categoryInfo = {
             "이해심 및 공감 능력": { color: "#D726BD", starImage: "star-pink.png", shortName: "리더십", colorName: "pink", bgColor: "#FFE7FB" },
             "성실성 및 책임감": { color: "#1A99B6", starImage: "star-skyblue.png", shortName: "배려심", colorName: "skyblue", bgColor: "#E7FBFF" },
@@ -559,47 +580,27 @@
                         name: charm.name,
                         level: charm.level,
                         category: charm.category,
-                        position: charm.position
+                        position: charm.position,
+                        starImage: charm.starImage
                     })),
                     lines: resultData.lines || [],
                     totalLevel: resultData.charms.reduce((sum, charm) => sum + charm.level, 0),
                     timestamp: new Date().toISOString()
                 };
 
-                // localStorage에 저장
-                const existing3DData = localStorage.getItem('constellations3D');
-                let constellations = existing3DData ? JSON.parse(existing3DData) : [];
-                constellations.push(constellationData);
-                localStorage.setItem('constellations3D', JSON.stringify(constellations));
+                console.log('🌟 Firebase로 별자리 전송 중...', constellationData);
 
-                console.log('🌟 3D 별자리 추가됨:', constellationData);
-
-                // 3D 별자리 페이지 URL 설정
-                const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-                const base3DUrl = isLocalhost ? 'http://localhost:5173/index.html' : 'https://3d-102030.vercel.app';
+                // Firebase Realtime Database에 데이터 추가
+                const newConstellationRef = database.ref('constellations').push();
+                await newConstellationRef.set(constellationData);
                 
-                // 별자리 데이터를 URL 파라미터로 인코딩
-                const encodedData = encodeURIComponent(JSON.stringify(constellationData));
-                const url3D = `${base3DUrl}?constellation=${encodedData}`;
+                console.log('✅ Firebase에 별자리 추가 완료!');
                 
-                console.log('3D URL 생성:', url3D);
-                
-                // 새 탭에서 3D 별자리 페이지 열기
-                const confirmation = confirm('✨ 별자리가 준비되었습니다!\n\n3D 별자리 페이지를 새 탭에서 여시겠습니까?');
-                if (confirmation) {
-                    const newWindow = window.open(url3D, '_blank');
-                    if (newWindow) {
-                        newWindow.focus();
-                    } else {
-                        alert('팝업이 차단되었습니다. 팝업 차단을 해제하고 다시 시도해주세요.');
-                    }
-                } else {
-                    alert('✨ 나중에 3D 페이지에서 직접 추가할 수 있습니다.');
-                }
+                alert('✨ 별자리가 3D 우주에 추가되었습니다!\n컴퓨터 화면을 확인해보세요! 🌟');
                 
             } catch (error) {
-                console.error('3D 전송 오류:', error);
-                alert('별자리 추가 중 오류가 발생했습니다.');
+                console.error('❌ 3D 전송 오류:', error);
+                alert('별자리 추가 중 오류가 발생했습니다.\n' + error.message);
             }
         }
     </script>
