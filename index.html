@@ -3179,24 +3179,24 @@ getPersonalizedPersonalityQuestions() {
 
     scoredQuestions.sort((a, b) => b.relevanceScore - a.relevanceScore);
 
-    // ⚠️ 수정 포인트 1: 상위 8개의 질문을 선택하도록 변경
-    const topQuestions = scoredQuestions.slice(0, 8);
+    // ⚠️ 수정 포인트 1: 상위 6개의 질문을 선택하도록 변경
+    const topQuestions = scoredQuestions.slice(0, 6);
 
     let finalSelectedQuestions;
 
-    // ⚠️ 수정 포인트 2: 전체 질문 수가 8개를 초과하는지 확인하도록 변경
-    if (topQuestions.every(q => q.relevanceScore === 0) && scoredQuestions.length > 8) {
+    // ⚠️ 수정 포인트 2: 전체 질문 수가 6개를 초과하는지 확인하도록 변경
+    if (topQuestions.every(q => q.relevanceScore === 0) && scoredQuestions.length > 6) {
         // ⚠️ 수정 포인트 3: 로그 메시지 변경
-        console.log("모든 성향 질문의 관련성 점수가 0이므로, 무작위로 8개를 선택합니다.");
+        console.log("모든 성향 질문의 관련성 점수가 0이므로, 무작위로 6개를 선택합니다.");
         const shuffledAll = [...this.allPersonalityQuestions].sort(() => 0.5 - Math.random());
-        // ⚠️ 수정 포인트 4: 무작위 선택 시에도 8개를 선택하도록 변경
-        finalSelectedQuestions = shuffledAll.slice(0, 8);
+        // ⚠️ 수정 포인트 4: 무작위 선택 시에도 6개를 선택하도록 변경
+        finalSelectedQuestions = shuffledAll.slice(0, 6);
     } else {
         finalSelectedQuestions = topQuestions;
     }
 
     // ⚠️ 수정 포인트 5: 최종 로그 메시지 변경
-    console.log("최종 선택된 8개 성향 질문:", finalSelectedQuestions);
+    console.log("최종 선택된 6개 성향 질문:", finalSelectedQuestions);
 
     this.currentPersonalityQuestions = finalSelectedQuestions;
 
@@ -3244,7 +3244,7 @@ function renderSituationQuestions() { // <--- 여기서부터 복사 시작
     }
 
     const shuffledPool = [...fullQuestionPool].sort(() => 0.5 - Math.random());
-    const selectedQuestionsForStage = shuffledPool.slice(0, 5);
+    const selectedQuestionsForStage = shuffledPool.slice(0, 4);
 
     testSystem.currentStage2SituationQuestions = selectedQuestionsForStage; 
 
