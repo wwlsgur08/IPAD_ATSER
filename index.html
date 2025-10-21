@@ -3644,6 +3644,13 @@ function startStage3() {
     renderStage3Page(2);
     document.getElementById('stage3_page1').style.display = 'none';
     document.getElementById('stage3_page2').style.display = 'block';
+    
+    // 화면 전환 후 스크롤
+    setTimeout(() => {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }, 100);
 }
 
 // [신규] '3단계 2페이지' -> '3단계 3페이지'로 이동 - 제거됨 (이제 2페이지가 마지막)
@@ -3767,19 +3774,7 @@ function renderStage3Page(pageNumber) { // pageNumber는 1 또는 2
 
 // 3단계 페이지 이동 함수들
 // testlogic.js 파일 내 proceedToStage3Page2 함수를 아래와 같이 수정합니다.
-
-function proceedToStage3Page2() {
-    // 현재까지 진행 상황 저장 (이 부분은 그대로 둡니다)
-
-    // 3단계 두 번째 페이지 렌더링 요청
-    // 이제 renderStage3Page 함수에 페이지 번호 '2'만 전달하면,
-    // renderStage3Page 함수가 알아서 stage3SelectedQuestionIds.secondQuestionId를 사용합니다.
-    renderStage3Page(2); 
-
-    // 화면 전환 (이 부분도 그대로 둡니다)
-    document.getElementById('stage3_page1').style.display = 'none';
-    document.getElementById('stage3_page2').style.display = 'block';
-}
+// (이 함수는 위에서 이미 정의됨 - 중복 제거)
 
 
 
