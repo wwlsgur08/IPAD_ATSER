@@ -572,6 +572,25 @@
 
                 const resultData = JSON.parse(savedData);
                 
+                console.log('📸 별자리 카드 캡처 중...');
+                
+                // 별자리 카드 캡처 (왼쪽 카드만)
+                const constellationCard = document.querySelector('.constellation-card');
+                let cardImageData = null;
+                
+                try {
+                    const canvas = await html2canvas(constellationCard, {
+                        scale: 2,
+                        backgroundColor: null,
+                        useCORS: true,
+                        allowTaint: true
+                    });
+                    cardImageData = canvas.toDataURL('image/png');
+                    console.log('✅ 카드 이미지 캡처 완료');
+                } catch (error) {
+                    console.error('❌ 카드 캡처 실패:', error);
+                }
+                
                 // 3D 프로젝트로 전송할 데이터 준비
                 const constellationData = {
                     name: `${resultData.userName}'s Constellation`,
@@ -585,7 +604,8 @@
                     })),
                     lines: resultData.lines || [],
                     totalLevel: resultData.charms.reduce((sum, charm) => sum + charm.level, 0),
-                    timestamp: new Date().toISOString()
+                    timestamp: new Date().toISOString(),
+                    cardImage: cardImageData // 카드 이미지 추가
                 };
 
                 console.log('🌟 Firebase로 별자리 전송 중...', constellationData);
