@@ -576,22 +576,37 @@
                 
                 // 별자리 프리뷰 부분만 캡처 (별 + 연결선)
                 const constellationPreview = document.querySelector('.constellation-preview');
+                const eyeBackground = document.getElementById('eyeBackground');
                 let cardImageData = null;
                 
                 try {
+                    // 눈동자 배경 임시로 숨기기
+                    const originalDisplay = eyeBackground.style.display;
+                    eyeBackground.style.display = 'none';
+                    
+                    // 약간 대기 (렌더링 완료)
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    
                     const canvas = await html2canvas(constellationPreview, {
-                        scale: 2, // 2로 줄임 (용량 감소)
-                        backgroundColor: 'rgba(0,0,0,0.1)', // 약간의 배경
+                        scale: 2,
+                        backgroundColor: null, // 투명 배경
                         useCORS: true,
                         allowTaint: true,
                         logging: false
                     });
+                    
+                    // 눈동자 배경 다시 보이기
+                    eyeBackground.style.display = originalDisplay;
                     
                     // 이미지 압축 (품질 0.7)
                     cardImageData = canvas.toDataURL('image/jpeg', 0.7);
                     console.log('✅ 별자리 이미지 캡처 완료 (크기:', Math.round(cardImageData.length / 1024), 'KB)');
                 } catch (error) {
                     console.error('❌ 별자리 캡처 실패:', error);
+                    // 에러 발생 시에도 눈동자 배경 복원
+                    if (eyeBackground) {
+                        eyeBackground.style.display = '';
+                    }
                 }
                 
                 // 3D 프로젝트로 전송할 데이터 준비
