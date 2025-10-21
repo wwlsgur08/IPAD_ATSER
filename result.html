@@ -235,10 +235,48 @@
         }
         
         @media (max-width: 768px) {
-            .cards-container { flex-direction: column; gap: 20px; }
-            .card { width: 100%; max-width: 320px; height: auto; padding: 20px; }
-            .constellation-preview { width: 200px; height: 200px; }
-            .buttons { flex-direction: column; }
+            .title {
+                font-size: 24px;
+                color: white !important;
+                margin-bottom: 25px;
+            }
+            .cards-container { 
+                flex-direction: column; 
+                gap: 20px; 
+                padding: 0 10px;
+            }
+            .card { 
+                width: 100%; 
+                max-width: 340px; 
+                height: auto; 
+                padding: 20px; 
+                margin: 0 auto;
+            }
+            .constellation-preview { 
+                width: 220px; 
+                height: 220px; 
+            }
+            .subtitle {
+                font-size: 13px;
+            }
+            .constellation-name {
+                font-size: 18px;
+            }
+            .constellation-bottom {
+                font-size: 13px;
+            }
+            .buttons { 
+                flex-direction: column; 
+                gap: 12px;
+                padding: 0 10px;
+                width: 100%;
+            }
+            .btn {
+                width: 100%;
+                max-width: 340px;
+                font-size: 15px;
+                padding: 14px 20px;
+            }
         }
     </style>
 </head>
