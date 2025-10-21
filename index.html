@@ -131,13 +131,13 @@
         .category-item input[type="checkbox"] {
             appearance: none;
             -webkit-appearance: none;
-            height: 1.2em;
-            width: 1.2em;
+            height: 1em;
+            width: 1em;
             background-color: rgba(255,255,255,0.1);
-            border-radius: 0.375rem;
+            border-radius: 0.3rem;
             border: 1px solid rgba(34, 211, 238, 0.3);
             cursor: pointer;
-            margin-right: 0.8rem;
+            margin-right: 0.6rem;
             position: relative;
             transition: all 0.3s ease;
             flex-shrink: 0;
@@ -155,7 +155,7 @@
             top: 50%;
             transform: translate(-50%, -50%);
             font-weight: bold;
-            font-size: 0.85em;
+            font-size: 0.75em;
         }
         
         .category-selection {
@@ -3279,12 +3279,16 @@ function proceedToStage2Situation() {
     // 상황 질문 렌더링
     renderSituationQuestions();
     
-    // 스크롤 맨 위로
-    window.scrollTo({top: 0, behavior: 'smooth'});
-    
     // 화면 전환
     document.getElementById('stage1').style.display = 'none';
     document.getElementById('stage2Situation').style.display = 'block';
+    
+    // 화면 전환 후 스크롤 (약간 지연)
+    setTimeout(() => {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+        document.body.scrollTop = 0; // Safari
+        document.documentElement.scrollTop = 0; // Chrome, Firefox
+    }, 100);
 }
 
 // testlogic.js - 이 코드로 기존 renderSituationQuestions 함수를 완전히 대체합니다.
@@ -3416,12 +3420,16 @@ console.log("개인화된 상황 질문 응답 수집 완료: ", testSystem.stag
 // 성향 질문 렌더링
 renderPersonalityQuestions();
 
-// 스크롤 맨 위로
-window.scrollTo({top: 0, behavior: 'smooth'});
-
 // 화면 전환
 document.getElementById('stage2Situation').style.display = 'none';
 document.getElementById('stage2Personality').style.display = 'block';
+
+// 화면 전환 후 스크롤
+setTimeout(() => {
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}, 100);
 }
 
 // testlogic.js - renderPersonalityQuestions 함수 전체를 아래 내용으로 구성합니다.
@@ -3565,13 +3573,17 @@ function proceedToStage3Onboarding() {
     testSystem.stage2_personality_responses = personalityResponses;
     console.log("성향 질문 응답 수집 완료: ", testSystem.stage2_personality_responses);
     
-    // 스크롤 맨 위로
-    window.scrollTo({top: 0, behavior: 'smooth'});
-
     // 화면 전환
     document.getElementById('stage2Personality').style.display = 'none';
     document.getElementById('stage3_onboarding').style.display = 'block';
     console.log('✅ 3단계 온보딩 화면으로 이동합니다.');
+    
+    // 화면 전환 후 스크롤
+    setTimeout(() => {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }, 100);
 }
 
 // testlogic.js 파일 내
@@ -3613,13 +3625,17 @@ function startStage3() {
     // 4. 3단계 첫 페이지 렌더링
     renderStage3Page(1);
 
-    // 스크롤 맨 위로
-    window.scrollTo({top: 0, behavior: 'smooth'});
-
     // 5. 화면 전환
     document.getElementById('stage3_onboarding').style.display = 'none';
     document.getElementById('stage3_page1').style.display = 'block';
     console.log('🚀 3단계의 첫 번째 질문 페이지로 시작합니다.');
+    
+    // 화면 전환 후 스크롤
+    setTimeout(() => {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }, 100);
 }
  function proceedToStage3Page2() {
     // 스크롤을 맨 위로 이동
