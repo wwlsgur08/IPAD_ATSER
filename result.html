@@ -576,19 +576,25 @@
 
                 // 3D 별자리 페이지 URL 설정
                 const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-                const url3D = isLocalhost ? 'http://localhost:5173/index.html' : 'https://3d-102030.vercel.app';
+                const base3DUrl = isLocalhost ? 'http://localhost:5173/index.html' : 'https://3d-102030.vercel.app';
+                
+                // 별자리 데이터를 URL 파라미터로 인코딩
+                const encodedData = encodeURIComponent(JSON.stringify(constellationData));
+                const url3D = `${base3DUrl}?constellation=${encodedData}`;
+                
+                console.log('3D URL 생성:', url3D);
                 
                 // 새 탭에서 3D 별자리 페이지 열기
-                const confirmation = confirm('✨ 별자리가 저장되었습니다!\n\n3D 별자리 페이지를 새 탭에서 여시겠습니까?');
+                const confirmation = confirm('✨ 별자리가 준비되었습니다!\n\n3D 별자리 페이지를 새 탭에서 여시겠습니까?');
                 if (confirmation) {
                     const newWindow = window.open(url3D, '_blank');
                     if (newWindow) {
                         newWindow.focus();
                     } else {
-                        alert('팝업이 차단되었습니다.');
+                        alert('팝업이 차단되었습니다. 팝업 차단을 해제하고 다시 시도해주세요.');
                     }
                 } else {
-                    alert('✨ 별자리가 저장되었습니다!\n3D 페이지에서 확인할 수 있습니다.');
+                    alert('✨ 나중에 3D 페이지에서 직접 추가할 수 있습니다.');
                 }
                 
             } catch (error) {
