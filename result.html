@@ -298,31 +298,24 @@
         const symbols = { 0: "♦", 1: "♦", 2: "♦", 3: "♦", 4: "♦", 5: "♦", 6: "♦" };
 
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOMContentLoaded 실행됨');
+            console.log('[Result Page] DOMContentLoaded 시작');
             const savedData = localStorage.getItem('asterResultData');
-            console.log('localStorage 데이터:', savedData);
+            console.log('[Result Page] localStorage 데이터:', savedData ? '있음' : '없음');
             
             if (!savedData) {
-                console.error('asterResultData가 localStorage에 없습니다!');
-                document.getElementById('constellationName').textContent = '데이터를 찾을 수 없습니다';
+                console.error('[Result Page] asterResultData가 없습니다!');
                 alert('결과 데이터를 찾을 수 없습니다. main.html에서 별자리를 만들어주세요.');
-                setTimeout(() => {
-                    window.location.href = 'main.html';
-                }, 2000);
+                window.location.href = 'main.html';
                 return;
             }
 
             let resultData;
             try {
                 resultData = JSON.parse(savedData);
-                console.log('결과 데이터 파싱 성공:', resultData);
+                console.log('[Result Page] 데이터 파싱 성공:', resultData);
             } catch (error) {
-                console.error('JSON 파싱 오류:', error);
-                document.getElementById('constellationName').textContent = '데이터 오류';
-                alert('데이터 형식이 올바르지 않습니다.');
-                setTimeout(() => {
-                    window.location.href = 'main.html';
-                }, 2000);
+                console.error('[Result Page] JSON 파싱 오류:', error);
+                alert('데이터 형식 오류');
                 return;
             }
             
@@ -330,11 +323,11 @@
             let highestLevelCharm = null;
             let maxLevel = 0;
             
-            console.log('resultData.charms:', resultData.charms);
+            console.log('[Result Page] charms 개수:', resultData.charms ? resultData.charms.length : 0);
             
             if (!resultData.charms || resultData.charms.length === 0) {
-                console.error('charms 데이터가 없습니다!');
-                document.getElementById('constellationName').textContent = '매력 데이터 없음';
+                console.error('[Result Page] charms가 없거나 비어있습니다!');
+                alert('매력 데이터가 없습니다.');
                 return;
             }
             
@@ -345,21 +338,20 @@
                 }
             });
             
-            console.log('highestLevelCharm:', highestLevelCharm);
+            console.log('[Result Page] 가장 높은 레벨 매력:', highestLevelCharm);
             
             // 가장 높은 레벨 별의 카테고리 정보 가져오기
             const dominantCategoryInfo = highestLevelCharm ? categoryInfo[highestLevelCharm.category] : null;
             const colorName = dominantCategoryInfo ? dominantCategoryInfo.colorName : 'blue';
             const bgColor = dominantCategoryInfo ? dominantCategoryInfo.bgColor : '#E7F1FF';
             
-            console.log('colorName:', colorName);
-            console.log('userName:', resultData.userName);
+            console.log('[Result Page] colorName:', colorName);
             
             // 별자리 이름 설정
             const nameEl = document.getElementById('constellationName');
             nameEl.textContent = `${resultData.userName || 'User'}'s Constellation`;
             nameEl.setAttribute('lang', 'en');
-            console.log('별자리 이름 설정 완료:', nameEl.textContent);
+            console.log('[Result Page] 별자리 이름 설정 완료:', nameEl.textContent);
             
             // 카드 배경색 변경
             const cards = document.querySelectorAll('.card');
@@ -377,9 +369,7 @@
             const logoElements = [document.getElementById('asterLogo'), document.getElementById('asterLogo2')];
             logoElements.forEach(logo => {
                 if (logo) {
-                    const logoPath = `./images/logo-${colorName}.png`;
-                    logo.style.backgroundImage = `url('${logoPath}')`;
-                    console.log('로고 이미지 경로:', logoPath);
+                    logo.style.backgroundImage = `url('./images/logo-${colorName}.png')`;
                 }
             });
             
@@ -391,7 +381,7 @@
                 console.log('colorName:', colorName);
                 eyeBackground.style.backgroundImage = `url('${eyeImagePath}')`;
                 console.log('eyeBackground 요소:', eyeBackground);
-                console.log('eyeBackground 스타일:', eyeBackground.style.backgroundImage);
+                console.log('eyeBackground 스타일:', eyeBackground.style);
             } else {
                 console.log('eyeBackground 요소를 찾을 수 없음');
             }
@@ -400,18 +390,13 @@
             const starField = document.getElementById('starField');
             const svg = document.getElementById('constellation-svg');
             
-            console.log('별 생성 시작, charms 개수:', resultData.charms.length);
-            
-            resultData.charms.forEach((charm, index) => {
-                console.log(`별 ${index} 생성:`, charm.name, charm.level, charm.starImage);
+            resultData.charms.forEach(charm => {
                 const star = document.createElement('div');
                 star.className = 'constellation-star';
                 star.style.left = `${charm.position.x}%`;
                 star.style.top = `${charm.position.y}%`;
                 // Use each charm's original star image (preserve per-charm color)
-                const starImagePath = `./images/${charm.starImage}`;
-                star.style.backgroundImage = `url(${starImagePath})`;
-                console.log('별 이미지 경로:', starImagePath);
+                star.style.backgroundImage = `url(./images/${charm.starImage})`;
                 
                 const size = charm.level > 0 ? 40 + (charm.level * 50) : 0;
                 star.style.width = size + 'px';
@@ -591,13 +576,9 @@
 
                 // 3D 별자리 페이지 URL 설정
                 const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-                const base3DURL = isLocalhost 
-                    ? 'http://localhost:5173'
+                const url3D = isLocalhost 
+                    ? 'http://localhost:5173/index.html'
                     : 'https://3d-102030.vercel.app';
-                
-                // URL 파라미터로 데이터 전송
-                const dataParam = encodeURIComponent(JSON.stringify(constellationData));
-                const url3D = ${base3DURL}?newConstellation=;
                 
                 // 새 탭에서 3D 별자리 페이지 열기
                 const confirmation = confirm('✨ 별자리가 저장되었습니다!\n\n3D 별자리 페이지를 새 탭에서 여시겠습니까?');
