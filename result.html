@@ -344,14 +344,14 @@
             const logoElements = [document.getElementById('asterLogo'), document.getElementById('asterLogo2')];
             logoElements.forEach(logo => {
                 if (logo) {
-                    logo.style.backgroundImage = `url('./images/logo-${colorName}.png')`;
+                    logo.style.backgroundImage = `url('images/logo-${colorName}.png')`;
                 }
             });
             
             // 눈 배경 이미지 설정
             const eyeBackground = document.getElementById('eyeBackground');
             if (eyeBackground) {
-                const eyeImagePath = `./images/eye-${colorName}.png`;
+                const eyeImagePath = `images/eye-${colorName}.png`;
                 console.log('눈 이미지 경로:', eyeImagePath);
                 console.log('colorName:', colorName);
                 eyeBackground.style.backgroundImage = `url('${eyeImagePath}')`;
@@ -371,7 +371,7 @@
                 star.style.left = `${charm.position.x}%`;
                 star.style.top = `${charm.position.y}%`;
                 // Use each charm's original star image (preserve per-charm color)
-                star.style.backgroundImage = `url(./images/${charm.starImage})`;
+                star.style.backgroundImage = `url(images/${charm.starImage})`;
                 
                 const size = charm.level > 0 ? 40 + (charm.level * 50) : 0;
                 star.style.width = size + 'px';
