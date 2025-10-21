@@ -1359,14 +1359,66 @@
     }
     
     .stage {
-        padding: 25px 15px; /* 좌우 여백을 더 줄여서 공간 확보 */
+        padding: 20px 15px; /* 좌우 여백을 더 줄여서 공간 확보 */
         min-height: calc(100vh - 50px);
+    }
+    
+    /* 인트로 페이지 */
+    #introStage {
+        padding-top: 40px !important;
+        padding-bottom: 40px !important;
+    }
+    
+    #introStage h2 {
+        font-size: 26px !important; /* 제목 크기 축소 */
+        margin-bottom: 20px !important;
+    }
+    
+    #introStage .text-6xl {
+        font-size: 3rem !important; /* 이모지 크기 축소 */
+    }
+    
+    #introStage p {
+        font-size: 15px !important;
+        line-height: 1.6 !important;
+        margin-bottom: 30px !important;
+    }
+    
+    #introStage .bg-slate-800\/50 {
+        padding: 20px !important;
+        margin-bottom: 30px !important;
+    }
+    
+    #introStage h4 {
+        font-size: 18px !important;
+    }
+    
+    #introStage ul li {
+        font-size: 14px !important;
+    }
+    
+    #introStage .bg-gradient-to-b {
+        padding: 20px !important;
+    }
+    
+    #introStage .notice-icon {
+        font-size: 2rem !important;
+    }
+    
+    #introStage .notice-text strong {
+        font-size: 16px !important;
+    }
+    
+    #introStage .notice-text p {
+        font-size: 13px !important;
+        line-height: 1.5 !important;
     }
     
     h2 {
         font-size: 22px; /* 제목 폰트 크기 더 줄임 */
         line-height: 1.4;
         margin-bottom: 15px;
+        color: white !important; /* 모든 제목 흰색 */
     }
 
     /* 본문/설명 텍스트 가독성 최적화 */
@@ -1375,7 +1427,7 @@
     .onboarding-content p {
         font-size: 14px; 
         line-height: 1.6;
-        color: #555;
+        color: #e2e8f0 !important; /* 밝은 회색으로 변경 */
     }
 
     /* 2. 버튼 및 터치 영역 최적화 */
@@ -1416,6 +1468,7 @@
     .question-title, .survey-question-title {
         font-size: 15px;
         margin-bottom: 12px;
+        color: white !important;
     }
 
     /* 3단계: 성찰 질문 */
@@ -1425,6 +1478,7 @@
     }
     .reflection-question-title {
         font-size: 17px;
+        color: white !important;
     }
     .reflection-sub-question {
         padding: 12px;
