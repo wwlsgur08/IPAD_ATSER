@@ -356,58 +356,74 @@
             margin: 0 auto;
         }
         
-        .reflection-question-card {
-            background: linear-gradient(to bottom right, rgba(51, 65, 85, 0.4), rgba(30, 58, 138, 0.4));
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(34, 211, 238, 0.3);
-            box-shadow: 0 4px 6px -1px rgba(34, 211, 238, 0.05), 0 2px 4px -2px rgba(34, 211, 238, 0.05);
-            border-radius: 1rem;
-            padding: clamp(20px, 4vw, 30px);
-            margin-bottom: 2.5rem;
-            position: relative;
-        }
-        
-        .reflection-question-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .reflection-question-title {
-            font-size: clamp(18px, 3vw, 22px);
-            font-weight: bold;
-            color: #fff;
-            text-shadow: 0 0 8px rgba(100, 200, 255, 0.5);
+        /* 3단계 페이지 헤더 (박스 밖) */
+        .reflection-page-header {
+            margin-bottom: 2rem;
         }
         
         .reflection-question-number {
-            background: rgba(34, 211, 238, 0.8);
-            color: #0f172a;
-            padding: 5px 12px;
+            background: rgba(34, 211, 238, 0.2);
+            color: #22d3ee;
+            padding: 6px 14px;
             border-radius: 20px;
             font-size: 14px;
             font-weight: bold;
+            display: inline-block;
+            margin-bottom: 12px;
         }
         
-        .reflection-sub-questions {
-            margin-bottom: 1rem;
+        .reflection-question-title {
+            font-size: clamp(20px, 3vw, 24px);
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 8px rgba(100, 200, 255, 0.5);
+            line-height: 1.4;
         }
         
+        /* 매력 키워드 안내 카드 */
+        .attraction-guide {
+            background: linear-gradient(to right, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 12px;
+            padding: 15px 18px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .attraction-guide-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        
+        .attraction-guide-text {
+            color: #e2e8f0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .attraction-guide-text strong {
+            color: #fff;
+        }
+        
+        /* 서브 질문 박스 (각각 독립) */
         .reflection-sub-question {
-            margin-bottom: 1.5rem;
-            padding: 1.25rem;
-            background: rgba(15, 23, 42, 0.4); /* slate-900/40 */
-            border-radius: 0.75rem;
-            border: 1px solid rgba(34, 211, 238, 0.2);
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(to bottom right, rgba(51, 65, 85, 0.4), rgba(30, 58, 138, 0.4));
+            backdrop-filter: blur(4px);
+            border-radius: 12px;
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            box-shadow: 0 4px 6px -1px rgba(34, 211, 238, 0.05);
         }
         
         .reflection-sub-question-title {
             font-weight: bold;
             margin-bottom: 1rem;
-            color: #f1f5f9; /* 매우 밝은 회색으로 가독성 확보 */
+            color: #f1f5f9;
             line-height: 1.6;
-            font-size: 15px;
+            font-size: 16px;
             text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         }
         
@@ -1480,46 +1496,68 @@
     }
 
     /* 3단계: 성찰 질문 */
-    .reflection-question-card {
-        padding: 20px; /* 15px → 20px */
-        margin-bottom: 30px; /* 25px → 30px */
+    .reflection-page-header {
+        margin-bottom: 20px;
     }
+    
+    .reflection-question-number {
+        font-size: 13px;
+        padding: 5px 12px;
+        margin-bottom: 10px;
+    }
+    
     .reflection-question-title {
-        font-size: 18px; /* 17px → 18px */
-        color: white !important;
-        margin-bottom: 15px; /* 여백 추가 */
+        font-size: 19px;
         line-height: 1.5;
     }
-    .reflection-sub-question {
-        padding: 15px; /* 12px → 15px */
-        margin-bottom: 15px;
-        line-height: 1.6;
+    
+    .attraction-guide {
+        padding: 14px 16px;
+        margin-bottom: 20px;
     }
+    
+    .attraction-guide-icon {
+        font-size: 22px;
+    }
+    
+    .attraction-guide-text {
+        font-size: 13px;
+    }
+    
+    .reflection-sub-question {
+        padding: 18px;
+        margin-bottom: 20px;
+    }
+    
     .reflection-sub-question-title {
         font-size: 15px;
-        margin-bottom: 10px;
-        color: #22d3ee !important;
+        margin-bottom: 12px;
+        line-height: 1.6;
     }
+    
     .reflection-sub-question textarea {
         margin-top: 10px;
         line-height: 1.6;
         padding: 12px;
+        font-size: 14px;
     }
+    
     .helper-buttons {
-        gap: 10px; /* 8px → 10px */
-        margin-top: 12px; /* 10px → 12px */
+        gap: 10px;
+        margin-top: 15px;
         flex-wrap: wrap;
     }
+    
     .helper-btn {
-        padding: 10px 16px; /* 8px 14px → 10px 16px */
-        font-size: 13px; /* 12px → 13px */
+        padding: 10px 14px;
+        font-size: 13px;
         line-height: 1.4;
     }
     
     /* 3단계 버튼 간격 */
     #stage3_page1 .btn,
     #stage3_page2 .btn {
-        margin-top: 20px;
+        margin-top: 25px;
         margin-bottom: 10px;
     }
     
@@ -3743,58 +3781,66 @@ function renderStage3Page(pageNumber) { // pageNumber는 1 또는 2
     questionCard.className = 'reflection-question-card';
     // questionToDisplay 객체의 속성들을 사용하여 HTML 내용을 채웁니다.
     // 예시로 title과 pageNumber만 사용했지만, 기존 렌더링 로직을 여기에 적용하세요.
-    questionCard.innerHTML = `
-        <div class="reflection-question-header">
-    <div class="reflection-question-title">${questionToDisplay.title}</div>
-    <div class="reflection-question-number">${pageNumber}/3</div>
-</div>
-        
-        <div class="attraction-guide">
-            <div class="attraction-guide-icon">✨</div>
-            <div class="attraction-guide-text">
-                <strong>매력 키워드를 활용하세요!</strong><br>
-                답변 작성 시 매력 키워드를 선택하면 더 풍부한 표현을 할 수 있습니다.
-            </div>
-        </div>
-        
-        <div class="reflection-sub-questions">
-            ${questionToDisplay.questions.map((subQuestion, index) => `
-                <div class="reflection-sub-question">
-                    <div class="reflection-sub-question-title">
-                        ${pageNumber}-${index + 1}. ${subQuestion} 
-                        ${ typeof subQuestion.replace === 'function' ? subQuestion.replace(/^\d+-\d+\.\s*/, '') : subQuestion } 
-                        </div>
-                    
-                    <div class="helper-buttons">
-                       
-                        <button class="helper-btn" onclick="showExample(${questionToDisplay.id}, ${index})">💡 예시 보기</button>
-                        <button class="helper-btn" onclick="showTemplate(${questionToDisplay.id}, ${index})">📝 템플릿</button>
-                        <button class="helper-btn attraction-keyword-btn" onclick="showAttractionKeywords(${questionToDisplay.id}, ${index})">
-                            ✨ <strong>매력 키워드 선택</strong> ✨
-                        </button>
-                    </div>
-                    
-                    <div class="textarea-container">
-                        <div class="selected-keywords" id="selectedKeywords_${questionToDisplay.id}_${index}">
-                            <div class="keywords-label">선택한 매력 키워드:</div>
-                            <div class="keywords-tags">
-                                <div class="no-keywords">아직 선택된 키워드가 없습니다</div>
-                            </div>
-                        </div>
-                        
-                        <textarea 
-                            class="reflection-textarea" 
-                            placeholder="자유롭게 생각을 적어주세요..."
-                            id="reflection_${questionToDisplay.id}_${index}"
-                            onfocus="window.currentTextarea = this; window.currentQuestionId = ${questionToDisplay.id}; window.currentSubIndex = ${index};"
-                            oninput="saveReflectionAnswer(${questionToDisplay.id}, ${index}, this.value)"
-                        ></textarea>
-                    </div>
-                </div>
-            `).join('')}
+    
+    // 매력 키워드 안내 카드 (맨 위에 한번만)
+    const guideCard = document.createElement('div');
+    guideCard.className = 'attraction-guide';
+    guideCard.innerHTML = `
+        <div class="attraction-guide-icon">✨</div>
+        <div class="attraction-guide-text">
+            <strong>매력 키워드를 활용하세요!</strong><br>
+            답변 작성 시 매력 키워드를 선택하면 더 풍부한 표현을 할 수 있습니다.
         </div>
     `;
-    container.appendChild(questionCard);
+    container.appendChild(guideCard);
+    
+    // 질문 번호와 제목 (박스 밖)
+    const questionHeader = document.createElement('div');
+    questionHeader.className = 'reflection-page-header';
+    questionHeader.innerHTML = `
+        <div class="reflection-question-number">${pageNumber}/2</div>
+        <div class="reflection-question-title">${questionToDisplay.title}</div>
+    `;
+    container.appendChild(questionHeader);
+    
+    // 각 서브 질문마다 박스 하나씩
+    questionToDisplay.questions.forEach((subQuestion, index) => {
+        const subQuestionCard = document.createElement('div');
+        subQuestionCard.className = 'reflection-sub-question';
+        subQuestionCard.innerHTML = `
+            <div class="reflection-sub-question-title">
+                ${pageNumber}-${index + 1}. ${typeof subQuestion === 'string' ? subQuestion.replace(/^\d+-\d+\.\s*/, '') : subQuestion}
+            </div>
+            
+            <div class="textarea-container">
+                <div class="selected-keywords" id="selectedKeywords_${questionToDisplay.id}_${index}">
+                    <div class="keywords-label">선택한 매력 키워드:</div>
+                    <div class="keywords-tags">
+                        <div class="no-keywords">아직 선택된 키워드가 없습니다</div>
+                    </div>
+                </div>
+                
+                <textarea 
+                    class="reflection-textarea" 
+                    placeholder="자유롭게 생각을 적어주세요..."
+                    id="reflection_${questionToDisplay.id}_${index}"
+                    onfocus="window.currentTextarea = this; window.currentQuestionId = ${questionToDisplay.id}; window.currentSubIndex = ${index};"
+                    oninput="saveReflectionAnswer(${questionToDisplay.id}, ${index}, this.value)"
+                ></textarea>
+            </div>
+            
+            <div class="helper-buttons">
+                <button class="helper-btn" onclick="showExample(${questionToDisplay.id}, ${index})">💡 예시 보기</button>
+                <button class="helper-btn" onclick="showTemplate(${questionToDisplay.id}, ${index})">📝 템플릿</button>
+                <button class="helper-btn attraction-keyword-btn" onclick="showAttractionKeywords(${questionToDisplay.id}, ${index})">
+                    ✨ <strong>매력 키워드 선택</strong> ✨
+                </button>
+            </div>
+        `;
+        container.appendChild(subQuestionCard);
+    });
+    
+    // container.appendChild(questionCard); // 제거
     // --- ⬆️ 여기까지 기존 렌더링 로직과 유사하게 HTML 구성 ⬆️ ---
     
     // 이전 답변 복원 로직이 있다면, questionToDisplay.id를 사용하여 호출합니다.
