@@ -278,10 +278,155 @@
                 padding: 14px 20px;
             }
         }
+        
+        /* 3D 추가 모달 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: linear-gradient(to bottom right, #1e293b, #1e3a8a);
+            border: 2px solid #22d3ee;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 30px rgba(34, 211, 238, 0.5);
+        }
+        
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-header h2 {
+            color: #22d3ee;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .modal-header p {
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            color: #22d3ee;
+            font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid #22d3ee;
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        
+        .input-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #14b8a6;
+            box-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        
+        .modal-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .modal-btn.primary {
+            background: linear-gradient(to right, #22d3ee, #14b8a6);
+            color: #0f172a;
+        }
+        
+        .modal-btn.secondary {
+            background: rgba(203, 213, 225, 0.2);
+            color: #cbd5e1;
+            border: 1px solid #cbd5e1;
+        }
+        
+        .modal-btn.ai {
+            background: linear-gradient(to right, #a855f7, #ec4899);
+            color: white;
+        }
+        
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(34, 211, 238, 0.3);
+        }
+        
+        .modal-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
     <h1 class="title">나만의 매력 별자리 카드</h1>
+    
+    <!-- 3D 추가 모달 -->
+    <div id="constellationModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✨ 별자리를 3D 우주에 추가</h2>
+                <p>별자리의 이름과 설명을 입력하거나 AI가 자동으로 생성할 수 있습니다</p>
+            </div>
+            
+            <div class="input-group">
+                <label for="constellationName">별자리 이름</label>
+                <input type="text" id="constellationName" placeholder="예: 빛나는 공감의 별자리" maxlength="50">
+            </div>
+            
+            <div class="input-group">
+                <label for="constellationDesc">별자리 설명</label>
+                <textarea id="constellationDesc" placeholder="예: 따뜻한 공감과 배려심으로 주변을 밝히는 별자리" maxlength="200"></textarea>
+            </div>
+            
+            <div class="modal-buttons">
+                <button class="modal-btn secondary" onclick="closeConstellationModal()">취소</button>
+                <button class="modal-btn ai" onclick="generateAIDescription()">🤖 AI 자동 생성</button>
+                <button class="modal-btn primary" onclick="submitConstellation()">추가하기</button>
+            </div>
+        </div>
+    </div>
     
     <div class="cards-container">
         <div class="card constellation-card">
@@ -599,8 +744,81 @@
             btn.disabled = false;
         }
 
-        // 3D 별자리에 추가하는 함수
-        async function sendTo3DConstellation() {
+        // 3D 별자리 추가 모달 열기
+        function sendTo3DConstellation() {
+            const modal = document.getElementById('constellationModal');
+            modal.style.display = 'flex';
+            
+            // 기본값 설정
+            const savedData = localStorage.getItem('asterResultData');
+            if (savedData) {
+                const resultData = JSON.parse(savedData);
+                document.getElementById('constellationName').value = `${resultData.userName}의 별자리`;
+            }
+        }
+        
+        // 모달 닫기
+        function closeConstellationModal() {
+            const modal = document.getElementById('constellationModal');
+            modal.style.display = 'none';
+        }
+        
+        // AI 자동 생성
+        async function generateAIDescription() {
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '생성 중...';
+            btn.disabled = true;
+            
+            try {
+                const savedData = localStorage.getItem('asterResultData');
+                if (!savedData) return;
+                
+                const resultData = JSON.parse(savedData);
+                
+                // 매력 정보 추출
+                const charmsList = resultData.charms
+                    .sort((a, b) => b.level - a.level)
+                    .slice(0, 3)
+                    .map(c => c.name)
+                    .join(', ');
+                
+                // AI 스타일의 이름과 설명 생성
+                const nameTemplates = [
+                    `${charmsList.split(',')[0]}이 빛나는 별자리`,
+                    `따뜻한 ${charmsList.split(',')[0]}의 별자리`,
+                    `${resultData.userName}의 ${charmsList.split(',')[0]} 성좌`,
+                    `빛나는 ${charmsList.split(',')[0]} 별무리`
+                ];
+                
+                const descTemplates = [
+                    `${charmsList}으로 이루어진 아름다운 별자리입니다. ${resultData.charms.length}개의 매력이 조화롭게 빛나고 있습니다.`,
+                    `${charmsList} 등의 매력이 조화를 이루며 밤하늘을 수놓는 별자리입니다.`,
+                    `총 ${resultData.charms.length}개의 별로 이루어진 이 별자리는 ${charmsList}의 아름다움을 간직하고 있습니다.`,
+                    `${charmsList}이(가) 특별히 빛나는, ${resultData.charms.length}개의 별로 구성된 독특한 별자리입니다.`
+                ];
+                
+                const randomName = nameTemplates[Math.floor(Math.random() * nameTemplates.length)];
+                const randomDesc = descTemplates[Math.floor(Math.random() * descTemplates.length)];
+                
+                document.getElementById('constellationName').value = randomName;
+                document.getElementById('constellationDesc').value = randomDesc;
+                
+                btn.textContent = '생성 완료! ✨';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }, 1500);
+                
+            } catch (error) {
+                console.error('AI 생성 오류:', error);
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+        
+        // 별자리 전송
+        async function submitConstellation() {
             // 버튼 비활성화 및 로딩 표시
             const btn = event.target;
             const originalText = btn.textContent;
@@ -672,10 +890,22 @@
                 
                 btn.textContent = '전송 중...';
                 
+                // 사용자 입력 가져오기
+                const customName = document.getElementById('constellationName').value.trim();
+                const customDesc = document.getElementById('constellationDesc').value.trim();
+                
+                if (!customName) {
+                    alert('별자리 이름을 입력해주세요!');
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                    return;
+                }
+                
                 // 3D 프로젝트로 전송할 데이터 준비
                 const constellationData = {
-                    name: `${resultData.userName}'s Constellation`,
+                    name: customName, // 사용자 입력 이름
                     userName: resultData.userName,
+                    description: customDesc || '별자리 설명이 없습니다.', // 사용자 입력 설명
                     charms: resultData.charms.map(charm => ({
                         name: charm.name,
                         level: charm.level,
@@ -698,10 +928,13 @@
                 console.log('✅ Firebase에 별자리 추가 완료!');
                 
                 btn.textContent = '전송 완료! ✨';
+                
+                // 모달 닫기
                 setTimeout(() => {
+                    closeConstellationModal();
                     btn.textContent = originalText;
                     btn.disabled = false;
-                }, 2000);
+                }, 1500);
                 
                 alert('✨ 별자리가 3D 우주에 추가되었습니다!\n컴퓨터 화면을 확인해보세요! 🌟');
                 
