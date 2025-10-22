@@ -863,8 +863,8 @@
                     await new Promise(resolve => setTimeout(resolve, 50));
                     
                     const canvas = await html2canvas(constellationPreview, {
-                        scale: 1.5, // 2 → 1.5로 줄임 (속도 개선)
-                        backgroundColor: null,
+                        scale: 1.2, // 1.5 → 1.2로 줄임 (속도 개선 + 용량 감소)
+                        backgroundColor: null, // 투명 배경
                         useCORS: true,
                         allowTaint: true,
                         logging: false
@@ -876,8 +876,8 @@
                     constellationPreview.style.borderRadius = originalBorderRadius;
                     constellationPreview.style.overflow = originalOverflow;
                     
-                    // 이미지 압축 (JPEG, 품질 0.6으로 더 낮춤)
-                    cardImageData = canvas.toDataURL('image/jpeg', 0.6);
+                    // PNG로 저장 (투명도 유지, 품질 0.7)
+                    cardImageData = canvas.toDataURL('image/png', 0.7);
                     console.log('✅ 별자리 이미지 캡처 완료 (크기:', Math.round(cardImageData.length / 1024), 'KB)');
                 } catch (error) {
                     console.error('❌ 별자리 캡처 실패:', error);
