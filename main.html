@@ -677,7 +677,16 @@
             }
 
             .charm-list-container {
-                min-height: 280px; 
+                min-height: 280px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+                max-width: 100%;
+            }
+            
+            .charm-card {
+                flex-shrink: 0;
+                max-width: 280px;
             }
 
             /* ▼▼▼ 이 부분을 수정/교체해주세요 ▼▼▼ */
