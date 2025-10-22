@@ -1361,8 +1361,14 @@
     }
     
     .stage {
-        padding: 20px 15px; /* 좌우 여백을 더 줄여서 공간 확보 */
+        padding: 25px 18px; /* 20px 15px → 25px 18px (더 여유있게) */
         min-height: calc(100vh - 50px);
+    }
+    
+    /* 3단계는 더 넉넉하게 */
+    #stage3_page1,
+    #stage3_page2 {
+        padding: 30px 18px !important;
     }
     
     /* 인트로 페이지 */
@@ -1475,23 +1481,46 @@
 
     /* 3단계: 성찰 질문 */
     .reflection-question-card {
-        padding: 15px;
-        margin-bottom: 25px;
+        padding: 20px; /* 15px → 20px */
+        margin-bottom: 30px; /* 25px → 30px */
     }
     .reflection-question-title {
-        font-size: 17px;
+        font-size: 18px; /* 17px → 18px */
         color: white !important;
+        margin-bottom: 15px; /* 여백 추가 */
+        line-height: 1.5;
     }
     .reflection-sub-question {
+        padding: 15px; /* 12px → 15px */
+        margin-bottom: 15px;
+        line-height: 1.6;
+    }
+    .reflection-sub-question-title {
+        font-size: 15px;
+        margin-bottom: 10px;
+        color: #22d3ee !important;
+    }
+    .reflection-sub-question textarea {
+        margin-top: 10px;
+        line-height: 1.6;
         padding: 12px;
     }
     .helper-buttons {
-        gap: 8px;
-        margin-top: 10px;
+        gap: 10px; /* 8px → 10px */
+        margin-top: 12px; /* 10px → 12px */
+        flex-wrap: wrap;
     }
     .helper-btn {
-        padding: 8px 14px;
-        font-size: 12px;
+        padding: 10px 16px; /* 8px 14px → 10px 16px */
+        font-size: 13px; /* 12px → 13px */
+        line-height: 1.4;
+    }
+    
+    /* 3단계 버튼 간격 */
+    #stage3_page1 .btn,
+    #stage3_page2 .btn {
+        margin-top: 20px;
+        margin-bottom: 10px;
     }
     
     /* ========================================= */
