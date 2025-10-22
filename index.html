@@ -719,26 +719,16 @@
 
 /* 매력 키워드 버튼 강조 스타일 */
 .attraction-keyword-btn {
-    background: linear-gradient(to right, #22d3ee, #14b8a6) !important; /* 민트색 그라데이션 */
-    color: #0f172a !important; /* 어두운 글씨 */
-    font-size: 16px !important;
-    padding: 12px 20px !important;
-    border-radius: 25px !important;
+    background: linear-gradient(to right, #22d3ee, #14b8a6) !important;
+    color: #0f172a !important;
     border: none !important;
     font-weight: bold !important;
     box-shadow: 0 4px 15px rgba(34, 211, 238, 0.4) !important;
-    transform: scale(1.05) !important;
-    animation: pulse 2s ease-in-out infinite !important;
+    /* 크기와 패딩은 다른 버튼과 동일하게 */
 }
 
 .attraction-keyword-btn:hover {
-    transform: scale(1.1) !important;
     box-shadow: 0 6px 20px rgba(34, 211, 238, 0.6) !important;
-}
-
-@keyframes pulse {
-    0%, 100% { box-shadow: 0 4px 15px rgba(34, 211, 238, 0.4); }
-    50% { box-shadow: 0 6px 20px rgba(34, 211, 238, 0.6); }
 }
 
 /* 답변창과 키워드 컨테이너 */
@@ -2174,17 +2164,14 @@ body {
         
     <div id="attractionModal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">
-            <div class="modal-title">매력 키워드 선택</div>
+        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="modal-title">✨ 매력 키워드 선택</div>
+            <button class="attraction-complete-btn" onclick="completeKeywordSelection()" style="margin: 0 10px;">
+                ✅ 선택 완료
+            </button>
             <button class="modal-close" onclick="closeModal('attractionModal')">&times;</button>
         </div>
         <div id="attractionContent"></div>
-        <!-- 선택 완료 버튼 추가 -->
-        <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
-            <button class="attraction-complete-btn" onclick="completeKeywordSelection()">
-                ✅ 선택 완료
-            </button>
-        </div>
     </div>
 </div>
 
@@ -3794,11 +3781,10 @@ function renderStage3Page(pageNumber) { // pageNumber는 1 또는 2
     `;
     container.appendChild(guideCard);
     
-    // 질문 번호와 제목 (박스 밖)
+    // 질문 제목 (박스 밖)
     const questionHeader = document.createElement('div');
     questionHeader.className = 'reflection-page-header';
     questionHeader.innerHTML = `
-        <div class="reflection-question-number">${pageNumber}/2</div>
         <div class="reflection-question-title">${questionToDisplay.title}</div>
     `;
     container.appendChild(questionHeader);
