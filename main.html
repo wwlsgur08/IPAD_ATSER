@@ -1031,6 +1031,17 @@ document.addEventListener('DOMContentLoaded', () => {
             updateStarAppearance(state.startStar.element, state.startStar.clickableElement, state.startStar.level, false);
             state.startStar = null;
         }
+        
+        // 온보딩 중이고 버튼 클릭 단계라면 자동으로 다음 단계로
+        const overlay = document.getElementById('onboarding-overlay');
+        if (overlay && overlay.classList.contains('active') && currentOnboardingStep === 2 && state.drawMode) {
+            setTimeout(() => {
+                currentOnboardingStep++;
+                if (currentOnboardingStep < onboardingSteps.length) {
+                    showOnboardingStep(currentOnboardingStep);
+                }
+            }, 500);
+        }
      }
     function drawLine(startCharm, endCharm) {
         const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
@@ -1043,6 +1054,20 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('connectionSvg').appendChild(line);
         state.lines.push({ element: line, start: startCharm.name, end: endCharm.name });
         updateUndoButtonState();
+        
+        // 온보딩 중이고 선 연결 실습 단계라면
+        const overlay = document.getElementById('onboarding-overlay');
+        if (overlay && overlay.classList.contains('active') && currentOnboardingStep === 3) {
+            onboardingLineDrawn = true;
+            setTimeout(() => {
+                currentOnboardingStep++;
+                if (currentOnboardingStep < onboardingSteps.length) {
+                    showOnboardingStep(currentOnboardingStep);
+                } else {
+                    endOnboarding();
+                }
+            }, 800);
+        }
      }
     function handleUndoLine() {
         if (state.lines.length === 0) return;
@@ -1087,11 +1112,8 @@ document.addEventListener('DOMContentLoaded', () => {
         starEl.style.height = visualSize;
         clickableEl.style.width = clickableSize;
         clickableEl.style.height = clickableSize;
-        if (isHighlighted) {
-            starEl.style.boxShadow = `0 0 25px 8px rgba(255, 255, 255, 0.7)`;
-        } else {
-            starEl.style.boxShadow = '';
-        }
+        // 후광 효과 제거
+        starEl.style.boxShadow = '';
     }
     function updateDisplay() { 
         document.getElementById('remaining-stardust').textContent = state.remainingStardust;
@@ -1147,12 +1169,30 @@ document.addEventListener('DOMContentLoaded', () => {
             text: '투자한 매력들이 별자리로 나타납니다. 별들을 연결해서 자신만의 별자리를 완성하세요!'
         },
         {
+            target: '#drawModeBtn',
+            title: '선 연결 실습 - Step 1',
+            text: '이 버튼을 눌러서 선 연결 모드를 켜보세요!',
+            interactive: true,
+            action: 'click-button',
+            requireAction: true
+        },
+        {
+            target: '.star-container',
+            title: '선 연결 실습 - Step 2',
+            text: '이제 별을 하나씩 클릭해서 선을 그어보세요! (아무 별이나 2개를 클릭하면 됩니다)',
+            interactive: true,
+            action: 'draw-line',
+            requireAction: true
+        },
+        {
             target: '.visualization-controls',
-            title: '별자리 그리기',
-            text: '선 그리기 버튼을 눌러 별들을 연결할 수 있습니다. 실수했다면 되돌리기도 가능해요!'
+            title: '완벽해요! 🎉',
+            text: '선 연결 방법을 익혔습니다! 이제 자유롭게 나만의 별자리를 완성해보세요!'
         }
     ];
     let currentOnboardingStep = 0;
+    let onboardingLineDrawn = false;
+    let onboardingStars = [];
 
     function setupOnboarding() {
         const skipBtn = document.getElementById('skip-onboarding');
@@ -1160,6 +1200,20 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (skipBtn) skipBtn.addEventListener('click', endOnboarding);
         if (nextBtn) nextBtn.addEventListener('click', () => {
+            const currentStep = onboardingSteps[currentOnboardingStep];
+            
+            // requireAction이 true인 경우 액션 완료 확인
+            if (currentStep && currentStep.requireAction) {
+                if (currentStep.action === 'click-button' && !state.drawMode) {
+                    alert('먼저 선 연결 모드 버튼을 클릭해주세요!');
+                    return;
+                }
+                if (currentStep.action === 'draw-line' && !onboardingLineDrawn) {
+                    alert('별 2개를 클릭해서 선을 그어보세요!');
+                    return;
+                }
+            }
+            
             currentOnboardingStep++;
             if (currentOnboardingStep >= onboardingSteps.length) {
                 endOnboarding();
@@ -1209,7 +1263,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startOnboarding() {
         currentOnboardingStep = 0;
+        createOnboardingStars();
         showOnboardingStep(0);
+    }
+    
+    function createOnboardingStars() {
+        const starField = document.getElementById('starField');
+        if (!starField) return;
+        
+        const tempStars = [
+            { name: '온보딩별1', category: '이해심 및 공감 능력', position: { x: 30, y: 50 }, level: 5 },
+            { name: '온보딩별2', category: '목표 지향성 및 야망', position: { x: 70, y: 50 }, level: 5 }
+        ];
+        
+        tempStars.forEach(tempStar => {
+            const info = categoryInfo[tempStar.category];
+            const starEl = document.createElement('div');
+            starEl.className = 'star onboarding-star';
+            starEl.style.left = `${tempStar.position.x}%`;
+            starEl.style.top = `${tempStar.position.y}%`;
+            starEl.style.backgroundImage = `url(./images/${info.starImage})`;
+            starEl.style.opacity = '1';
+            
+            const size = 40 + (tempStar.level * 50);
+            starEl.style.width = `${size}px`;
+            starEl.style.height = `${size}px`;
+            
+            const clickableArea = document.createElement('div');
+            clickableArea.className = 'star-clickable-area';
+            clickableArea.addEventListener('click', () => handleStarClick(tempStar.name));
+            starEl.appendChild(clickableArea);
+            starField.appendChild(starEl);
+            
+            state.charms[tempStar.name] = {
+                name: tempStar.name,
+                level: tempStar.level,
+                category: tempStar.category,
+                color: info.color,
+                element: starEl,
+                clickableElement: clickableArea,
+                position: tempStar.position
+            };
+            
+            onboardingStars.push(tempStar.name);
+        });
+        
+        console.log('✨ 온보딩 전용 별 2개 생성 완료');
+    }
+    
+    function removeOnboardingStars() {
+        onboardingStars.forEach(starName => {
+            const star = state.charms[starName];
+            if (star && star.element) {
+                star.element.remove();
+            }
+            delete state.charms[starName];
+        });
+        onboardingStars = [];
+        console.log('🗑️ 온보딩 전용 별 제거 완료');
     }
 
     function endOnboarding() {
@@ -1217,6 +1328,26 @@ document.addEventListener('DOMContentLoaded', () => {
         if (overlay) {
             overlay.classList.remove('active');
         }
+        
+        // 온보딩 중 그려진 선이 있으면 제거
+        if (onboardingLineDrawn && state.lines.length > 0) {
+            const lastLine = state.lines.pop();
+            if (lastLine && lastLine.element) {
+                lastLine.element.remove();
+            }
+            updateUndoButtonState();
+        }
+        
+        // 온보딩 전용 별 제거
+        removeOnboardingStars();
+        
+        // 선 연결 모드가 켜져있으면 끄기
+        if (state.drawMode) {
+            toggleDrawMode();
+        }
+        
+        // 온보딩 플래그 리셋
+        onboardingLineDrawn = false;
     }
 
     // ✅ generateResultCard 함수를 이 최종 버전으로 교체합니다.
