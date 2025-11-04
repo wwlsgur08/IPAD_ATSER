@@ -446,6 +446,31 @@
         .share-btn.kakao:hover {
             background: #fdd835;
         }
+        
+        /* QR 코드 모달 */
+        .qr-modal {
+            max-width: 450px;
+            text-align: center;
+        }
+        
+        .qr-content {
+            padding: 30px;
+        }
+        
+        .qr-code-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            display: inline-block;
+            margin: 20px auto;
+        }
+        
+        .qr-instruction {
+            color: #cbd5e1;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -510,10 +535,43 @@
     </div>
 
     <div class="buttons">
-        <button class="btn btn-secondary" onclick="openShareModal()">카드 공유하기</button>
+        <button class="btn btn-secondary" onclick="showQRCode()">📱 내 폰으로 받기</button>
         <button class="btn btn-primary" onclick="sendTo3DConstellation()">우주에 별자리 추가</button>
         <button class="btn btn-primary" onclick="sendToAlarm()">매력 벨소리 만들기</button>
         <a href="main.html" class="btn btn-primary">다시 만들기</a>
+    </div>
+    
+    <!-- QR 코드 모달 -->
+    <div id="qrModal" class="modal">
+        <div class="modal-content qr-modal">
+            <div class="modal-header">
+                <h3>📱 내 폰으로 카드 받기</h3>
+                <span class="close" onclick="closeQRModal()">&times;</span>
+            </div>
+            <div class="qr-content">
+                <div id="qrcode" class="qr-code-container"></div>
+                <p class="qr-instruction">📸 폰 카메라로 QR 코드를 스캔하면<br>카드 이미지를 다운로드할 수 있어요!</p>
+                <button class="btn btn-secondary" onclick="downloadCard()" style="margin-top: 20px;">
+                    💾 지금 바로 다운로드
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- QR 코드 모달 -->
+    <div id="qrModal" class="modal">
+        <div class="modal-content qr-modal">
+            <div class="modal-header">
+                <h3>📱 내 폰으로 카드 받기</h3>
+                <span class="close" onclick="closeQRModal()">&times;</span>
+            </div>
+            <div class="qr-content">
+                <div id="qrcode" class="qr-code-container"></div>
+                <p class="qr-instruction">📸 폰 카메라로 QR 코드를 스캔하면<br>카드 이미지를 다운로드할 수 있어요!</p>
+                <button class="btn btn-secondary" onclick="downloadCard()" style="margin-top: 20px;">
+                    💾 지금 바로 다운로드
+                </button>
+            </div>
+        </div>
     </div>
     
     <!-- 공유 모달 -->
@@ -544,6 +602,9 @@
         </div>
     </div>
 
+    <!-- QR Code 라이브러리 -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    
     <!-- 카카오 SDK -->
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
     
@@ -1058,6 +1119,51 @@
         if (window.Kakao && !window.Kakao.isInitialized()) {
             Kakao.init('eaf3d8f14c7e903bf2799b6c84a1132c');
             console.log('✅ 카카오 SDK 초기화 완료');
+        }
+        
+        // QR 코드 모달 열기
+        let qrCodeInstance = null;
+        
+        async function showQRCode() {
+            const modal = document.getElementById('qrModal');
+            const qrcodeDiv = document.getElementById('qrcode');
+            
+            // 기존 QR 코드 제거
+            qrcodeDiv.innerHTML = '';
+            
+            modal.style.display = 'flex';
+            
+            // 카드 이미지를 base64로 변환
+            try {
+                const cardElement = document.querySelector('.card');
+                const canvas = await html2canvas(cardElement, {
+                    backgroundColor: null,
+                    scale: 2
+                });
+                
+                // Canvas를 Blob으로 변환 후 서버에 업로드 (또는 URL 생성)
+                // 여기서는 현재 페이지 URL을 QR 코드로 생성
+                const currentUrl = window.location.href;
+                
+                // QR 코드 생성
+                new QRCode(qrcodeDiv, {
+                    text: currentUrl,
+                    width: 256,
+                    height: 256,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                
+            } catch (error) {
+                console.error('QR 코드 생성 오류:', error);
+                alert('QR 코드 생성 중 오류가 발생했습니다.');
+            }
+        }
+        
+        // QR 코드 모달 닫기
+        function closeQRModal() {
+            document.getElementById('qrModal').style.display = 'none';
         }
         
         // 공유 모달 열기
