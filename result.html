@@ -611,6 +611,7 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
     
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
@@ -1130,10 +1131,10 @@
             
             // 기존 QR 코드 제거
             qrcodeDiv.innerHTML = '';
+            qrcodeDiv.innerHTML = '<p style="color: white; padding: 20px;">QR 코드 생성 중...</p>';
             
             modal.style.display = 'flex';
             
-            // 카드 이미지를 base64로 변환
             try {
                 const cardElement = document.querySelector('.card');
                 const canvas = await html2canvas(cardElement, {
@@ -1141,24 +1142,53 @@
                     scale: 2
                 });
                 
-                // Canvas를 Blob으로 변환 후 서버에 업로드 (또는 URL 생성)
-                // 여기서는 현재 페이지 URL을 QR 코드로 생성
-                const currentUrl = window.location.href;
-                
-                // QR 코드 생성
-                new QRCode(qrcodeDiv, {
-                    text: currentUrl,
-                    width: 256,
-                    height: 256,
-                    colorDark: "#000000",
-                    colorLight: "#ffffff",
-                    correctLevel: QRCode.CorrectLevel.H
-                });
+                // Canvas를 Blob으로 변환
+                canvas.toBlob(async (blob) => {
+                    // Firebase Storage에 업로드
+                    const imageKey = 'card_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    
+                    try {
+                        // Firebase Storage 참조
+                        const storageRef = firebase.storage().ref();
+                        const imageRef = storageRef.child(`temp_cards/${imageKey}.png`);
+                        
+                        // 업로드
+                        await imageRef.put(blob);
+                        
+                        // 다운로드 URL 가져오기
+                        const downloadUrl = await imageRef.getDownloadURL();
+                        
+                        // QR 코드 초기화
+                        qrcodeDiv.innerHTML = '';
+                        
+                        // QR 코드 생성
+                        new QRCode(qrcodeDiv, {
+                            text: downloadUrl,
+                            width: 256,
+                            height: 256,
+                            colorDark: "#000000",
+                            colorLight: "#ffffff",
+                            correctLevel: QRCode.CorrectLevel.H
+                        });
+                        
+                    } catch (uploadError) {
+                        console.error('Firebase 업로드 오류:', uploadError);
+                        // Firebase 실패 시 대체 방법: Data URL 직접 다운로드
+                        fallbackQRCode(canvas);
+                    }
+                    
+                }, 'image/png');
                 
             } catch (error) {
                 console.error('QR 코드 생성 오류:', error);
                 alert('QR 코드 생성 중 오류가 발생했습니다.');
             }
+        }
+        
+        // 대체 방법: 긴 Data URL을 짧은 URL로 변환 (bit.ly 같은 서비스 필요)
+        function fallbackQRCode(canvas) {
+            const qrcodeDiv = document.getElementById('qrcode');
+            qrcodeDiv.innerHTML = '<p style="color: white; padding: 20px;">⚠️ QR 코드를 생성할 수 없습니다.<br>아래 버튼으로 다운로드하세요.</p>';
         }
         
         // QR 코드 모달 닫기
