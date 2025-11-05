@@ -35,13 +35,50 @@
         
         body {
             font-family: 'YESMyungJo', 'Nanum Myeongjo', 'Playfair Display', serif;
-            background: #000;
+            background: #0E172B;
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
             justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* 별 배경 레이어 */
+        .star-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            background: #0E172B;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle ease-in-out infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        
+        /* 메인 컨텐츠를 별 위에 표시 */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
         }
         
         .title {
@@ -523,6 +560,11 @@
     </style>
 </head>
 <body>
+    <!-- 별 배경 레이어 -->
+    <div class="star-background" id="starBackground"></div>
+    
+    <!-- 메인 컨텐츠 -->
+    <div class="main-content">
     <h1 class="title">나만의 매력 별자리 카드</h1>
     
     <!-- 3D 추가 모달 -->
@@ -603,6 +645,8 @@
             </div>
         </div>
     </div>
+    
+    </div><!-- main-content 닫기 -->
 
     <!-- QR Code 라이브러리 -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
@@ -1214,6 +1258,41 @@
         function closeQRModal() {
             document.getElementById('qrModal').style.display = 'none';
         }
+        
+        // 별 배경 생성
+        function generateStars() {
+            const container = document.getElementById('starBackground');
+            const starCount = 150; // React 코드와 동일
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // 랜덤 크기 (1-3px)
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // 랜덤 위치
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // 랜덤 투명도 (0.3-1.0)
+                const opacity = Math.random() * 0.7 + 0.3;
+                star.style.opacity = opacity;
+                
+                // 랜덤 애니메이션 시간 (3-8초)
+                const duration = Math.random() * 5 + 3;
+                const delay = Math.random() * 5;
+                star.style.animationDuration = `${duration}s`;
+                star.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(star);
+            }
+        }
+        
+        // 페이지 로드 시 별 생성
+        window.addEventListener('DOMContentLoaded', generateStars);
     </script>
 </body>
 </html>
