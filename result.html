@@ -890,13 +890,10 @@
         function sendTo3DConstellation() {
             const modal = document.getElementById('constellationModal');
             modal.style.display = 'flex';
-            
-            // 기본값 설정
-            const savedData = localStorage.getItem('asterResultData');
-            if (savedData) {
-                const resultData = JSON.parse(savedData);
-                document.getElementById('constellationName').value = `${resultData.userName}의 별자리`;
-            }
+
+            // 입력창 비우기 (초기화)
+            document.getElementById('constellationName').value = '';
+            document.getElementById('constellationDesc').value = '';
         }
         
         // 모달 닫기
@@ -929,8 +926,9 @@
                 const nameTemplates = [
                     `${charmsList.split(',')[0]}이 빛나는 별자리`,
                     `따뜻한 ${charmsList.split(',')[0]}의 별자리`,
-                    `${resultData.userName}의 ${charmsList.split(',')[0]} 성좌`,
-                    `빛나는 ${charmsList.split(',')[0]} 별무리`
+                    `${charmsList.split(',')[0]}의 빛나는 성좌`,
+                    `찬란한 ${charmsList.split(',')[0]} 별무리`,
+                    `${charmsList.split(',')[0]}과 함께하는 별자리`
                 ];
                 
                 const descTemplates = [
