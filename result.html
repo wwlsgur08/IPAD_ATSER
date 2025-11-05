@@ -1098,10 +1098,26 @@
             // 기존 QR 코드 제거
             qrcodeDiv.innerHTML = '';
             qrcodeDiv.innerHTML = `
-                <div style="color: white; padding: 30px; text-align: center;">
-                    <div style="font-size: 48px; margin-bottom: 20px;">⏳</div>
-                    <div style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">잠시만 기다려주세요...</div>
-                    <div style="font-size: 14px; color: #cbd5e1;">2장의 카드를 업로드하고 있습니다</div>
+                <div style="
+                    background: white;
+                    color: #1e293b;
+                    padding: 50px 40px;
+                    border-radius: 20px;
+                    text-align: center;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                ">
+                    <div style="font-size: 60px; margin-bottom: 20px;">⏳</div>
+                    <div style="
+                        font-size: 22px;
+                        font-weight: 700;
+                        margin-bottom: 15px;
+                        color: #0f172a;
+                    ">카드를 업로드 중입니다.</div>
+                    <div style="
+                        font-size: 16px;
+                        color: #64748b;
+                        font-weight: 500;
+                    ">잠시만 기다려주세요.</div>
                 </div>
             `;
             
