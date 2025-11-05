@@ -1007,8 +1007,10 @@
 
 /* 길잡이 질문들이 담길 상자의 기본 스타일 */
 .guide-questions-container {
-    background-color: #f8f9fa;
-    border-radius: 10px;
+    background: linear-gradient(to bottom right, rgba(30, 41, 59, 0.7) 0%, rgba(30, 58, 138, 0.7) 100%); /* 반투명 배경 */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 12px;
     padding: 0 20px; /* 평소엔 상하 패딩이 없음 */
     margin: 15px 0;
     
@@ -1026,15 +1028,17 @@
     padding: 20px; /* 상하 패딩 추가 */
     max-height: 500px; /* 내용물이 들어갈 충분한 높이 */
     opacity: 1; /* 완전히 보이게 */
-    border: 1px solid #e2e8f0;
+    border: 1px solid rgba(34, 211, 238, 0.4); /* 민트색 테두리 */
+    box-shadow: 0 4px 15px rgba(34, 211, 238, 0.15);
 }
 
 /* 길잡이 질문 공간 안의 제목 스타일 */
 .guide-questions-container .guide-title {
     font-weight: bold;
-    color: #000000; /* 검정색으로 변경 */
+    color: #ffffff; /* 흰색으로 변경 */
     margin-bottom: 15px;
     font-size: 14px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* 가독성을 위한 그림자 */
 }
 
 /* 길잡이 질문 목록(ul)과 항목(li) 스타일 */
@@ -1046,14 +1050,16 @@
 
 .guide-questions-container li {
     font-size: 13px;
-    color: #1e293b; /* 검정색으로 변경 */
-    background-color: #ffffff; /* 흰색 배경 */
+    color: #ffffff; /* 흰색으로 변경 */
+    background: rgba(255, 255, 255, 0.1); /* 반투명 흰색 배경 */
     padding: 10px 12px;
-    border-radius: 6px;
+    border-radius: 8px;
     margin-bottom: 8px;
-    border-left: 3px solid #22d3ee; /* 민트색으로 변경 */
+    border-left: 3px solid #22d3ee; /* 민트색 강조 */
     font-weight: 500;
-    text-shadow: none; /* 텍스트 그림자 제거 */
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); /* 가독성을 위한 그림자 */
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 
 /* ================================= */
@@ -1061,8 +1067,10 @@
 /* ================================= */
 
 .example-container {
-    background: #f0fff4; /* 예시에 맞는 다른 배경색 */
-    border-radius: 10px;
+    background: linear-gradient(to bottom right, rgba(30, 41, 59, 0.7) 0%, rgba(30, 58, 138, 0.7) 100%); /* 반투명 배경 */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 12px;
     padding: 0 20px;
     margin: 15px 0;
     
@@ -1078,26 +1086,31 @@
     padding: 20px;
     max-height: 500px;
     opacity: 1;
-    border: 1px solid #c6f6d5;
+    border: 1px solid rgba(34, 211, 238, 0.4); /* 민트색 테두리 */
+    box-shadow: 0 4px 15px rgba(34, 211, 238, 0.15);
 }
 
 .example-container .example-title {
     font-weight: bold;
-    color: #000000; /* 검정색으로 변경 */
+    color: #ffffff; /* 흰색으로 변경 */
     margin-bottom: 15px;
     font-size: 14px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* 가독성을 위한 그림자 */
 }
 
 .example-container .example-item {
     font-size: 13px;
-    color: #1e293b; /* 검정색 유지 */
-    background-color: #ffffff; /* 완전 흰색 배경 */
+    color: #ffffff; /* 흰색으로 변경 */
+    background: rgba(255, 255, 255, 0.1); /* 반투명 흰색 배경 */
     padding: 10px 12px;
-    border-radius: 6px;
+    border-radius: 8px;
     margin-bottom: 8px;
-    border-left: 3px solid #48bb78;
+    border-left: 3px solid #22d3ee; /* 민트색 강조 */
     font-weight: 500;
     line-height: 1.5;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); /* 가독성을 위한 그림자 */
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 
 .onboarding-content {
