@@ -631,6 +631,7 @@
         <button class="btn btn-secondary" onclick="showQRCode()">📱 내 폰으로 받기</button>
         <button class="btn btn-primary" onclick="sendTo3DConstellation()">우주에 별자리 추가</button>
         <button class="btn btn-primary" onclick="sendToAlarm()">매력 벨소리 만들기</button>
+        <button class="btn btn-primary" onclick="sendToPerfume()">나만의 매력 향수 만들기</button>
         <a href="main.html" class="btn btn-primary">다시 만들기</a>
     </div>
     
@@ -1137,26 +1138,55 @@
                 alert('데이터를 찾을 수 없습니다.');
                 return;
             }
-            
+
             const resultData = JSON.parse(savedData);
-            
+
             // 매력 데이터 추출
             const charms = resultData.charms.map(charm => ({
                 charm_name: charm.name,
                 stage: charm.level
             }));
-            
+
             // 데이터 객체 생성
             const importData = {
                 userName: resultData.userName,
                 charms: charms
             };
-            
+
             // Base64 인코딩
             const base64Data = btoa(encodeURIComponent(JSON.stringify(importData)));
-            
+
             // Aster Alarm 앱으로 이동
             window.open(`https://aster-alarm.vercel.app/?import=${base64Data}`, '_blank');
+        }
+        
+        // Aster Perfume 앱으로 데이터 전송
+        function sendToPerfume() {
+            const savedData = localStorage.getItem('asterResultData');
+            if (!savedData) {
+                alert('데이터를 찾을 수 없습니다.');
+                return;
+            }
+
+            const resultData = JSON.parse(savedData);
+
+            // 매력 데이터 추출
+            const charms = resultData.charms.map(charm => ({
+                charm_name: charm.name,
+                stage: charm.level
+            }));
+
+            // 데이터 객체 생성
+            const importData = {
+                userName: resultData.userName,
+                charms: charms
+            };
+
+            // Base64 인코딩
+            const base64Data = btoa(encodeURIComponent(JSON.stringify(importData)));
+
+            // Aster Perfume 앱으로 이동
+            window.open(`https://chroma-almond-03255360.figma.site/?import=${base64Data}`, '_blank');
         }
         
         // 카카오 SDK 초기화
