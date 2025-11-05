@@ -225,6 +225,21 @@
             margin-top: 30px;
             justify-content: center;
             flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .button-divider {
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, transparent, rgba(34, 211, 238, 0.5), transparent);
+            margin: 0 20px;
         }
         
         .btn {
@@ -628,11 +643,21 @@
     </div>
 
     <div class="buttons">
-        <button class="btn btn-secondary" onclick="showQRCode()">📱 내 폰으로 받기</button>
-        <button class="btn btn-primary" onclick="sendTo3DConstellation()">우주에 별자리 추가</button>
-        <button class="btn btn-primary" onclick="sendToAlarm()">매력 벨소리 만들기</button>
-        <button class="btn btn-primary" onclick="sendToPerfume()">나만의 매력 향수 만들기</button>
-        <a href="main.html" class="btn btn-primary">다시 만들기</a>
+        <!-- 기본 기능 그룹 -->
+        <div class="button-group">
+            <button class="btn btn-secondary" onclick="showQRCode()">📱 내 폰으로 받기</button>
+            <a href="main.html" class="btn btn-primary">다시 만들기</a>
+        </div>
+        
+        <!-- 구분선 -->
+        <div class="button-divider"></div>
+        
+        <!-- 연동 기능 그룹 -->
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="sendTo3DConstellation()">우주에 별자리 추가</button>
+            <button class="btn btn-primary" onclick="sendToAlarm()">매력 벨소리 만들기</button>
+            <button class="btn btn-primary" onclick="sendToPerfume()">매력 향수 만들기</button>
+        </div>
     </div>
     
     <!-- QR 코드 모달 -->
