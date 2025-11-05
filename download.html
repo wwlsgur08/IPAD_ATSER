@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>매력 카드 다운로드</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(to bottom, #0f172a 0%, #1e3a8a 50%, #312e81 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #22d3ee;
+        }
+        
+        p {
+            color: #cbd5e1;
+            margin-bottom: 30px;
+        }
+        
+        .preview-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card-preview {
+            background: rgba(30, 41, 59, 0.6);
+            border: 2px solid rgba(34, 211, 238, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .card-preview img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .download-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, #22d3ee, #06b6d4);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(34, 211, 238, 0.4);
+        }
+        
+        .download-btn:active {
+            transform: translateY(0);
+        }
+        
+        .loading {
+            color: #cbd5e1;
+            font-size: 18px;
+        }
+        
+        .error {
+            color: #ef4444;
+            padding: 20px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ 매력 카드 다운로드</h1>
+        <p id="status" class="loading">카드를 불러오는 중...</p>
+        
+        <div id="preview" class="preview-container" style="display: none;"></div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    
+    <script>
+        // Firebase 설정
+        const firebaseConfig = {
+            apiKey: "AIzaSyBcl4tKzcneq6yn6mmADC5YzoVGmRnsZbk",
+            authDomain: "dinteraction-e0393.firebaseapp.com",
+            databaseURL: "https://dinteraction-e0393-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "dinteraction-e0393",
+            storageBucket: "dinteraction-e0393.firebasestorage.app",
+            messagingSenderId: "845988355289",
+            appId: "1:845988355289:web:b5243b16e80bfb9cbf32c8",
+            measurementId: "G-QG1QWM3LSC"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        
+        // URL에서 imageKey 가져오기
+        const urlParams = new URLSearchParams(window.location.search);
+        const imageKey = urlParams.get('key');
+        
+        if (!imageKey) {
+            document.getElementById('status').innerHTML = '<p class="error">❌ 잘못된 접근입니다.</p>';
+        } else {
+            loadImages(imageKey);
+        }
+        
+        async function loadImages(key) {
+            const storage = firebase.storage();
+            const preview = document.getElementById('preview');
+            const status = document.getElementById('status');
+            
+            try {
+                // 앞면, 뒷면 이미지 URL 가져오기
+                const frontRef = storage.ref(`temp_cards/${key}_front.png`);
+                const backRef = storage.ref(`temp_cards/${key}_back.png`);
+                
+                const frontUrl = await frontRef.getDownloadURL();
+                const backUrl = await backRef.getDownloadURL();
+                
+                // 미리보기 표시
+                preview.innerHTML = `
+                    <div class="card-preview">
+                        <img src="${frontUrl}" alt="카드 앞면">
+                        <button class="download-btn" onclick="downloadImage('${frontUrl}', 'card-front.png')">
+                            📥 앞면 다운로드
+                        </button>
+                    </div>
+                    <div class="card-preview">
+                        <img src="${backUrl}" alt="카드 뒷면">
+                        <button class="download-btn" onclick="downloadImage('${backUrl}', 'card-back.png')">
+                            📥 뒷면 다운로드
+                        </button>
+                    </div>
+                `;
+                
+                status.textContent = '✅ 아래 버튼을 눌러 이미지를 저장하세요!';
+                preview.style.display = 'flex';
+                
+            } catch (error) {
+                console.error('이미지 로드 오류:', error);
+                status.innerHTML = '<p class="error">❌ 이미지를 불러올 수 없습니다.<br>QR 코드를 다시 스캔해주세요.</p>';
+            }
+        }
+        
+        function downloadImage(url, filename) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
