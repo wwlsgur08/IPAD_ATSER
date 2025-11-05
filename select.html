@@ -60,6 +60,30 @@
             font-size: clamp(14px, 2.5vw, 16px);
             color: #cbd5e1; /* slate-300 */
             line-height: 1.5;
+            margin-bottom: 0;
+        }
+        .scroll-guide {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: linear-gradient(to right, rgba(34, 211, 238, 0.2), rgba(20, 184, 166, 0.2));
+            border: 1px solid rgba(34, 211, 238, 0.4);
+            border-radius: 20px;
+            font-size: clamp(13px, 2.5vw, 15px);
+            color: #ffffff;
+            font-weight: 500;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+        .scroll-guide .arrow {
+            font-size: 18px;
+            animation: slideRight 1.5s ease-in-out infinite;
+        }
+        @keyframes slideRight {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
         }
         .selection-grid {
             display: flex;
@@ -312,6 +336,10 @@
         <header>
             <h1>1단계: 나의 매력 모두 선택하기</h1>
             <p>지난 여정을 통해 발견한 당신의 매력을 모두 선택해주세요. (개수 제한 없음)</p>
+            <div class="scroll-guide">
+                <span class="arrow">👉</span>
+                <span>오른쪽으로 스크롤하여 7개의 카테고리를 모두 확인하세요!</span>
+            </div>
         </header>
 
         <main>
