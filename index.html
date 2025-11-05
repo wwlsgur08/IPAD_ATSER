@@ -1266,40 +1266,51 @@
     animation: fadeInDown 0.4s ease-out;
 }
 .guide-questions-container { 
-    background-color: rgba(15, 23, 42, 0.5);
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(34, 211, 238, 0.3); 
+    background: linear-gradient(to bottom right, rgba(30, 41, 59, 0.7) 0%, rgba(30, 58, 138, 0.7) 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(34, 211, 238, 0.4);
+    box-shadow: 0 4px 15px rgba(34, 211, 238, 0.15);
 }
 .example-container { 
-    background-color: rgba(15, 23, 42, 0.5);
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(34, 211, 238, 0.3); 
+    background: linear-gradient(to bottom right, rgba(30, 41, 59, 0.7) 0%, rgba(30, 58, 138, 0.7) 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(34, 211, 238, 0.4);
+    box-shadow: 0 4px 15px rgba(34, 211, 238, 0.15);
 }
 .guide-questions-container.visible, .example-container.visible { display: block; }
 .guide-title, .example-title { 
     font-weight: bold; 
     margin-bottom: 15px; 
     font-size: 14px; 
-    color: #fff;
-    text-shadow: 0 0 8px rgba(100, 200, 255, 0.3);
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
-.guide-title { color: #22d3ee; }
-.example-title { color: #14b8a6; }
+.guide-title { color: #ffffff; }
+.example-title { color: #ffffff; }
 .guide-questions-container ul { margin:0; padding-left: 20px; }
 .guide-questions-container li { 
     font-size: 13px; 
-    color: #cbd5e1; 
-    margin-bottom: 5px; 
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    border-left: 3px solid #22d3ee;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 /* 온보딩 예시 내용 스타일 */
 .example-container p, .example-container div:not(.example-title) {
     font-size: 14px;
-    color: #000000 !important; /* 검정색 텍스트 */
-    background-color: #ffffff; /* 흰색 배경 */
+    color: #ffffff !important; /* 흰색 텍스트 */
+    background: rgba(255, 255, 255, 0.1); /* 반투명 배경 */
     padding: 12px;
     border-radius: 8px;
     margin-bottom: 10px;
     line-height: 1.6;
+    border-left: 3px solid #22d3ee;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
