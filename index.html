@@ -438,20 +438,24 @@
         
         .helper-buttons {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin: 15px 0;
-            flex-wrap: wrap;
+            flex-wrap: nowrap; /* 한 줄로 고정 */
+            justify-content: center; /* 중앙 정렬 */
         }
-        
+
         .helper-btn {
             background: #f7fafc;
             border: 1px solid #e2e8f0;
-            padding: 8px 16px;
+            padding: 8px 12px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
             transition: all 0.2s ease;
             color: #4a5568;
+            white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+            flex: 1; /* 균등 분배 */
+            min-width: 0; /* flex 자식의 최소 너비 제한 해제 */
         }
         
         .helper-btn:hover {
@@ -1516,15 +1520,15 @@
     }
     
     .helper-buttons {
-        gap: 10px;
+        gap: 6px;
         margin-top: 15px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap; /* 모바일에서도 한 줄 유지 */
     }
-    
+
     .helper-btn {
-        padding: 10px 14px;
-        font-size: 13px;
-        line-height: 1.4;
+        padding: 8px 10px;
+        font-size: 10px;
+        line-height: 1.3;
     }
     
     /* 3단계 버튼 간격 */
@@ -1987,9 +1991,9 @@ body {
                 <p class="reflection-sub-question-title" style="color: #ffffff; line-height: 1.5; font-weight: 500; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);">누가 먼저 부탁하지 않았는데도, '이건 내가 한번 해봐야겠다!' 싶어서 먼저 나서서 어떤 일을 더 좋게 만들려고 했던 경험이 있다면 먼저 그 이야기를 들려주세요.</p>
                 
                 <div class="helper-buttons">
-                    <button class="helper-btn" id="demoGuideBtn">📝 길잡이 질문</button>
-                    <button class="helper-btn" id="demoExampleBtn">💡 예시 보기</button>
-                    <button class="helper-btn" id="demoKeywordBtn">✨ 매력 키워드</button>
+                    <button class="helper-btn" id="demoGuideBtn">길잡이 질문</button>
+                    <button class="helper-btn" id="demoExampleBtn">예시 보기</button>
+                    <button class="helper-btn" id="demoKeywordBtn">매력 키워드</button>
                 </div>
 
                 <div class="guide-boxes-container">
