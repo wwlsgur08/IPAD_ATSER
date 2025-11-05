@@ -62,46 +62,6 @@
             line-height: 1.5;
             margin-bottom: 0;
         }
-        .scroll-guide {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 12px;
-            padding: 10px 20px;
-            background: linear-gradient(to right, rgba(34, 211, 238, 0.2), rgba(20, 184, 166, 0.2));
-            border: 1px solid rgba(34, 211, 238, 0.4);
-            border-radius: 20px;
-            font-size: clamp(13px, 2.5vw, 15px);
-            color: #ffffff;
-            font-weight: 500;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-            animation: pulseGlow 2s ease-in-out infinite;
-        }
-        .scroll-guide .arrow {
-            font-size: 18px;
-            animation: slideRight 1.5s ease-in-out infinite;
-        }
-        @keyframes slideRight {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(5px); }
-        }
-        .landscape-guide {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 10px;
-            padding: 8px 18px;
-            background: linear-gradient(to right, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
-            border: 1px solid rgba(168, 85, 247, 0.4);
-            border-radius: 20px;
-            font-size: clamp(12px, 2.2vw, 14px);
-            color: #e9d5ff;
-            font-weight: 500;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-        }
-        .landscape-guide .icon {
-            font-size: 16px;
-        }
         .selection-grid {
             display: flex;
             justify-content: flex-start;
@@ -343,24 +303,125 @@
         }
     </style>
 
-    
-</head>
+    <style>
+        /* 가로 모드 안내 모달 */
+        .orientation-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .orientation-modal.active {
+            display: flex;
+        }
+        
+        .orientation-modal-content {
+            background: linear-gradient(to bottom right, rgba(30, 41, 59, 0.95) 0%, rgba(30, 58, 138, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid rgba(34, 211, 238, 0.5);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(34, 211, 238, 0.3),
+                        0 0 100px rgba(34, 211, 238, 0.2);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .orientation-modal-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: rotateDevice 2s ease-in-out infinite;
+        }
+        
+        @keyframes rotateDevice {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(90deg); }
+        }
+        
+        .orientation-modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(103, 232, 249, 0.5);
+        }
+        
+        .orientation-modal-text {
+            font-size: 16px;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .orientation-modal-btn {
+            background: linear-gradient(135deg, #22d3ee 0%, #14b8a6 100%);
+            color: #0f172a;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(34, 211, 238, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .orientation-modal-btn:hover {
+            box-shadow: 0 6px 20px rgba(34, 211, 238, 0.5),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .orientation-modal-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+
+    </head>
 <body>
     <!-- 반짝이는 별 배경 -->
     <div id="sparklingBackground" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;"></div>
+    
+    <!-- 가로 모드 안내 모달 -->
+    <div class="orientation-modal active" id="orientationModal">
+        <div class="orientation-modal-content">
+            <div class="orientation-modal-icon">📱➡️🔄</div>
+            <h2 class="orientation-modal-title">최적의 경험을 위해</h2>
+            <p class="orientation-modal-text">
+                이 페이지부터 아이패드를 가로로 돌리고 진행해 주세요.<br>
+                오른쪽으로 스크롤하여 7개의 카테고리를 모두 확인할 수 있습니다.
+            </p>
+            <button class="orientation-modal-btn" onclick="closeOrientationModal()">확인</button>
+        </div>
+    </div>
     
     <div class="container">
         <header>
             <h1>1단계: 나의 매력 모두 선택하기</h1>
             <p>지난 여정을 통해 발견한 당신의 매력을 모두 선택해주세요. (개수 제한 없음)</p>
-            <div class="landscape-guide">
-                <span class="icon">📱</span>
-                <span>아이패드를 가로로 돌려서 진행해주세요</span>
-            </div>
-            <div class="scroll-guide">
-                <span class="arrow">👉</span>
-                <span>오른쪽으로 스크롤하여 7개의 카테고리를 모두 확인하세요!</span>
-            </div>
         </header>
 
         <main>
@@ -375,6 +436,14 @@
     </div>
     <script>
         
+    // 가로 모드 안내 모달 닫기 함수
+    function closeOrientationModal() {
+        const modal = document.getElementById('orientationModal');
+        if (modal) {
+            modal.classList.remove('active');
+        }
+    }
+    
     // --- START OF FILE select.js ---
 
 document.addEventListener('DOMContentLoaded', () => {
