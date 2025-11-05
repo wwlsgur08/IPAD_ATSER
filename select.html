@@ -85,6 +85,23 @@
             0%, 100% { transform: translateX(0); }
             50% { transform: translateX(5px); }
         }
+        .landscape-guide {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 10px;
+            padding: 8px 18px;
+            background: linear-gradient(to right, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            border-radius: 20px;
+            font-size: clamp(12px, 2.2vw, 14px);
+            color: #e9d5ff;
+            font-weight: 500;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        .landscape-guide .icon {
+            font-size: 16px;
+        }
         .selection-grid {
             display: flex;
             justify-content: flex-start;
@@ -336,6 +353,10 @@
         <header>
             <h1>1단계: 나의 매력 모두 선택하기</h1>
             <p>지난 여정을 통해 발견한 당신의 매력을 모두 선택해주세요. (개수 제한 없음)</p>
+            <div class="landscape-guide">
+                <span class="icon">📱</span>
+                <span>아이패드를 가로로 돌려서 진행해주세요</span>
+            </div>
             <div class="scroll-guide">
                 <span class="arrow">👉</span>
                 <span>오른쪽으로 스크롤하여 7개의 카테고리를 모두 확인하세요!</span>
