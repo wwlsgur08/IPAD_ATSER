@@ -62,6 +62,29 @@
             line-height: 1.5;
             margin-bottom: 0;
         }
+        .scroll-guide {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            padding: 10px 20px;
+            background: linear-gradient(to right, rgba(34, 211, 238, 0.2), rgba(20, 184, 166, 0.2));
+            border: 1px solid rgba(34, 211, 238, 0.4);
+            border-radius: 20px;
+            font-size: clamp(13px, 2.5vw, 15px);
+            color: #ffffff;
+            font-weight: 500;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+        .scroll-guide .arrow {
+            font-size: 18px;
+            animation: slideRight 1.5s ease-in-out infinite;
+        }
+        @keyframes slideRight {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
+        }
         .selection-grid {
             display: flex;
             justify-content: flex-start;
@@ -349,30 +372,13 @@
             }
         }
         
-        .orientation-modal-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-            animation: rotateDevice 2s ease-in-out infinite;
-        }
-        
-        @keyframes rotateDevice {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(90deg); }
-        }
-        
         .orientation-modal-title {
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 18px;
+            font-weight: 600;
             color: #ffffff;
-            margin-bottom: 15px;
-            text-shadow: 0 0 20px rgba(103, 232, 249, 0.5);
-        }
-        
-        .orientation-modal-text {
-            font-size: 16px;
-            color: #cbd5e1;
-            line-height: 1.6;
             margin-bottom: 30px;
+            line-height: 1.6;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
         }
         
         .orientation-modal-btn {
@@ -408,12 +414,7 @@
     <!-- 가로 모드 안내 모달 -->
     <div class="orientation-modal active" id="orientationModal">
         <div class="orientation-modal-content">
-            <div class="orientation-modal-icon">📱➡️🔄</div>
-            <h2 class="orientation-modal-title">최적의 경험을 위해</h2>
-            <p class="orientation-modal-text">
-                이 페이지부터 아이패드를 가로로 돌리고 진행해 주세요.<br>
-                오른쪽으로 스크롤하여 7개의 카테고리를 모두 확인할 수 있습니다.
-            </p>
+            <h2 class="orientation-modal-title">이 페이지부터 아이패드를 가로로 돌리고 진행해 주세요.</h2>
             <button class="orientation-modal-btn" onclick="closeOrientationModal()">확인</button>
         </div>
     </div>
@@ -422,6 +423,10 @@
         <header>
             <h1>1단계: 나의 매력 모두 선택하기</h1>
             <p>지난 여정을 통해 발견한 당신의 매력을 모두 선택해주세요. (개수 제한 없음)</p>
+            <div class="scroll-guide">
+                <span class="arrow">👉</span>
+                <span>오른쪽으로 스크롤하여 7개의 카테고리를 모두 확인하세요!</span>
+            </div>
         </header>
 
         <main>
