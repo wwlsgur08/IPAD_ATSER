@@ -319,11 +319,44 @@
             max-width: 500px;
             width: 90%;
             box-shadow: 0 0 30px rgba(34, 211, 238, 0.5);
+            position: relative;
         }
         
         .modal-header {
             text-align: center;
             margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .close {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 36px;
+            height: 36px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+            z-index: 10;
+        }
+        
+        .close:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(239, 68, 68, 0.6);
+        }
+        
+        .close:active {
+            transform: scale(0.95);
         }
         
         .modal-header h2 {
@@ -560,9 +593,9 @@
     <!-- QR 코드 모달 -->
     <div id="qrModal" class="modal">
         <div class="modal-content qr-modal">
+            <span class="close" onclick="closeQRModal()">&times;</span>
             <div class="modal-header">
                 <h3>📱 내 폰으로 카드 받기</h3>
-                <span class="close" onclick="closeQRModal()">&times;</span>
             </div>
             <div class="qr-content">
                 <div id="qrcode" class="qr-code-container"></div>
