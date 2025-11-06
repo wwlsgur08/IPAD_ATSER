@@ -1041,8 +1041,6 @@
     
 </head>
 <body>
-    <!-- 반짝이는 별 배경 -->
-    <div id="sparklingBackground" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;"></div>
 
     <!-- ▼▼▼ 이 부분을 새로 추가하세요 ▼▼▼ -->
 <div id="redirect-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center;">
@@ -1730,32 +1728,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 프로그램 실행
     init();
-    
-    // 반짝이는 별 배경 생성
-    createSparklingBackground();
 });
-
-// 반짝이는 별 배경 생성 함수
-function createSparklingBackground() {
-    const container = document.getElementById('sparklingBackground');
-    if (!container) return;
-    
-    // 50개의 반짝이는 별 생성
-    for (let i = 0; i < 50; i++) {
-        const sparkle = document.createElement('div');
-        sparkle.className = 'sparkle';
-        sparkle.style.left = `${Math.random() * 100}%`;
-        sparkle.style.top = `${Math.random() * 100}%`;
-        
-        // 랜덤한 애니메이션 지연과 지속 시간
-        const duration = 2 + Math.random() * 3;
-        const delay = Math.random() * 2;
-        sparkle.style.animationDuration = `${duration}s`;
-        sparkle.style.animationDelay = `${delay}s`;
-        
-        container.appendChild(sparkle);
-    }
-}
    </script>
 </body>
 </html>
