@@ -177,6 +177,11 @@
             color: #67e8f9; /* cyan-300 강조 색상 */
             background: linear-gradient(to right, rgba(51, 65, 85, 0.4), rgba(30, 58, 138, 0.4)); /* 글래스모피즘 */
             backdrop-filter: blur(6px);
+            /* PC/태블릿에서는 한 줄로 표시 */
+        }
+        
+        .permanent-instruction br {
+            display: none; /* PC/태블릿에서 줄바꿈 제거 */
             padding: 6px 10px;
             border-radius: 12px;
             border: 1px solid rgba(34, 211, 238, 0.3);
@@ -343,8 +348,8 @@
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border-radius: 8px;
-            padding: 6px 10px;
-            max-width: 220px;
+            padding: 4px 8px;
+            max-width: 180px;
         }
 
         .replay-container {
@@ -355,10 +360,10 @@
         .cost-guide-row {
             display: flex;
             align-items: center;
-            font-size: 11px;
+            font-size: 10px;
         }
         .cost-guide-row:first-child {
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
         .guide-label {
             font-weight: 700;
@@ -796,6 +801,11 @@
                 padding: 6px 10px;
                 text-align: center;
                 line-height: 1.3;
+            }
+            
+            /* 모바일 세로에서만 줄바꿈 표시 */
+            .permanent-instruction br {
+                display: inline; /* 모바일에서는 줄바꿈 표시 */
             }
 
             .budget-panel {
