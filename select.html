@@ -324,6 +324,103 @@
                 padding: 16px 24px;
             }
         }
+        
+        /* 모바일 가로 모드 최적화 */
+        @media (max-width: 926px) and (orientation: landscape) {
+            body {
+                padding: 10px;
+                overflow: hidden;
+            }
+            
+            .container {
+                max-width: 100%;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                padding: 15px;
+                border-radius: 12px;
+            }
+            
+            header {
+                padding: 10px 15px;
+                margin-bottom: 15px;
+                flex-shrink: 0;
+            }
+            
+            header h1 {
+                font-size: 20px;
+                margin-bottom: 5px;
+            }
+            
+            header p {
+                font-size: 13px;
+                margin-bottom: 8px;
+            }
+            
+            .scroll-guide {
+                margin-top: 8px;
+                padding: 6px 14px;
+                font-size: 12px;
+            }
+            
+            .scroll-guide .arrow {
+                font-size: 14px;
+            }
+            
+            main {
+                flex: 1;
+                overflow: hidden;
+                min-height: 0;
+            }
+            
+            .selection-grid {
+                height: 100%;
+                padding: 5px 0 10px 0;
+                gap: 12px;
+            }
+            
+            .category-group {
+                min-width: 160px;
+                max-width: 180px;
+                padding: 12px;
+                height: calc(100% - 10px);
+                overflow-y: auto;
+            }
+            
+            .category-title {
+                font-size: 13px;
+                margin-bottom: 8px;
+                position: sticky;
+                top: 0;
+                background: linear-gradient(to bottom right, rgba(30, 41, 59, 0.95) 0%, rgba(30, 58, 138, 0.95) 100%);
+                padding: 5px 0;
+                z-index: 1;
+            }
+            
+            .charm-container {
+                gap: 5px;
+            }
+            
+            .selectable-charm {
+                font-size: 11px;
+                padding: 7px 8px;
+                min-height: 36px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .footer {
+                flex-shrink: 0;
+                padding: 10px 15px;
+                margin-top: 0;
+            }
+            
+            #completeBtn {
+                padding: 12px 20px;
+                font-size: 15px;
+            }
+        }
     </style>
 
     <style>
@@ -414,7 +511,7 @@
     <!-- 가로 모드 안내 모달 -->
     <div class="orientation-modal active" id="orientationModal">
         <div class="orientation-modal-content">
-            <h2 class="orientation-modal-title">이 페이지부터 아이패드를 가로로 돌리고 진행해 주세요.</h2>
+            <h2 class="orientation-modal-title">이 페이지부터 기기를 가로로 돌리고 진행해 주세요.</h2>
             <button class="orientation-modal-btn" onclick="closeOrientationModal()">확인</button>
         </div>
     </div>
