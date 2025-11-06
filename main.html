@@ -19,6 +19,7 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
             background: linear-gradient(to bottom, #0f172a 0%, #1e3a8a 50%, #312e81 100%); /* slate-900 → blue-900 → indigo-900 */
+            background-attachment: fixed;
             color: #cbd5e1;
             line-height: 1.6;
             padding: env(safe-area-inset-top, 20px) env(safe-area-inset-right, 20px) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 20px);
@@ -28,6 +29,7 @@
             touch-action: manipulation;
             font-size: 125%;
             position: relative;
+            margin: 0;
         }
 
         .app-container {
@@ -739,6 +741,33 @@
             .charm-card {
                 flex-shrink: 0;
                 max-width: 280px;
+            }
+            
+            /* 매력 항목 및 레벨 버튼 수정 */
+            .charm-item {
+                padding: 8px;
+                gap: 6px;
+                margin-bottom: 8px;
+            }
+            
+            .charm-name {
+                font-size: 13px;
+                margin-bottom: 4px;
+            }
+            
+            .level-buttons {
+                display: flex;
+                gap: 4px;
+                justify-content: center;
+                flex-wrap: nowrap;
+                width: 100%;
+            }
+            
+            .level-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 11px;
+                flex-shrink: 0;
             }
 
             /* ▼▼▼ 이 부분을 수정/교체해주세요 ▼▼▼ */
