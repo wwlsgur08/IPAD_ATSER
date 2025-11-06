@@ -70,6 +70,16 @@
             flex-direction: column;
             gap: 15px;
         }
+        
+        /* PC/태블릿에서는 오른쪽에 있는 제목 표시 */
+        .panel-title-header {
+            display: block;
+        }
+        
+        /* PC/태블릿에서는 모바일 제목 숨김 */
+        .mobile-title-header {
+            display: none;
+        }
 
         .star-container-wrapper {
             position: relative;
@@ -662,6 +672,16 @@
                 overflow: auto;
                 background: linear-gradient(to bottom, #0f172a 0%, #1e3a8a 50%, #312e81 100%) !important;
             }
+            
+            /* 모바일: PC/태블릿용 제목 숨김 */
+            .panel-title-header {
+                display: none !important;
+            }
+            
+            /* 모바일: 모바일용 제목 표시 */
+            .mobile-title-header {
+                display: block !important;
+            }
 
             .app-container {
                 flex-direction: column;
@@ -1052,8 +1072,8 @@
     <div class="app-container" id="appContainer">
         
         <div class="visualization-panel" id="visualizationPanel">
-            <!-- 제목과 설명을 제일 위로 이동 -->
-            <header class="panel-header" id="panelHeader" style="grid-column: 1 / -1; grid-row: 1;">
+            <!-- 모바일용 제목 (모바일에서만 표시) -->
+            <header class="panel-header mobile-title-header">
                 <h2>4단계: 핵심매력 발견 및 별자리 완성</h2>
                 <p>주어진 '별가루'를 투자하여 당신의 핵심 매력을 발견하고, 자신만의 별자리를 만들어보세요.</p>
                 
@@ -1082,6 +1102,18 @@
         </div>
 
         <div class="budget-panel" id="budgetPanel">
+            <!-- PC/태블릿: 제목을 오른쪽 패널 위에 배치 -->
+            <header class="panel-header panel-title-header" id="panelHeader">
+                <h2>4단계: 핵심매력 발견 및 별자리 완성</h2>
+                <p>주어진 '별가루'를 투자하여 당신의 핵심 매력을 발견하고, 자신만의 별자리를 만들어보세요.</p>
+                
+                <div class="header-middle-row">
+                    <div class="replay-container">
+                        <button id="replayOnboardingBtn" class="replay-btn">설명 다시보기</button>
+                    </div>
+                </div>
+            </header>
+            
             <header class="panel-header">
                 <div class="header-middle-row">
                     <div class="cost-guide">
