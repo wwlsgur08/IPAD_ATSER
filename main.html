@@ -819,22 +819,23 @@
         /* 모바일 가로 모드 최적화 */
         @media (max-width: 768px) and (orientation: landscape) {
             body {
-                padding: 8px;
+                padding: 5px;
                 overflow: hidden;
             }
             
             .app-container {
                 flex-direction: row;
-                height: calc(100vh - 16px);
-                gap: 15px;
-                padding: 12px;
+                height: calc(100vh - 10px);
+                gap: 10px;
+                padding: 8px;
             }
             
             .visualization-panel {
-                flex: 0 0 45%;
+                flex: 0 0 38%;
                 min-width: 0;
                 display: flex;
                 flex-direction: column;
+                overflow: hidden;
             }
             
             .budget-panel {
@@ -844,102 +845,131 @@
             }
             
             .star-container-wrapper {
-                padding-top: 100%;
+                padding-top: 85%;
+                flex-shrink: 0;
+            }
+            
+            .panel-header {
+                padding: 4px 0;
+                margin-bottom: 4px;
             }
             
             .panel-header h2 {
-                font-size: 16px;
-                margin-bottom: 6px;
+                font-size: 13px;
+                margin-bottom: 3px;
             }
             
             .panel-header p {
-                font-size: 11px;
-                margin-bottom: 8px;
+                font-size: 9px;
+                margin-bottom: 4px;
             }
             
             .permanent-instruction {
-                font-size: 10px;
-                padding: 5px 8px;
+                font-size: 8px;
+                padding: 3px 6px;
+                margin-bottom: 4px;
             }
             
             .visualization-controls {
-                gap: 6px;
+                gap: 4px;
+                margin-top: 4px;
             }
             
             .control-btn {
-                font-size: 10px;
-                padding: 8px 6px;
+                font-size: 8px;
+                padding: 6px 4px;
+                min-height: 28px;
             }
             
             .cost-guide {
-                padding: 4px 6px;
+                padding: 3px 5px;
+                margin-bottom: 4px;
             }
             
             .cost-guide-row {
-                font-size: 8px;
+                font-size: 7px;
+                margin-bottom: 2px;
+            }
+            
+            .cost-guide-row:first-child {
+                margin-bottom: 2px;
             }
             
             .guide-label {
-                width: 24px;
-                font-size: 8px;
+                width: 20px;
+                font-size: 7px;
+                margin-right: 3px;
+            }
+            
+            .guide-values {
+                gap: 2px;
             }
             
             .guide-values > span {
-                width: 14px;
-                height: 14px;
-            }
-            
-            .level-tag {
+                width: 12px;
+                height: 12px;
                 font-size: 7px;
             }
             
+            .level-tag {
+                font-size: 6px;
+                padding: 1px 2px;
+            }
+            
             .cost-value {
-                font-size: 8px;
+                font-size: 7px;
+            }
+            
+            .replay-container {
+                margin-top: 4px;
             }
             
             .replay-btn {
-                font-size: 9px;
-                padding: 3px 8px;
+                font-size: 8px;
+                padding: 3px 6px;
             }
             
             .stardust-display-wrapper {
-                padding: 6px 10px;
+                padding: 5px 8px;
+                margin-top: 4px;
             }
             
             .stardust-display-wrapper p {
-                font-size: 11px;
+                font-size: 10px;
+                margin-bottom: 3px;
             }
             
             .stardust-display-wrapper span {
-                font-size: 13px;
+                font-size: 12px;
             }
             
             .charm-list-container {
-                gap: 10px;
+                gap: 8px;
                 max-height: none;
                 overflow-x: auto;
                 overflow-y: hidden;
+                padding: 4px 0;
             }
             
             .category-group {
-                width: 130px;
-                padding: 8px;
+                width: 120px;
+                padding: 6px;
                 flex-shrink: 0;
             }
             
             .category-title {
-                font-size: 11px;
-                margin-bottom: 6px;
+                font-size: 10px;
+                margin-bottom: 5px;
             }
             
             .charm-item {
-                gap: 3px;
-                padding: 4px;
-                margin-bottom: 4px;
+                gap: 2px;
+                padding: 3px;
+                margin-bottom: 3px;
             }
             
             .charm-name {
-                font-size: 10px;
+                font-size: 9px;
             }
             
             .level-buttons {
@@ -947,19 +977,19 @@
             }
             
             .level-btn {
-                width: 16px;
-                height: 16px;
-                font-size: 8px;
+                width: 14px;
+                height: 14px;
+                font-size: 7px;
             }
             
             #userNameInput {
-                font-size: 12px;
-                padding: 8px;
+                font-size: 11px;
+                padding: 6px;
             }
             
             #createCardBtn {
-                font-size: 12px;
-                padding: 8px 16px;
+                font-size: 11px;
+                padding: 6px 12px;
             }
         }
     </style>
