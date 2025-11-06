@@ -678,15 +678,21 @@
                 padding: 15px;
                 display: grid;
                 grid-template-columns: 1fr auto;
-                grid-template-rows: auto auto;
+                grid-template-rows: auto auto auto;
                 gap: 10px;
                 align-items: start;
+            }
+            
+            /* 제목 영역 - 최상단 전체 너비 */
+            .visualization-panel .panel-header {
+                grid-column: 1 / -1;
+                grid-row: 1;
             }
             
             /* 별 박스 - 왼쪽 */
             .star-container-wrapper {
                 grid-column: 1;
-                grid-row: 1;
+                grid-row: 2;
                 display: flex;
                 justify-content: flex-start;
                 align-items: flex-start;
@@ -714,7 +720,7 @@
             /* 컨트롤 버튼 - 오른쪽 */
             .visualization-controls {
                 grid-column: 2;
-                grid-row: 1;
+                grid-row: 2;
                 display: flex;
                 flex-direction: column;
                 gap: 6px;
@@ -739,7 +745,7 @@
             /* 설명 박스 - 아래쪽 */
             .permanent-instruction {
                 grid-column: 1 / -1;
-                grid-row: 2;
+                grid-row: 3;
                 font-size: 10px;
                 padding: 6px 10px;
                 text-align: center;
@@ -1042,6 +1048,18 @@
     <div class="app-container" id="appContainer">
         
         <div class="visualization-panel" id="visualizationPanel">
+            <!-- 제목과 설명을 제일 위로 이동 -->
+            <header class="panel-header" id="panelHeader" style="grid-column: 1 / -1; grid-row: 1;">
+                <h2>4단계: 핵심매력 발견 및 별자리 완성</h2>
+                <p>주어진 '별가루'를 투자하여 당신의 핵심 매력을 발견하고, 자신만의 별자리를 만들어보세요.</p>
+                
+                <div class="header-middle-row">
+                    <div class="replay-container">
+                        <button id="replayOnboardingBtn" class="replay-btn">설명 다시보기</button>
+                    </div>
+                </div>
+            </header>
+            
             <div class="star-container-wrapper">
                 <div class="star-container" id="starContainer">
                     <div class="star-field" id="starField"></div>
@@ -1060,10 +1078,7 @@
         </div>
 
         <div class="budget-panel" id="budgetPanel">
-            <header class="panel-header" id="panelHeader">
-                <h2>4단계: 핵심매력 발견 및 별자리 완성</h2>
-                <p>주어진 '별가루'를 투자하여 당신의 핵심 매력을 발견하고, 자신만의 별자리를 만들어보세요.</p>
-                
+            <header class="panel-header">
                 <div class="header-middle-row">
                     <div class="cost-guide">
                         <div class="cost-guide-row">
@@ -1078,9 +1093,6 @@
                                 <span class="cost-value">1</span> <span class="cost-value">2</span> <span class="cost-value">3</span> <span class="cost-value">5</span> <span class="cost-value">7</span> <span class="cost-value">10</span>
                             </div>
                         </div>
-                    </div>
-                    <div class="replay-container">
-                        <button id="replayOnboardingBtn" class="replay-btn">설명 다시보기</button>
                     </div>
                 </div>
 
