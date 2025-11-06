@@ -677,12 +677,21 @@
                 border-radius: 16px;
                 padding: 15px;
                 display: flex;
-                flex-direction: row;
+                flex-direction: column;
                 gap: 10px;
+            }
+            
+            /* 별 박스와 컨트롤을 가로로 배치하는 래퍼 */
+            .star-container-wrapper {
+                display: flex;
+                flex-direction: row;
+                gap: 8px;
+                width: 100%;
                 align-items: flex-start;
             }
             
-            .star-container-wrapper {
+            /* 별 박스 영역 */
+            .star-container {
                 flex: 1;
                 min-width: 0;
             }
@@ -690,19 +699,19 @@
             .visualization-controls {
                 display: flex;
                 flex-direction: column;
-                gap: 8px;
-                width: 80px;
+                gap: 6px;
+                width: 60px;
                 flex-shrink: 0;
             }
             
             .control-btn {
-                font-size: 11px;
-                padding: 12px 6px;
+                font-size: 10px;
+                padding: 8px 4px;
                 white-space: normal;
                 line-height: 1.2;
                 text-align: center;
                 word-break: keep-all;
-                min-height: 60px;
+                min-height: 55px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
