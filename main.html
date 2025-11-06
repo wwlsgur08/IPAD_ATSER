@@ -343,8 +343,8 @@
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border-radius: 8px;
-            padding: 8px 12px;
-            max-width: 260px;
+            padding: 6px 10px;
+            max-width: 220px;
         }
 
         .replay-container {
@@ -1099,7 +1099,7 @@
                 
                 <div class="header-middle-row">
                     <div class="replay-container">
-                        <button id="replayOnboardingBtn" class="replay-btn">설명 다시보기</button>
+                        <button class="replay-btn replayOnboardingBtn">설명 다시보기</button>
                     </div>
                 </div>
             </header>
@@ -1129,7 +1129,7 @@
                 
                 <div class="header-middle-row">
                     <div class="replay-container">
-                        <button id="replayOnboardingBtn" class="replay-btn">설명 다시보기</button>
+                        <button class="replay-btn replayOnboardingBtn">설명 다시보기</button>
                     </div>
                 </div>
             </header>
@@ -1245,13 +1245,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const undoLineBtn = document.getElementById('undoLineBtn');
         const clearLinesBtn = document.getElementById('clearLinesBtn');
         const resetAllBtn = document.getElementById('resetAllBtn');
-        const replayOnboardingBtn = document.getElementById('replayOnboardingBtn');
+        const replayOnboardingBtns = document.querySelectorAll('.replayOnboardingBtn');
         
         if(drawModeBtn) drawModeBtn.addEventListener('click', toggleDrawMode);
         if(undoLineBtn) undoLineBtn.addEventListener('click', handleUndoLine);
         if(clearLinesBtn) clearLinesBtn.addEventListener('click', clearAllLines);
         if(resetAllBtn) resetAllBtn.addEventListener('click', resetAll);
-        if(replayOnboardingBtn) replayOnboardingBtn.addEventListener('click', startOnboarding);
+        replayOnboardingBtns.forEach(btn => {
+            btn.addEventListener('click', startOnboarding);
+        });
 
         const createCardBtn = document.getElementById('createCardBtn');
         if (createCardBtn) {
