@@ -737,6 +737,200 @@
             }
             /* ▲▲▲ 여기까지 수정/교체 ▲▲▲ */
         }
+        
+        /* 모바일 전용 가로 모드 안내 모달 */
+        .orientation-modal-mobile {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        .orientation-modal-mobile.active {
+            display: flex;
+        }
+        
+        .orientation-modal-mobile-content {
+            background: linear-gradient(to bottom right, rgba(30, 41, 59, 0.95) 0%, rgba(30, 58, 138, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid rgba(34, 211, 238, 0.5);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(34, 211, 238, 0.3),
+                        0 0 100px rgba(34, 211, 238, 0.2);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .orientation-modal-mobile-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .orientation-modal-mobile-btn {
+            background: linear-gradient(135deg, #22d3ee 0%, #14b8a6 100%);
+            color: #0f172a;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(34, 211, 238, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .orientation-modal-mobile-btn:hover {
+            box-shadow: 0 6px 20px rgba(34, 211, 238, 0.5),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .orientation-modal-mobile-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* 모바일 가로 모드 최적화 */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .app-container {
+                flex-direction: row;
+                height: calc(100vh - 20px);
+                gap: 12px;
+            }
+            
+            .visualization-panel {
+                flex: 0 0 35%;
+                min-width: 0;
+            }
+            
+            .budget-panel {
+                flex: 1;
+                min-width: 0;
+                overflow-y: auto;
+            }
+            
+            .star-container-wrapper {
+                padding-top: 100%;
+            }
+            
+            .panel-header h2 {
+                font-size: 14px;
+            }
+            
+            .panel-header p {
+                font-size: 10px;
+            }
+            
+            .permanent-instruction {
+                font-size: 9px;
+                padding: 4px 6px;
+            }
+            
+            .visualization-controls {
+                gap: 4px;
+            }
+            
+            .control-btn {
+                font-size: 9px;
+                padding: 6px 4px;
+            }
+            
+            .cost-guide {
+                padding: 3px 5px;
+            }
+            
+            .cost-guide-row {
+                font-size: 7px;
+            }
+            
+            .guide-label {
+                width: 20px;
+                font-size: 7px;
+            }
+            
+            .guide-values > span {
+                width: 12px;
+                height: 12px;
+            }
+            
+            .level-tag {
+                font-size: 6px;
+            }
+            
+            .replay-btn {
+                font-size: 8px;
+                padding: 2px 6px;
+            }
+            
+            .stardust-display-wrapper p {
+                font-size: 10px;
+            }
+            
+            .charm-list-container {
+                gap: 8px;
+                max-height: calc(100vh - 300px);
+            }
+            
+            .category-group {
+                width: 110px;
+                padding: 5px;
+            }
+            
+            .category-title {
+                font-size: 9px;
+            }
+            
+            .charm-item {
+                gap: 2px;
+                padding: 2px;
+            }
+            
+            .charm-name {
+                font-size: 8px;
+            }
+            
+            .level-btn {
+                width: 12px;
+                height: 12px;
+                font-size: 6px;
+            }
+            
+            #userNameInput {
+                font-size: 10px;
+                padding: 5px;
+            }
+            
+            #createCardBtn {
+                font-size: 10px;
+                padding: 5px 10px;
+            }
+        }
     </style>
 
     
@@ -744,6 +938,14 @@
 <body>
     <!-- 반짝이는 별 배경 -->
     <div id="sparklingBackground" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;"></div>
+
+    <!-- 모바일 전용 가로 모드 안내 모달 -->
+    <div class="orientation-modal-mobile" id="orientationModalMobile">
+        <div class="orientation-modal-mobile-content">
+            <h2 class="orientation-modal-mobile-title">기기를 가로로 돌리고 진행해 주세요.</h2>
+            <button class="orientation-modal-mobile-btn" onclick="closeOrientationModalMobile()">확인</button>
+        </div>
+    </div>
 
     <!-- ▼▼▼ 이 부분을 새로 추가하세요 ▼▼▼ -->
 <div id="redirect-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center;">
@@ -828,6 +1030,31 @@
    <script>
 // JavaScript 로드 확인
 console.log('🔥 main.html JavaScript 로드됨!');
+
+// 모바일 감지 함수 (스마트폰만, 태블릿 제외)
+function isMobilePhone() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    // 태블릿은 제외하고 모바일만
+    return /android.*mobile|iphone|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+}
+
+// 가로 모드 안내 모달 닫기 (모바일용)
+function closeOrientationModalMobile() {
+    const modal = document.getElementById('orientationModalMobile');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+// 페이지 로드 시 모바일에서만 모달 표시
+window.addEventListener('DOMContentLoaded', function() {
+    if (isMobilePhone()) {
+        const modal = document.getElementById('orientationModalMobile');
+        if (modal) {
+            modal.classList.add('active');
+        }
+    }
+});
 
 // --- START OF FILE code (1).js ---
 document.addEventListener('DOMContentLoaded', () => {
