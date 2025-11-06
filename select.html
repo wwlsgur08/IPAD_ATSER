@@ -81,6 +81,12 @@
             font-size: 18px;
             animation: slideRight 1.5s ease-in-out infinite;
         }
+        
+        /* 모바일이 아닐 때는 줄바꿈 숨김 */
+        .mobile-only-br {
+            display: none;
+        }
+        
         @keyframes slideRight {
             0%, 100% { transform: translateX(0); }
             50% { transform: translateX(5px); }
@@ -278,6 +284,12 @@
                 font-size: 14px;
                 color: #e2e8f0 !important;
             }
+            
+            /* 모바일에서만 줄바꿈 표시 */
+            .mobile-only-br {
+                display: inline;
+            }
+            
             main {
                 flex-grow: 1;
                 overflow: hidden;
@@ -522,7 +534,7 @@
             <p>지난 여정을 통해 발견한 당신의 매력을 모두 선택해주세요. (개수 제한 없음)</p>
             <div class="scroll-guide">
                 <span class="arrow">👉</span>
-                <span>오른쪽으로 스크롤하여 7개의 카테고리를 모두 확인하세요!</span>
+                <span>오른쪽으로 스크롤하여<br class="mobile-only-br"> 7개의 카테고리를 모두 확인하세요!</span>
             </div>
         </header>
 
