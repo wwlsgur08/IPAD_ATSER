@@ -339,23 +339,24 @@
                 transform: translateY(-50%);
             }
             
-            /* 설명 줄 - 왼쪽 정렬 + 오른쪽에 버튼 */
+            /* 설명 줄 - 가운데 정렬 + 오른쪽에 버튼 */
             .panel-title-header .description-row {
                 display: flex;
-                justify-content: space-between;
+                justify-content: center;
                 align-items: center;
+                position: relative;
                 gap: 15px;
                 margin-bottom: 8px;
             }
             
             .panel-title-header .description-row p {
                 margin: 0;
-                text-align: left;
-                flex: 1;
+                text-align: center;
             }
             
             .panel-title-header .replay-container {
-                flex-shrink: 0;
+                position: absolute;
+                right: 0;
             }
         }
         
@@ -1187,23 +1188,6 @@
             </header>
             
             <header class="panel-header">
-                <div class="header-middle-row">
-                    <div class="cost-guide">
-                        <div class="cost-guide-row">
-                            <span class="guide-label">레벨:</span>
-                            <div class="guide-values">
-                                <span class="level-tag">1</span> <span class="level-tag">2</span> <span class="level-tag">3</span> <span class="level-tag">4</span> <span class="level-tag">5</span> <span class="level-tag">6</span>
-                            </div>
-                        </div>
-                        <div class="cost-guide-row">
-                            <span class="guide-label">비용:</span>
-                            <div class="guide-values">
-                                <span class="cost-value">1</span> <span class="cost-value">2</span> <span class="cost-value">3</span> <span class="cost-value">5</span> <span class="cost-value">7</span> <span class="cost-value">10</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="stardust-display-wrapper">
                     <p>남은 별가루: <span id="remaining-stardust">40</span> / 40</p>
                 </div>
