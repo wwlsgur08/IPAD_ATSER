@@ -623,7 +623,7 @@
                 <div class="star-field" id="starField"></div>
             </div>
             
-            <div class="constellation-name" id="constellationName">Loading...</div>
+            <div class="constellation-name" id="constellationNameDisplay">Loading...</div>
             <div class="constellation-bottom">마침내 발견한 나만의 별</div>
             <div class="star-corner bl">✦</div>
             <div class="star-corner br">✦</div>
@@ -766,7 +766,7 @@
             console.log('[Result Page] colorName:', colorName);
             
             // 별자리 이름 설정
-            const nameEl = document.getElementById('constellationName');
+            const nameEl = document.getElementById('constellationNameDisplay');
             nameEl.textContent = `${resultData.userName || 'User'}'s Constellation`;
             nameEl.setAttribute('lang', 'en');
             console.log('[Result Page] 별자리 이름 설정 완료:', nameEl.textContent);
