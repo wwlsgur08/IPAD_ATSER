@@ -1113,8 +1113,8 @@
                     constellationPreview.style.borderRadius = originalBorderRadius;
                     constellationPreview.style.overflow = originalOverflow;
                     
-                    // PNG로 저장 (투명도 유지, 품질 0.7)
-                    cardImageData = canvas.toDataURL('image/png', 0.7);
+                    // PNG로 저장 (투명도 유지, 최고 품질)
+                    cardImageData = canvas.toDataURL('image/png', 1.0);
                     console.log('✅ 별자리 이미지 캡처 완료 (크기:', Math.round(cardImageData.length / 1024), 'KB)');
                 } catch (error) {
                     console.error('❌ 별자리 캡처 실패:', error);
@@ -1273,11 +1273,11 @@
                         color: #0f172a;
                     ">카드를 업로드 중입니다.</div>
                     <div style="
-                        font-size: 16px;
+                        font-size: 14px;
                         color: #64748b;
                         font-weight: 500;
                         margin-bottom: 10px;
-                    ">QR코드 만들어지는 동안<br>20~30초 정도가 걸릴 수 있습니다.</div>
+                    ">QR코드 만들어지는 동안 15~20초 정도가 걸릴 수 있습니다.</div>
                     <div style="
                         font-size: 14px;
                         color: #94a3b8;
@@ -1293,7 +1293,13 @@
                 const frontCard = document.querySelector('.constellation-card');
                 const frontCanvas = await html2canvas(frontCard, {
                     backgroundColor: null,
-                    scale: 2
+                    scale: 3,
+                    useCORS: true,
+                    allowTaint: true,
+                    imageTimeout: 30000,
+                    logging: false,
+                    foreignObjectRendering: false,
+                    removeContainer: true
                 });
                 
                 // 뒷면들 (매력 목록 카드들) - 모든 stats-card를 하나의 이미지로 합치기
@@ -1304,7 +1310,13 @@
                     // 카드가 하나면 그대로 캡처
                     backCanvas = await html2canvas(backCards[0], {
                         backgroundColor: null,
-                        scale: 2
+                        scale: 3,
+                        useCORS: true,
+                        allowTaint: true,
+                        imageTimeout: 30000,
+                        logging: false,
+                        foreignObjectRendering: false,
+                        removeContainer: true
                     });
                 } else {
                     // 여러 카드면 세로로 이어붙이기
@@ -1322,7 +1334,13 @@
                     try {
                         backCanvas = await html2canvas(tempContainer, {
                             backgroundColor: null,
-                            scale: 2
+                            scale: 3,
+                            useCORS: true,
+                            allowTaint: true,
+                            imageTimeout: 30000,
+                            logging: false,
+                            foreignObjectRendering: false,
+                            removeContainer: true
                         });
                     } finally {
                         document.body.removeChild(tempContainer);
@@ -1336,13 +1354,13 @@
                 const storage = firebase.storage();
                 const storageRef = storage.ref();
                 
-                // 앞면 업로드
-                const frontBlob = await new Promise(resolve => frontCanvas.toBlob(resolve, 'image/png'));
+                // 앞면 업로드 (최고 품질로)
+                const frontBlob = await new Promise(resolve => frontCanvas.toBlob(resolve, 'image/png', 1.0));
                 const frontRef = storageRef.child(`temp_cards/${imageKey}_front.png`);
                 await frontRef.put(frontBlob);
                 
-                // 뒷면 업로드
-                const backBlob = await new Promise(resolve => backCanvas.toBlob(resolve, 'image/png'));
+                // 뒷면 업로드 (최고 품질로)
+                const backBlob = await new Promise(resolve => backCanvas.toBlob(resolve, 'image/png', 1.0));
                 const backRef = storageRef.child(`temp_cards/${imageKey}_back.png`);
                 await backRef.put(backBlob);
                 
