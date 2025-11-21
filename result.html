@@ -610,7 +610,7 @@
         </div>
     </div>
     
-    <div class="cards-container">
+    <div class="cards-container" id="cardsContainer">
         <div class="card constellation-card">
             <div class="star-corner tl">✦</div>
             <div class="star-corner tr">✦</div>
@@ -629,17 +629,7 @@
             <div class="star-corner br">✦</div>
         </div>
 
-        <div class="card stats-card">
-            <div class="star-corner tl">✦</div>
-            <div class="star-corner tr">✦</div>
-            <div class="aster-logo" id="asterLogo2"></div>
-            
-            <div class="stats-list" id="statsList"></div>
-            
-            <div class="constellation-bottom">마침내 발견한 나만의 별</div>
-            <div class="star-corner bl">✦</div>
-            <div class="star-corner br">✦</div>
-        </div>
+        <!-- 매력 카드들은 JavaScript로 동적 생성 -->
     </div>
 
     <div class="buttons">
@@ -846,13 +836,46 @@
                 }
             });
 
-            // 통계 생성 - 개별 매력들을 레벨 순으로 표시
-            const statsList = document.getElementById('statsList');
+            // 통계 생성 - 매력이 많으면 여러 카드로 분할
+            createStatsCards(resultData.charms, dominantCategoryInfo, bgColor, themeColor);
+        });
+
+        // 매력 카드들을 동적으로 생성하는 함수
+        function createStatsCards(charms, dominantCategoryInfo, bgColor, themeColor) {
+            const cardsContainer = document.getElementById('cardsContainer');
+            const sortedCharms = charms.sort((a, b) => b.level - a.level);
             
-            resultData.charms
-                .sort((a, b) => b.level - a.level)
-                .slice(0, 8)
-                .forEach(charm => {
+            // 한 카드당 최대 8개 매력 표시
+            const charmsPerCard = 8;
+            const totalCards = Math.ceil(sortedCharms.length / charmsPerCard);
+            
+            console.log(`[Stats Cards] 총 ${sortedCharms.length}개 매력, ${totalCards}개 카드 생성`);
+            
+            for (let cardIndex = 0; cardIndex < totalCards; cardIndex++) {
+                const startIndex = cardIndex * charmsPerCard;
+                const endIndex = Math.min(startIndex + charmsPerCard, sortedCharms.length);
+                const cardCharms = sortedCharms.slice(startIndex, endIndex);
+                
+                // 카드 생성
+                const statsCard = document.createElement('div');
+                statsCard.className = 'card stats-card';
+                statsCard.style.background = `linear-gradient(145deg, ${bgColor} 0%, ${bgColor}dd 100%)`;
+                
+                statsCard.innerHTML = `
+                    <div class="star-corner tl" style="color: ${themeColor}">✦</div>
+                    <div class="star-corner tr" style="color: ${themeColor}">✦</div>
+                    <div class="aster-logo" style="background-image: url('./images/logo-${dominantCategoryInfo ? dominantCategoryInfo.colorName : 'blue'}.png')"></div>
+                    
+                    <div class="stats-list"></div>
+                    
+                    <div class="constellation-bottom" style="color: ${themeColor}">마침내 발견한 나만의 별${totalCards > 1 ? ` (${cardIndex + 1}/${totalCards})` : ''}</div>
+                    <div class="star-corner bl" style="color: ${themeColor}">✦</div>
+                    <div class="star-corner br" style="color: ${themeColor}">✦</div>
+                `;
+                
+                // 매력 목록 추가
+                const statsList = statsCard.querySelector('.stats-list');
+                cardCharms.forEach(charm => {
                     const info = categoryInfo[charm.category];
                     const item = document.createElement('div');
                     item.className = 'stat-item';
@@ -865,7 +888,11 @@
                     `;
                     statsList.appendChild(item);
                 });
-        });
+                
+                // 카드 컨테이너에 추가
+                cardsContainer.appendChild(statsCard);
+            }
+        }
 
         // 이미지 미리 로딩 함수
         function preloadImages() {
@@ -1249,6 +1276,12 @@
                         font-size: 16px;
                         color: #64748b;
                         font-weight: 500;
+                        margin-bottom: 10px;
+                    ">QR코드 만들어지는 동안<br>20~30초 정도가 걸릴 수 있습니다.</div>
+                    <div style="
+                        font-size: 14px;
+                        color: #94a3b8;
+                        font-weight: 400;
                     ">잠시만 기다려주세요.</div>
                 </div>
             `;
@@ -1263,12 +1296,38 @@
                     scale: 2
                 });
                 
-                // 뒷면 (매력 목록 카드)
-                const backCard = document.querySelector('.stats-card');
-                const backCanvas = await html2canvas(backCard, {
-                    backgroundColor: null,
-                    scale: 2
-                });
+                // 뒷면들 (매력 목록 카드들) - 모든 stats-card를 하나의 이미지로 합치기
+                const backCards = document.querySelectorAll('.stats-card');
+                let backCanvas;
+                
+                if (backCards.length === 1) {
+                    // 카드가 하나면 그대로 캡처
+                    backCanvas = await html2canvas(backCards[0], {
+                        backgroundColor: null,
+                        scale: 2
+                    });
+                } else {
+                    // 여러 카드면 세로로 이어붙이기
+                    const tempContainer = document.createElement('div');
+                    tempContainer.style.cssText = 'position: fixed; top: -9999px; left: -9999px; display: flex; flex-direction: column; gap: 20px;';
+                    
+                    // 모든 뒷면 카드를 임시 컨테이너에 복사
+                    backCards.forEach(card => {
+                        const clonedCard = card.cloneNode(true);
+                        tempContainer.appendChild(clonedCard);
+                    });
+                    
+                    document.body.appendChild(tempContainer);
+                    
+                    try {
+                        backCanvas = await html2canvas(tempContainer, {
+                            backgroundColor: null,
+                            scale: 2
+                        });
+                    } finally {
+                        document.body.removeChild(tempContainer);
+                    }
+                }
                 
                 // 이미지 키 생성
                 const imageKey = 'card_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
