@@ -104,9 +104,13 @@
             gap: clamp(10px, 2vw, 18px);
             width: 100%;
             overflow-x: auto;
+            overflow-y: hidden;
             padding: 10px 0 20px 0;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: thin;
+            scroll-behavior: smooth;
+            touch-action: pan-x;
+            cursor: grab;
         }
         .selection-grid.active-drag {
             cursor: grabbing;
@@ -329,13 +333,16 @@
             }
             .selection-grid {
                 overflow-x: auto;
+                overflow-y: hidden;
                 justify-content: flex-start;
                 flex-wrap: nowrap;
                 -ms-overflow-style: none;
                 scrollbar-width: none;
                 padding: 15px;
-                
                 cursor: grab;
+                touch-action: pan-x;
+                scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch;
             }
             .selection-grid::-webkit-scrollbar {
                 height: 8px;
@@ -432,6 +439,11 @@
                 height: 100%;
                 padding: 5px 0 10px 0;
                 gap: 12px;
+                touch-action: pan-x;
+                scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch;
+                overflow-x: auto;
+                overflow-y: hidden;
             }
             
             .category-group {
@@ -726,14 +738,17 @@ document.addEventListener('DOMContentLoaded', () => {
         let isDown = false;
         let startX;
         let scrollLeft;
+        let startTouchX;
+        let isTouching = false;
 
+        // 마우스 이벤트 (데스크톱)
         slider.addEventListener('mousedown', (e) => {
-            // 버튼 클릭 시에는 드래그가 시작되지 않도록 예외 처리
             if (e.target.classList.contains('selectable-charm')) return;
             isDown = true;
             slider.classList.add('active-drag');
             startX = e.pageX - slider.offsetLeft;
             scrollLeft = slider.scrollLeft;
+            e.preventDefault();
         });
 
         slider.addEventListener('mouseleave', () => {
@@ -750,9 +765,34 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isDown) return;
             e.preventDefault();
             const x = e.pageX - slider.offsetLeft;
-            const walk = (x - startX) * 2; // *2는 스크롤 감도를 높이기 위함
+            const walk = (x - startX) * 1.5;
             slider.scrollLeft = scrollLeft - walk;
         });
+
+        // 터치 이벤트 (모바일/태블릿) - 개선된 버전
+        slider.addEventListener('touchstart', (e) => {
+            if (e.target.classList.contains('selectable-charm')) return;
+            isTouching = true;
+            startTouchX = e.touches[0].clientX;
+            scrollLeft = slider.scrollLeft;
+        }, { passive: true });
+
+        slider.addEventListener('touchmove', (e) => {
+            if (!isTouching) return;
+            const touchX = e.touches[0].clientX;
+            const walk = (startTouchX - touchX) * 1.2; // 터치 감도 조절
+            slider.scrollLeft = scrollLeft + walk;
+        }, { passive: true });
+
+        slider.addEventListener('touchend', () => {
+            isTouching = false;
+        }, { passive: true });
+
+        // 휠 스크롤 지원 (가로 스크롤)
+        slider.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            slider.scrollLeft += e.deltaY;
+        }, { passive: false });
     }
 
     // --- 실행 ---
