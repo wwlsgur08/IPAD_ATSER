@@ -13,9 +13,16 @@
             touch-action: manipulation;
         }
         
+        html {
+            background: #0f172a !important;
+            background-color: #0f172a !important;
+        }
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            background: linear-gradient(to bottom, #0f172a 0%, #1e3a8a 50%, #312e81 100%); /* slate-900 → blue-900 → indigo-900 */
+            background: linear-gradient(to bottom, #0f172a 0%, #1e3a8a 50%, #312e81 100%) !important; /* slate-900 → blue-900 → indigo-900 */
+            background-color: #0f172a !important;
+            background-attachment: fixed;
             color: #cbd5e1; /* slate-300 */
             padding: env(safe-area-inset-top, 20px) env(safe-area-inset-right, 20px) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 20px);
             display: flex;
@@ -274,11 +281,19 @@
             }
         }
         @media (max-width: 768px) {
+            html {
+                background: #0f172a !important;
+                background-color: #0f172a !important;
+            }
+            
             body {
                 display: block;
                 padding: 0;
                 height: auto;
-        min-height: 0;
+                min-height: 0;
+                background: linear-gradient(to bottom, #0f172a 0%, #1e3a8a 50%, #312e81 100%) !important;
+                background-color: #0f172a !important;
+                background-attachment: fixed;
             }
             .container {
                 width: 100%;
@@ -356,9 +371,17 @@
         
         /* 모바일 가로 모드 최적화 */
         @media (max-width: 926px) and (orientation: landscape) {
+            html {
+                background: #0f172a !important;
+                background-color: #0f172a !important;
+            }
+            
             body {
                 padding: 10px;
                 overflow: hidden;
+                background: linear-gradient(to bottom, #0f172a 0%, #1e3a8a 50%, #312e81 100%) !important;
+                background-color: #0f172a !important;
+                background-attachment: fixed;
             }
             
             .container {
@@ -540,7 +563,7 @@
     </head>
 <body>
     <!-- 반짝이는 별 배경 -->
-    <div id="sparklingBackground" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;"></div>
+    <div id="sparklingBackground" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; background: #0f172a;"></div>
     
     <!-- 가로 모드 안내 모달 (태블릿 전용) -->
     <div class="orientation-modal" id="orientationModal">
