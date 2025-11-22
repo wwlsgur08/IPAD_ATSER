@@ -27,7 +27,7 @@
             padding: env(safe-area-inset-top, 20px) env(safe-area-inset-right, 20px) env(safe-area-inset-bottom, 20px) env(safe-area-inset-left, 20px);
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             min-height: 100vh;
             min-height: -webkit-fill-available;
             -webkit-overflow-scrolling: touch;
@@ -295,6 +295,7 @@
                 padding: 0;
                 height: auto;
                 min-height: 0;
+                align-items: flex-start;
                 background: linear-gradient(to bottom, #0f172a 0%, #1e3a8a 50%, #312e81 100%) !important;
                 background-color: #0f172a !important;
                 background-attachment: fixed;
@@ -376,6 +377,25 @@
             }
         }
         
+        /* 12.9인치 아이패드 가로 모드 중앙 정렬 */
+        @media (min-width: 1000px) and (max-width: 1366px) and (orientation: landscape) {
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                padding: 20px;
+                margin: 0;
+            }
+            
+            .container {
+                height: auto;
+                max-height: 85vh;
+                margin: auto;
+                overflow-y: auto;
+            }
+        }
+        
         /* 모바일 가로 모드 최적화 */
         @media (max-width: 926px) and (orientation: landscape) {
             html {
@@ -386,6 +406,7 @@
             body {
                 padding: 10px;
                 overflow: hidden;
+                align-items: flex-start;
                 background: linear-gradient(to bottom, #0f172a 0%, #1e3a8a 50%, #312e81 100%) !important;
                 background-color: #0f172a !important;
                 background-attachment: fixed;

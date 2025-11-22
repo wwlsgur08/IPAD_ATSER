@@ -937,6 +937,22 @@
             /* ▲▲▲ 여기까지 수정/교체 ▲▲▲ */
         }
         
+        /* 12.9인치 아이패드 가로 모드 중앙 정렬 */
+        @media (min-width: 1000px) and (max-width: 1366px) and (orientation: landscape) {
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                padding: 30px;
+            }
+            
+            .app-container {
+                height: auto;
+                max-height: 80vh;
+            }
+        }
+
         /* 모바일 가로 모드 최적화 */
         @media (max-width: 768px) and (orientation: landscape) {
             body {
